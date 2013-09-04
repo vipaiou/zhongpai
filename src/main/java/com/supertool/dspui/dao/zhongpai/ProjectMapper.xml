@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.zhongpai.ProjectMapper">
+
+<insert id="donew">
+	<selectKey resultType="int" order="AFTER"  keyProperty="id"> 
+         select LAST_INSERT_ID()
+    </selectKey>
+	insert into project set step='0', content='',createdate=now(), createuser=${userId};
+</insert>
+
+<select id="selectByStepAndCreateuser" resultType="map">
+	select * from project where createuser=${userId} and step=${step} order by id asc;
+</select>
+
+<update id="updateBasic" parameterType="map">
+	update project set name=#{name}, province=#{province},city=#{city},content=#{content},
+	                   video=#{video},paybackintro=#{paybackinfo},money=#{money},day=#{day},
+	                   category=#{category},summary=#{summary},step='1',videocode=#{videocode} where id=#{id}
+</update>
+<update id="updateImage" parameterType="map">
+	update project set picture=#{picture} where id=#{projectId}
+</update>
+
+<select id="selectCreatedByStepAndCreateuser" resultType="map">
+	select * from project where createuser=${userId} and step > 0 order by id asc;
+</select>
+
+<select id="selectById" resultType="map">
+	select * from project where id=#{projectId};
+</select>
+
+<select id="selectByStatus" resultType="map">
+	select * from project where status=#{status} and step > 0 order by id asc;
+</select>
+<update id="submitaudit" parameterType="map">
+	update project set realname=#{realname}, sex=#{gender}, qq=#{qq}, phone=#{phone}, auditstatus='1', money=#{money}, day=#{day}  where id=#{id}
+</update>
+</mapper>

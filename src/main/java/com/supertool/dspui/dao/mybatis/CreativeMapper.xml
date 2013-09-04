@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.CreativeMapper">
+<insert id="insertCreative" parameterType="Creative" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+ insert into creative(CarbonId,DspId,CampaignId,Name,Description,CreateTime) 
+ values (#{carbonId},#{dspId},#{campaign.id},#{name},#{description},now())
+</insert>
+<resultMap type="Creative" id="creativeMap">
+<id column="id" property="id"/>
+<result column="CarbonId" property="carbonId"/>
+<result column="DspId" property="dspId"/>
+<result column="Name" property="name"/>
+<result column="campaignId" property="campaignId"/>
+<result column="Description" property="description"/>
+<result column="CreateTime" property="createTime"/>
+<result column="updateTime" property="updateTime"/>
+<result column="deleteTime" property="deleteTime"/>
+
+<association property="isInUse" column="id" select="isUsedByRtb"></association>
+<association property="materialCount" column="id" select="getMaterialCountByCreativeId"></association>
+<association property="campaignCarbonId" column="campaignId" select="getCampaignCarbonIdById"></association>
+<association property="campaign" column="CamPaignId" select="com.supertool.dspui.dao.mybatis.CampaignMapper.getCampaignById"></association>
+</resultMap>
+<select id="getCampaignCarbonIdById" parameterType="int" resultType="int">
+	select carbonId from campaign where id = #{campaignId}
+</select>
+<select id="getMaterialCountByCreativeId" parameterType="int" resultType="int">
+	select count(id) from material where isdeleted = 0 and creativeId = #{id}
+</select>
+<select id="getCreativeById" parameterType="int" resultMap="creativeMap">
+  select * from creative where isdeleted = 0 and id=#{id}
+</select>
+<update id="saveCreative" parameterType="Creative">
+ update creative 
+ <trim suffixOverrides=",">
+ 
+ <set>
+ 	<if test="carbonId != null">
+ 		CarbonId = #{carbonId},
+ 	</if>
+ 	<if test="dspId !=null">
+ 		DspId = #{dspId},
+ 	</if>
+ 	<if test="campaign != null">
+ 		CampaignId = #{campaign.id},
+ 	</if>
+ 	<if test="name != null">
+ 		Name = #{name},
+ 	</if>
+ 	<if test="description != null">
+ 		Description = #{description},
+ 	</if>
+ 	<if test="updateTime != null">
+ 		updateTime = now(),
+ 	</if>
+ 	<if test="isDeleted != null">
+ 		isDeleted = #{isDeleted}
+ 	</if>
+ </set>
+ </trim>
+  where  id = #{id}
+</update>
+<select id="checkName" parameterType="map" resultType="boolean">
+    select count(*) from creative where isdeleted = 0 
+    <if test="id != null">
+     and id &lt;&gt; #{id}
+    </if>
+    and campaignId = #{campaignId}
+    and name =#{name};
+</select>
+<select id="getPagedCreatives" parameterType="SelectSQLParam" resultMap="creativeMap">
+  select CarbonId , Id ,Name,CampaignId
+	 from creative 
+	 
+	 <where>
+	 	isDeleted = 0 and CampaignId = #{userData.campaignId} and dspId = #{dspId}
+
+	 	<if test="isNeedInIds == true">
+	 		 	<if test="ids!=null">
+	 				and  carbonId in
+	 		 		<foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 			#{id}
+	 				 </foreach>
+	 			</if>
+	 			<if test="ids ==null">
+	 				and false 
+	 			</if>
+	 	  	 
+	 	</if>
+	 	<if test="searchValue != null">
+		 		and (carbonId = #{searchValue} or name like concat('%',#{searchValue},'%'))
+	 	</if> 
+	 	<if test="sqlStr != null">
+	 		${sqlStr}
+	 	</if>
+	 </where>
+	  <if test="orderName!=null &amp;&amp; orderValue!=null">
+	 	order by ${orderName}   ${orderValue}
+	 </if>
+	 <if test="startRow!=null&amp;&amp;limitRows !=null">
+	 	limit #{startRow},#{limitRows}
+	 </if>
+
+</select>
+<select id="getCreativesCount" parameterType="SelectSQLParam" resultType="int">
+select count(id)
+	 from creative
+	 
+	 <where>
+	 	isDeleted = 0 and CampaignId = #{userData.campaignId} and dspId = #{dspId}
+	 	<if test="isNeedInIds == true">
+	 		 	<if test="ids!=null">
+	 				and  carbonId in
+	 		 		<foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 			#{id}
+	 				 </foreach>
+	 			</if>
+	 			<if test="ids ==null">
+	 				and false 
+	 			</if>
+	 	  	 
+	 	</if>
+	 	<if test="searchValue != null">
+		 		and (carbonId = #{searchValue} or name like concat('%',#{searchValue},'%'))
+	 	</if> 
+	 	<if test="sqlStr != null">
+	 		${sqlStr}
+	 	</if>
+	 </where>
+</select>
+<select id="isUsedByRtb" parameterType="int" resultType="boolean">
+ 	select count(id)  from rtb where isdeleted = 0  and CreativeId = #{id} 
+</select>
+<update id="deleteCreativeById" parameterType="int">
+	update   creative set   isdeleted = 1 where  id = #{id}
+</update>
+<select id="getMaterialIdsByCreativeId" parameterType="int" resultType="int">
+   select id from material where isdeleted = 0  and  CreativeId = #{id}
+</select>
+<update id="batchDeleteMaterials" parameterType="int" >
+	update  material set isdeleted = 1 where id in
+	<foreach collection="list" item="id" open="(" separator="," close=")">
+		#{id}
+	</foreach>
+</update>
+
+
+<select id="getByCampaignId" parameterType="int" resultType="Creative">
+	select * from creative where isDeleted = 0 and campaignId = #{campaignId}
+	order by convert(name using gbk) asc
+</select>
+<select id="getByCarbonId" parameterType="int" resultType="Creative">
+	select * from creative where isDeleted = 0 and carbonId = #{carbonId}
+</select>
+<update id="deleteCreativesInLocal" parameterType="int">
+	update creative set isDeleted = 1 
+	<where>
+		id in
+		<foreach collection="list" open="(" separator="," close=")" item="id">
+			#{id}
+		</foreach>
+	</where>
+</update>
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.zhongpai.UserMapper">
+
+<select id="findByUserName" resultType="com.supertool.dspui.model.User" >
+ select * from st_user
+ where username= '${username}' and isdeleted='0'
+
+</select>
+
+<select id="getUserById" resultType="map" parameterType="Object" >
+ select * from st_user where userid=#{id}
+</select>
+
+<update id="update" parameterType="com.supertool.dspui.model.User">
+	update st_user set
+	UserFullName = #{userFullName},
+	PhoneNumber = #{phoneNumber},
+	Email = #{email},
+	Address = #{address},
+	website = #{website},
+	zipcode = #{zipcode},
+	Description = #{description}
+	where UserId = #{userId}
+	
+</update>
+
+<update id="updateUserPasswordByName" >
+	update st_user set
+	Password = #{password}
+	where UserName = #{username}
+</update>
+<!-- function  -->
+</mapper>

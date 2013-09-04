@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.CampaignMapper">
+
+<sql id="campaignCommonColumns">
+ 	<!-- 
+ 	
+    CarbonId, 
+    Id ,
+     -->
+    DspId,
+    Name ,
+    StartTime ,
+    EndTime ,
+    AdvertiserId ,
+    Brand ,
+    MaxPrice,
+    LandingPage ,
+    IsMinisite ,
+    CreateTime ,
+    UpdateTime ,
+    DeleteTime ,
+    IsDeleted
+    
+    
+</sql>
+<sql id="campaignCommonProperties">
+    <!-- #{campaign.id}, -->
+    <!--  #{campaign.carbonId}, -->
+    #{campaign.dspId}, 
+    #{campaign.name},
+    #{campaign.startTime},
+    #{campaign.endTime},
+    #{campaign.advertiserId},
+    #{campaign.brand},
+    #{campaign.maxPrice},
+    #{campaign.landingPage},
+    #{campaign.isMinisite},
+    #{campaign.createTime},
+    #{campaign.updateTime},
+    #{campaign.deletedTime},
+    #{campaign.isDeleted}
+</sql>
+<!-- rtb join campaign -->
+<!-- <sql id=""></sql> -->
+
+
+
+
+<insert id="insertCampaign" parameterType="map"  >
+  
+ insert into campaign(CarbonId,<include refid="campaignCommonColumns"/>) 
+ values (#{campaign.carbonId},<include refid="campaignCommonProperties"/>)
+ <selectKey resultType="int" order="AFTER" keyProperty="id" >  
+          SELECT LAST_INSERT_ID() 
+   </selectKey>  
+</insert>  
+
+<update id="updateCampaignCarbonId" parameterType="int">
+ update campaign set carbonId =#{carbonId} where id = #{campaignId}
+</update>
+
+<select id="getCampaignBycarbonId" parameterType="int" resultType="Campaign">
+	select CarbonId , Id,
+	<include refid="campaignCommonColumns"/>
+	 from campaign
+	 
+	 <where>
+	 	isDeleted = 0 and carbonId = #{carbonId}
+	 </where>
+</select>
+
+<update id="deleteCampaignById" parameterType="int" >
+  update campaign set isdeleted = 1  where id = #{id}
+</update>
+<select id="getCampaignById" parameterType="int" resultType="Campaign">
+ select * from  campaign 
+  where isdeleted = 0 and id = #{id}
+</select>
+
+<update id="updateCampaign" parameterType="map">
+ update campaign set 
+  name = #{campaign.name},
+  startTime = #{campaign.startTime},
+  endTime = #{campaign.endTime},
+<!--   advertiserId = #{campaign.advertiserId}, -->
+  brand = #{campaign.brand},
+  landingPage = #{campaign.landingPage},
+  maxPrice = #{campaign.maxPrice},
+  updateTime = now()
+  
+  where isDeleted = 0
+  and carbonId = #{campaign.carbonId}
+</update>
+
+<select id="getAdvertiserById" parameterType="int" resultType="Advertiser">
+	select * from advertiser where isdeleted = 0 and id = #{advertiserId}
+</select>
+<select id="getAdvertiserIgnoreAllById" parameterType="int" resultType="Advertiser">
+	select * from advertiser where  id = #{advertiserId}
+</select>
+<update id="deleteCampaignByCarbonId" parameterType="int">
+ update campaign set isdeleted =1 where carbonId = #{carbonId}
+</update>
+<select id="checkName" parameterType="map" resultType="Campaign">
+	select * from campaign where isdeleted = 0 and name = #{name} and dspId = #{dspId}
+</select>
+<select id="checkOtherName" parameterType="map" resultType="Campaign">
+	select * from campaign where isdeleted = 0 and name = #{name} and carbonId &lt;&gt;#{carbonId} and dspId = #{dspId}
+</select>
+
+<select id="getRtbProgressNoStarted" parameterType="int" resultType="Rtb">
+
+ select * from rtb where isdeleted = 0 
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &lt; unix_timestamp(concat(startTime,' 00:00:00')) 
+ <if test="list != null">
+ 	 and carbonId in 
+ 	 <foreach collection="list" item="carbonId" open="(" separator="," close=")">
+ 	 	#{carbonId}
+ 	 </foreach>
+ </if>
+</select>
+
+<select id="getRtbProgressFinished" parameterType="int" resultType="Rtb">
+select * from rtb where isdeleted = 0 
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt; unix_timestamp(concat(endTime,' 23:59:59')) 
+ <if test="list != null">
+ 	 and carbonId in 
+ 	 <foreach collection="list" item="carbonId" open="(" separator="," close=")">
+ 	 	#{carbonId}
+ 	 </foreach>
+ </if>
+</select>
+
+<select id="getRtbProgressPause" parameterType="int" resultType="Rtb">
+
+select * from rtb where isdeleted = 0 
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt;= unix_timestamp(concat(startTime,' 00:00:00'))  
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &lt;= unix_timestamp(concat(endTime,' 23:59:59')) 
+ and Active = 0
+ <if test="list != null">
+ 	 and carbonId in 
+ 	 <foreach collection="list" item="carbonId" open="(" separator="," close=")">
+ 	 	#{carbonId}
+ 	 </foreach>
+ </if>
+</select>
+
+<select id="getRtbProgressOverRun" parameterType="int" resultType="Rtb">
+select * from rtb where isdeleted = 0 
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt;= unix_timestamp(concat(startTime,' 00:00:00'))  
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &lt;= unix_timestamp(concat(endTime,' 23:59:59')) 
+ and Active = 1
+ <if test="list != null">
+ 	 and carbonId in 
+ 	 <foreach collection="list" item="carbonId" open="(" separator="," close=")">
+ 	 	#{carbonId}
+ 	 </foreach>
+ </if>
+</select>
+
+<select id="getRtbsByCampaignId" parameterType="int" resultType="Rtb">
+ select carbonId from rtb where isdeleted = 0 and CampaignId = #{carbonId}
+</select>
+
+
+
+
+<select id="getPagedBrands" parameterType="SelectSQLParam" resultType="String" >
+	
+	select brand ,carbonId,
+	<include refid="campaignCommonColumns"/>
+	 from campaign
+	 
+	 <where>
+	 	isDeleted = 0 and dspId = #{dspId}
+	 	<trim  prefixOverrides="and |or">
+	 		<if test="ids!=null">
+	 		 and carbonId in
+	 		 <foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 	#{id}
+	 		 </foreach>
+	 		</if>
+		</trim>
+	 	
+	 </where>
+	 <if test="startRow!=null&amp;&amp;limitRows !=null">
+	 	limit #{startRow},#{limitRows}
+	 </if>
+	 <if test="orderName!=null &amp;&amp; orderValue!=null">
+	 	order by ${orderName}   ${orderValue}
+	 </if>
+	
+</select>
+
+
+
+<select id="getMaterialChecking" parameterType="int" resultType="Material">
+select carbonId from material where isdeleted = 0  and Status = 0 
+<if test="list !=null">
+	and carbonId in 
+	<foreach collection="list" item="carbonId" open="(" close=")" separator=",">
+		#{carbonId}
+	</foreach>
+</if> 
+</select>
+<select id="getMaterialReject" parameterType="int" resultType="Material">
+	select carbonId from material where isdeleted = 0  and Status = 1 
+<if test="list !=null">
+	and carbonId in 
+	<foreach collection="list" item="carbonId" open="(" close=")" separator=",">
+		#{carbonId}
+	</foreach>
+</if> 
+</select>
+<select id="getMaterialPassed" parameterType="int" resultType="Material">
+	select carbonId from material where isdeleted = 0  and Status = 2
+<if test="list !=null">
+	and carbonId in 
+	<foreach collection="list" item="carbonId" open="(" close=")" separator=",">
+		#{carbonId}
+	</foreach>
+</if> 
+</select>
+
+<select id="getAdvertiserNameById" parameterType="int" resultType="String">
+	select IfNULL(Name,'') from advertiser where isdeleted = 0 and id = #{id}
+</select>
+
+<select id="getRtbIdsByCampaignId" parameterType="int" resultType="int">
+
+	select DISTINCT (CarbonId) from rtb where isdeleted = 0 and CampaignId =#{id}
+
+</select>
+
+<select id="getMaterialIdsByCampaignId" parameterType="int" resultType="int">
+   <!--  select DISTINCT (m.carbonId) from campaign c 
+     left join rtb r on (c.carbonId = r.CampaignId and r.isdeleted = 0) 
+     left join rtb_adplacement_material_relation  rm on  r.carbonId = rm.RtbId  
+     left join material m on (rm.MaterialId = m.carbonId and m.isdeleted = 0 )
+    where c.isdeleted = 0  and c.carbonId = #{carbonId}  -->
+    select  DISTINCT (carbonId) from material  where  creativeId in
+	(select id from creative where isdeleted = 0 and campaignId  = #{id}
+  ) 
+</select>
+<select id="getRtbNotStarted" parameterType="int" resultType="int">
+   select count(*) from rtb where isdeleted = 0 
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &lt; unix_timestamp(concat(startTime,' 00:00:00')) 
+ and CampaignId =#{id}
+ 
+</select>
+<select id="getRtbFinished" parameterType="int" resultType="int">
+    select count(*) from rtb where isdeleted = 0 
+    and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt; unix_timestamp(concat(endTime,' 23:59:59')) 
+   and CampaignId =#{id}
+</select>
+<select id="getRtbPause" parameterType="int" resultType="int">
+ select count(*) from rtb where isdeleted = 0 
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt;= unix_timestamp(concat(startTime,' 00:00:00'))  
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &lt;= unix_timestamp(concat(endTime,' 23:59:59')) 
+ and Active = 0
+ and CampaignId =#{id}
+</select>
+
+<select id="getDspRejected" parameterType="int" resultType="int">
+    select count(DISTINCT  m.carbonId ) from campaign c 
+     left join rtb r on (c.carbonId = r.CampaignId and r.isdeleted = 0) 
+     left join rtb_adplacement_material_relation  rm on  r.carbonId = rm.RtbId  
+     left join material m on(rm.MaterialId = m.carbonId and m.isdeleted = 0 and m.Status =1)
+    where c.isdeleted = 0  and c.carbonId = #{carbonId} 
+</select>
+<select id="getDspChecking" parameterType="int" resultType="int">
+   select count(DISTINCT m.carbonId ) from campaign c 
+     left join rtb r on (c.carbonId = r.CampaignId and r.isdeleted = 0) 
+     left join rtb_adplacement_material_relation  rm on  r.carbonId = rm.RtbId 
+     left join material m on(rm.MaterialId = m.carbonId and m.isdeleted = 0 and m.Status =0)
+    where c.isdeleted = 0  and c.carbonId = #{carbonId}
+	
+</select>
+<select id="getEditable" parameterType="int" resultType="boolean" >
+select  if(UNIX_TIMESTAMP(concat(endTime,' 23:59:59')) &lt;unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')),false,true) from campaign where  id = #{id} 
+</select>
+<select id="getDeletable" parameterType="int" resultType="boolean">
+select  if(UNIX_TIMESTAMP(concat(startTime,' 00:00:00')) &gt;unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')),true,false) from campaign where  id = #{id} 
+</select>
+<resultMap type="CampaignRow" id="mm">
+<id column="id" property="id"/>
+<result column="carbonId" property="carbonId"/>
+ <result column="dspId" property="dspId"/>
+ <result column="brand" property="brand"/>
+ <result column="Name" property="campaignName"/>
+ <result column="StartTime" property="startTime"/>
+ <result column="endTime" property="endTime"/>
+ <result column="AdvertiserId" property="advertiserId"/>
+ <result column="Brand" property="brand"/>
+ <result column="MaxPrice" property="maxPrice"/>
+ <result column="LandingPage" property="landingPage"/>
+
+<association  column="id" property="deletable"  select="getDeletable"> </association>
+<association  column="id" property="editable"  select="getEditable"> </association> 
+ <association column="id" property="rtbPause" select="getRtbPause"></association> 
+ <association column="id" property="rtbNotStarted" select="getRtbNotStarted"></association>
+ <association column="id" property="rtbFinished" select="getRtbFinished"></association> 
+<!--  <association column="id" property="dspRejected" select="getDspRejected"></association>
+ <association column="id" property="dspChecking" select="getDspChecking"></association> -->
+
+ 
+ <association column="AdvertiserId" property="advertiserName" select="getAdvertiserNameById"></association> 
+ <collection column="id" property="rtbProgressIds" javaType="ArrayList" ofType="int" select="getRtbIdsByCampaignId"></collection>
+ <collection column="id" property="materailIds" javaType="ArrayList" ofType="int" select="getMaterialIdsByCampaignId"></collection> 
+ 
+
+</resultMap>  
+
+<select id="getPagedRows"  parameterType="SelectSQLParam" resultMap="mm">
+  select CarbonId , Id, dspId,brand,Name,StartTime,endTime,AdvertiserId,Brand,MaxPrice,LandingPage
+   
+	
+	 from campaign
+	 
+	 <where>
+	 	isDeleted = 0 and dspId = #{dspId}
+
+	 	<if test="isNeedInIds == true">
+	 		 	<if test="ids!=null">
+	 				and  carbonId in
+	 		 		<foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 			#{id}
+	 				 </foreach>
+	 			</if>
+	 			<if test="ids ==null">
+	 				and false 
+	 			</if>
+	 	  	 
+	 	</if>
+	 	<if test="searchValue != null">
+	 		
+	 			and (carbonId = #{searchValue} or name like concat('%',#{searchValue},'%'))
+	 		
+	 	</if> 
+	 	<if test="sqlStr != null">
+	 		${sqlStr}
+	 	</if>
+	 </where>
+	 <if test="orderName!=null &amp;&amp; orderValue!=null">
+	 	order by ${orderName}   ${orderValue}
+	 </if>
+	 <if test="startRow!=null&amp;&amp;limitRows !=null">
+	 	limit #{startRow},#{limitRows}
+	 </if>
+	 
+	
+</select>
+ <select id="getCampaignsCount" parameterType="SelectSQLParam" resultType="int">
+  select count(id) from campaign	 
+	 <where>
+	 	isDeleted = 0 and dspId = #{dspId}
+
+	 	<if test="isNeedInIds == true">
+	 		 	<if test="ids!=null">
+	 				and  carbonId in
+	 		 		<foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 			#{id}
+	 				 </foreach>
+	 			</if>
+	 			<if test="ids ==null">
+	 				and false 
+	 			</if>
+	 	  	 
+	 	</if>
+	 	<if test="searchValue != null">
+	 		and (carbonId = #{searchValue} or name like concat('%',#{searchValue},'%'))
+	 	</if> 
+	 	<if test="sqlStr != null">
+	 		${sqlStr}
+	 	</if>
+	 </where>	 
+ </select>
+<select id="getCampaignIdsByRtbNotStarted"  resultType="int">
+ <!--  select carbonId from campaign where isdeleted = 0 and 
+  id in (
+  	 select campaignId from rtb where isdeleted = 0 
+	 and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &lt; unix_timestamp(concat(startTime,' 00:00:00')) 
+  ) -->
+  select distinct c.carbonId from rtb r  join campaign  c 
+	on (c.id = r.CampaignId and c.isdeleted = 0) where  r.isdeleted = 0 and 
+	unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &lt; unix_timestamp(concat(r.startTime,' 00:00:00'))
+</select>
+<select id="getCampaignIdsByRtbFinished" resultType="int">
+<!-- 	select carbonId from campaign where isdeleted = 0 and 
+  id in (
+  	 select campaignId from rtb where isdeleted = 0 
+	 and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt; unix_timestamp(concat(r.endTime,' 23:59:59'))  
+  )
+     -->
+      select distinct c.carbonId from rtb r  join campaign  c 
+	on (c.id = r.CampaignId and c.isdeleted = 0) where  r.isdeleted = 0 and 
+	unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt; unix_timestamp(concat(r.endTime,' 23:59:59')) 
+</select>
+<select id="getCampaignIdsByRtbPause" resultType="int">
+
+<!-- select carbonId from campaign where isdeleted = 0 and 
+  id in (
+  	 select campaignId from rtb where isdeleted = 0 
+	 and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt;= unix_timestamp(concat(r.startTime,' 00:00:00'))  
+ 	and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &lt;= unix_timestamp(concat(r.endTime,' 23:59:59')) 
+ 	and Active = 0  
+  ) -->
+   select distinct c.carbonId from rtb r  join campaign  c 
+on (c.id = r.CampaignId and c.isdeleted = 0) where r.isdeleted = 0 and 
+unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt;= unix_timestamp(concat(r.startTime,' 00:00:00'))  
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &lt;= unix_timestamp(concat(r.endTime,' 23:59:59')) 
+ and Active = 0
+</select>
+<select id="getCampaignIdsByRtbStarted" parameterType="int" resultType="int">
+   select distinct c.carbonId from rtb r  join campaign  c 
+on (c.id = r.CampaignId and c.isdeleted = 0) where r.isdeleted = 0 and 
+unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt;= unix_timestamp(concat(r.startTime,' 00:00:00'))  
+ and  unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &lt;= unix_timestamp(concat(r.endTime,' 23:59:59')) 
+ and Active = 1 
+ <if test="list!= null">
+  and c.carbonId in 
+  <foreach collection="list" item="id" open="(" separator="," close=")">
+  	#{id}
+  </foreach>
+ </if>
+ <if test="list == null">
+ 	and false
+ </if>
+</select>
+<!-- <select id="getCampaignIdsByDspRejected" resultType="int">
+select c.carbonId from material m left join rtb_adplacement_material_relation rm on(m.carbonId = rm.MaterialId ) 
+left join rtb r  on(rm.RtbId = r.carbonId and r.isdeleted = 0) left join campaign c on(r.CampaignId = c.carbonId and c.isdeleted = 0)
+where m.isdeleted = 0  and m.Status = 1 
+</select>
+<select id="getCampaignIdsByDspChecking" resultType="int">
+select c.carbonId from material m left join rtb_adplacement_material_relation rm on(m.carbonId = rm.MaterialId ) 
+left join rtb r  on(rm.RtbId = r.carbonId and r.isdeleted = 0) left join campaign c on(r.CampaignId = c.carbonId and c.isdeleted = 0)
+where m.isdeleted = 0  and m.Status = 0 
+</select> -->
+
+<select id="getCampaignIdsNoRelatedMaterial" resultType="int" >
+  select distinct carbonId from campaign  cm where isdeleted =0  and 
+  not EXISTS (
+    select c.carbonId from material m left join creative cr on(m.creativeId = cr.id and cr.isdeleted = 0 ) 
+  join campaign c on(cr.CampaignId = c.id and c.isdeleted = 0)
+	where m.isdeleted = 0  and cm.carbonId = c.carbonId
+  )
+</select>
+<select id="getCampaignIdsNoRtb"  resultType="int">
+ select carbonId from campaign cm  where isdeleted = 0 and 
+  not EXISTS (
+    select  c.carbonId  from rtb r  join campaign  c 
+	on (c.id = r.CampaignId and c.isdeleted = 0) where  r.isdeleted = 0  and cm.carbonId = c.carbonId
+ )
+</select>
+
+<select id="getCampaignIdsByRtbIds" parameterType="int" resultType="int">
+ select distinct  c.carbonId from rtb r left join campaign  c 
+on (c.id = r.CampaignId and c.isdeleted = 0) where r.isdeleted = 0 
+ 	<if test="list != null">
+ 		and r.carbonId in 
+ 		<foreach collection="list" item="carbonId" open="(" separator="," close=")">
+ 			#{carbonId}
+ 		</foreach>
+ 	</if>
+ 	<if test="list == null">
+ 	 and false;
+ 	</if>
+	
+</select>
+<select id="getCampaignIdsByMaterialIds" parameterType="int" resultType="int">
+ 
+ select distinct c.carbonId from material m left join creative cr on(cr.id = m.creativeId and cr.isdeleted = 0 ) 
+	  join campaign c on(cr.CampaignId = c.id and c.isdeleted = 0)
+where m.isdeleted = 0  and m.carbonId in 
+	<foreach collection="list" item="carbonId" open="(" separator="," close=")">
+ 		#{carbonId}
+ 	</foreach>
+</select>
+<select id="getRtbsBycampaignId" parameterType="int" resultType="int">
+	select * from rtb where isdeleted = 0 and campaignId = #{campaignId}
+</select>
+<select id="getRtbMaxEndtime" parameterType="int" resultType="java.util.Date">
+  select max(endTime) from rtb where isdeleted = 0  and campaignId = #{id}
+</select>
+<select id="getCreativeIdsByCampaignId" parameterType="int" resultType="int">
+	select id from creative  where  isDeleted = 0 and campaignId = #{id}
+</select>
+<select id="getAlgorithmIdsByCampaignId" parameterType="int" resultType="int">
+	select id from algorithm where  isDeleted = 0 and campaignId = #{id}
+</select>
+</mapper>

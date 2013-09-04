@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.AlgorithmMapper">
+
+<sql id="columns">
+    `DspId`, `Name` , `CampaignId`,
+    `Description` , 
+    `CreateTime` , `UpdateTime` , `DeleteTime` , 
+    `IsDeleted`
+</sql>
+<sql id="values">
+    #{dspId},  #{name}, #{campaignId},
+    #{description}, #{script},
+    #{createTime}, #{updateTime}, #{deleteTime}, 
+    #{isDeleted}
+</sql>
+
+<sql id="insertcolumns">
+    `DspId`, `Name` , `CampaignId`,
+    `Description` , `Script`,
+    `CreateTime`
+</sql>
+<sql id="insertvalues">
+    #{dspId},  #{name}, #{campaignId},
+    #{description}, #{script},
+    #{createTime}
+</sql>
+
+<select id="getPagedAlgorithmList" resultType="Algorithm" useCache="true">
+select * from algorithm
+	 <where>
+	 	isDeleted = 0
+	 	<trim  prefixOverrides="and |or" prefix="and">
+	 		<!-- <if test="ids!=null">
+	 		 and carbonId in
+	 		 <foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 	#{id}
+	 		 </foreach>
+	 		</if> -->
+	 		and id > 0
+		</trim>
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==true" >
+		 	and (name like "%${ssp.searchValue}%" or id=${ssp.searchValue})
+		 </if>
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==false" >
+		 	and name like "%${ssp.searchValue}%" 
+		 </if>
+	 		and dspId = #{dspId} and campaignId=#{campaignId}
+	 </where>
+	 <if test="ssp.orderName!=null &amp;&amp; ssp.orderValue!=null">
+	 	order by ${ssp.orderName}  ${ssp.orderValue}
+	 </if>
+	 <if test="ssp.startRow!=null&amp;&amp;ssp.limitRows !=null">
+	 	limit #{ssp.startRow},#{ssp.limitRows}
+	 </if>
+</select>
+<select id="getTotalCount" parameterType="SelectSQLParam" resultType="Integer">
+select count(id) from algorithm
+	 <where>
+	 	isDeleted = 0
+<!-- 	 	<trim  prefixOverrides="and |or">
+	 		<if test="ids!=null">
+	 		 and carbonId in
+	 		 <foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 	#{id}
+	 		 </foreach>
+	 		</if>
+		</trim> -->
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==true" >
+		 	and (name like "%${ssp.searchValue}%" or id=${ssp.searchValue})
+		 </if>
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==false" >
+		 	and name like "%${ssp.searchValue}%" 
+		 </if>
+	 		and dspId = #{dspId} and campaignId=#{campaignId}
+	 </where>
+</select>
+
+<select id="getPageAlgorithmVOList" resultType="AlgorithmVO" useCache="true">
+select *,c.carbonId as campaignCarbonId, c.name as campaignName from algorithm a left join campaign c on (a.campaignId=c.id)
+	 <where>
+	 	a.isDeleted = 0
+	 	<trim  prefixOverrides="and |or" prefix="and">
+	 		and a.id > 0
+		</trim>
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==true" >
+		 	and (a.name like "%${ssp.searchValue}%" or a.id=${ssp.searchValue})
+		 </if>
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==false" >
+		 	and a.name like "%${ssp.searchValue}%" 
+		 </if>
+	 		and a.dspId = #{dspId}
+	 </where>
+	 <if test="ssp.orderName!=null &amp;&amp; ssp.orderValue!=null">
+	 	order by a.${ssp.orderName}  ${ssp.orderValue}
+	 </if>
+	 <if test="ssp.startRow!=null&amp;&amp;ssp.limitRows !=null">
+	 	limit #{ssp.startRow},#{ssp.limitRows}
+	 </if>
+</select>
+<select id="getTotalCountAll" parameterType="SelectSQLParam" resultType="Integer">
+select count(id) from algorithm
+	 <where>
+	 	isDeleted = 0
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==true" >
+		 	and (name like "%${ssp.searchValue}%" or id=${ssp.searchValue})
+		 </if>
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==false" >
+		 	and name like "%${ssp.searchValue}%" 
+		 </if>
+	 		and dspId = #{dspId}
+	 </where>
+</select>
+
+<insert id="create" parameterType="Algorithm" useGeneratedKeys="true" keyProperty="id">
+ insert into `algorithm` (<include refid="insertcolumns"></include>) 
+ values (<include refid="insertvalues"/>)
+</insert>
+
+<update id="edit" parameterType="Algorithm" >
+	update `algorithm` set `name`=#{name}, `description`=#{description}, `script`=#{script}, updatetime=now() where `id`=#{id};
+</update>
+
+<delete id="delete" parameterType="Algorithm" >
+	update `algorithm` set `isdeleted`=1, deletetime=now() where `id`=#{id};
+</delete>
+
+<select id="getAlgorithmById" resultType="Algorithm">
+	select * from `algorithm` where id=#{id} and isdeleted='0';
+</select>
+
+<select id="countBindAlgorithmRtb" resultType="Integer">
+	select count(*) from `rtb` r left join `campaign` c on (r.campaignid=c.id) where r.algorithmid=#{id} and r.isdeleted='0' and c.isdeleted='0' ;
+</select>
+
+<select id="checkByNameAndId" parameterType="Algorithm" resultType="Algorithm">
+		select * from `algorithm` where id!=#{id} and name=#{name} and dspId=#{dspId} and campaignId=#{campaignId} and isdeleted='0';
+</select>
+<select id="checkByName" parameterType="Algorithm" resultType="Algorithm">
+		select * from `algorithm` where name=#{name} and dspId=#{dspId} and campaignId=#{campaignId} and isdeleted='0';
+</select>
+<select id="getByCampaignId" parameterType="int" resultType="Algorithm">
+	select * from algorithm where campaignId = #{campaignId} and isDeleted = 0 order by convert(name using gbk) asc
+</select>
+<update id="deleteAlgorithmsByIds" parameterType="int">
+ update algorithm set isDeleted = 1  
+ <if test="list != null ">
+   <where>
+      id in
+      <foreach collection="list" item="id" open="(" separator="," close=")">
+      	#{id}
+      </foreach>
+   </where>
+ </if>
+</update>
+</mapper>

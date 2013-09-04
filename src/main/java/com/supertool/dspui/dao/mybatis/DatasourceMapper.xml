@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.DatasourceMapper">
+	
+	<select id="getPagedDatasources" parameterType="map" resultType="Datasource">
+		select * from datasource
+		<where>
+			<trim prefixOverrides="and |or">
+			isDeleted = 0
+				<if test="ownerDspId != null">
+					and ownerDspId = #{ownerDspId}
+				</if>
+				<if test="type != null">
+					and type = #{type}
+				</if>
+				<if test="name != null">
+					and name like concat('%', #{name}, '%')
+				</if>
+				<if test="searchStr != null">
+					and (carbonId = #{searchStr}
+					or name like concat('%', #{searchStr}, '%'))
+				</if>
+			</trim>
+		</where>
+		<if test="orderName != null &amp;&amp; orderValue != null">
+			order by ${orderName} ${orderValue}
+		</if>
+		<if test="startRow != null &amp;&amp; limitRows !=null">
+			limit #{startRow}, #{limitRows}
+		</if>
+	</select>
+	
+	<select id="getDatasourcesCount" parameterType="map" resultType="int">
+		select count(id) from datasource
+		<where>
+			<trim prefixOverrides="and |or">
+			isDeleted = 0
+				<if test="ownerDspId != null">
+					and ownerDspId = #{ownerDspId}
+				</if>
+				<if test="type != null">
+					and type = #{type}
+				</if>
+				<if test="name != null">
+					and name like concat('%', #{name}, '%')
+				</if>
+				<if test="searchStr != null">
+					and (carbonId = #{searchStr}
+					or name like concat('%', #{searchStr}, '%'))
+				</if>
+			</trim>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="Datasource" useGeneratedKeys="true" keyProperty="id">
+		insert into datasource(carbonId, ownerDspId, name, type, keySeperator, valueSeperator, remark, createTime)
+		values
+		(#{carbonId}, #{ownerDspId}, #{name}, #{type}, #{keySeperator}, #{valueSeperator}, #{remark}, now())
+	</insert>
+	
+	<update id="deleteByCarbonId" parameterType="int">
+		update datasource set isDeleted = 1, deleteTime = now()
+		where carbonId = #{id}
+	</update>
+	
+	<select id="getByName" parameterType="String" resultType="Datasource">
+		select * from datasource 
+		where name = #{name} and isDeleted = 0
+	</select>
+	
+	<select id="getByCarbonId" parameterType="int" resultType="Datasource">
+		select * from datasource 
+		where carbonId = #{carbonId} and isDeleted = 0
+	</select>
+	
+	<update id="update" parameterType="Datasource">
+		update datasource set
+		type = #{type},
+		remark = #{remark},
+		updateTime = now()
+		where id = #{id} and isDeleted = 0
+	</update>
+	
+	<select id="getById" parameterType="int" resultType="Datasource">
+		select * from datasource 
+		where id = #{id} and isDeleted = 0
+	</select>
+	
+	<update id="deleteById" parameterType="int">
+		update datasource set isDeleted = 1, deleteTime = now()
+		where id = #{id}
+	</update>
+</mapper>

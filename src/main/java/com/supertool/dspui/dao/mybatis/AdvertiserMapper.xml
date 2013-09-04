@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.AdvertiserMapper">
+
+<sql id="columns">
+    `CarbonId`, `DspId`, `Name` , 
+    `Description` , `Parent`, `IsAgency`,
+    `CreateTime` , `UpdateTime` , `DeleteTime` , 
+    `IsDeleted`
+</sql>
+<sql id="values">
+    #{carbonId}, #{dspId},  #{name}, 
+    #{description}, #{parent}, #{isAgency},
+    #{createTime}, #{updateTime}, #{deleteTime}, 
+    #{isDeleted}
+</sql>
+
+<select id="getAllAdvertisers" parameterType="SelectSQLParam" resultType="Advertiser" useCache="true">
+select *  from advertiser 
+	 <where>
+	 	isDeleted = 0 and dspId = ${dspId}
+	 	<trim  prefixOverrides="and |or">
+	 		<if test="ids!=null">
+	 		 and carbonId in
+	 		 <foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 	#{id}
+	 		 </foreach>
+	 		</if>
+		</trim>
+	 </where>
+	 <if test="orderName!=null &amp;&amp; orderValue!=null">
+	 	order by ${orderName}   ${orderValue}
+	 </if>
+	 <if test="startRow!=null&amp;&amp;limitRows !=null">
+	 	limit #{startRow},#{limitRows}
+	 </if>
+</select>
+<select id="getPagedAdvertiserList" resultType="Advertiser" useCache="true">
+select a.*,(select count(Id) from campaign where AdvertiserId = a.Id and isDeleted = 0) as hasCampaign from advertiser a
+	 <where>
+	 	a.isDeleted = 0
+	 	<trim  prefixOverrides="and |or" prefix="and">
+	 		<!-- <if test="ids!=null">
+	 		 and carbonId in
+	 		 <foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 	#{id}
+	 		 </foreach>
+	 		</if> -->
+	 		and a.id > 0
+		</trim>
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==true" >
+		 	and (a.name like "%${ssp.searchValue}%" or a.carbonid=${ssp.searchValue})
+		 </if>
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==false" >
+		 	and a.name like "%${ssp.searchValue}%" 
+		 </if>
+	 		and a.dspId = #{dspId}
+	 </where>
+	 <if test="ssp.orderName!=null &amp;&amp; ssp.orderValue!=null">
+	 	order by ${ssp.orderName}  ${ssp.orderValue}
+	 </if>
+	 <if test="ssp.startRow!=null&amp;&amp;ssp.limitRows !=null">
+	 	limit #{ssp.startRow},#{ssp.limitRows}
+	 </if>
+</select>
+<select id="getTotalCount" parameterType="SelectSQLParam" resultType="Integer">
+select count(id) from advertiser
+	 <where>
+	 	isDeleted = 0
+<!-- 	 	<trim  prefixOverrides="and |or">
+	 		<if test="ids!=null">
+	 		 and carbonId in
+	 		 <foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 	#{id}
+	 		 </foreach>
+	 		</if>
+		</trim> -->
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==true" >
+		 	and (name like "%${ssp.searchValue}%" or carbonid=${ssp.searchValue})
+		 </if>
+		 <if test="ssp.searchValue!=null &amp;&amp; ssp.searchValue!='' &amp;&amp; ssp.number==false" >
+		 	and name like "%${ssp.searchValue}%" 
+		 </if>
+	 		and dspId = #{dspId}
+	 </where>
+</select>
+
+<insert id="create" parameterType="Advertiser" useGeneratedKeys="true" keyProperty="id">
+ insert into `advertiser` (<include refid="columns"></include>) 
+ values (<include refid="values"/>)
+</insert>
+
+<update id="edit" parameterType="Advertiser" >
+	update `advertiser` set `name`=#{name}, `description`=#{description}, updatetime=now() where `id`=#{id};
+</update>
+
+<update id="updateCarbonId" parameterType="Advertiser" >
+	update `advertiser` set `carbonId`=#{carbonId}, updatetime=now() where `id`=#{id};
+</update>
+
+<select id="getAdvertiserById" resultType="Advertiser">
+	select * from `advertiser` where id=#{id} and isdeleted='0';
+</select>
+
+<select id="checkByNameAndId" parameterType="Advertiser" resultType="Advertiser">
+		select * from `advertiser` where id!=#{id} and name=#{name} and dspId=#{dspId} and isdeleted='0';
+</select>
+<select id="checkByName" parameterType="Advertiser" resultType="Advertiser">
+		select * from `advertiser` where name=#{name} and dspId=#{dspId} and isdeleted='0';
+</select>
+<update id="deleteAdvertiserById" parameterType="int">
+update advertiser set isDeleted = 1 where id = #{id}
+</update>
+</mapper>

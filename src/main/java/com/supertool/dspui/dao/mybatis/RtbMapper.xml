@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.RtbMapper">
+<sql id="rtbCommonColumns">
+
+ 	<!-- Id ,-->
+ 	DspId , 
+	CarbonId ,
+    Name ,
+    CampaignId ,
+    CreativeId ,
+    StartTime ,
+    EndTime ,
+    Active ,
+    OverBudget ,
+    Budget ,
+    DailyBudget ,
+    DailyPV ,
+    DefaultPrice ,
+    FilterHour ,
+    FilterWeekDay ,
+    FilterGeo ,
+    FilterFrequency ,
+    AlgorithmId ,
+    CreateTime ,
+    UpdateTime ,
+    DeleteTime ,
+    IsDeleted 
+</sql>
+<sql id="rtbCommonProperties">
+	#{rtb.carbonId},
+	#{rtb.dspId }, 
+    #{rtb.name},
+    #{rtb.campaignId} ,
+    #{rtb.creativeId} ,
+    #{rtb.startTime} ,
+    #{rtb.endTime ,
+    #{rtb.active} ,
+    #{rtb.overBudget} ,
+    #{rtb.budget} ,
+    #{rtb.dailyBudget} ,
+    #{rtb.dailyPV} ,
+    #{rtb.defaultPrice} ,
+    #{rtb.filterHour} ,
+    #{rtb.filterWeekDay} ,
+    #{rtb.filterGeo} ,
+    #{rtb.filterFrequency} ,
+    #{rtb.algorithmId} ,
+    #{rtb.createTime} ,
+    #{rtb.updateTime} ,
+    #{rtb.deleteTime} ,
+    #{rtb.isDeleted}
+</sql>
+<select id="getPagedRtbsByIds" parameterType="map" resultType="Rtb">
+	select Id ,
+	<include refid="rtbCommonColumns"/>
+	 from  rtb 
+	<where>
+	 <trim prefixOverrides="and |or">
+	 	isDeleted = 0
+	 	<if test="campaignIds !=null">
+	 		and campaignId in 
+	 		<foreach collection="campaignIds" item="campaignId" open="(" separator="," close=")">
+	 			#{campaignId}
+	 		</foreach>
+	 	</if>
+	 	<if test="creativeIds != null">
+	 		and creativeId in
+	 		<foreach collection="creativeIds" item="creativeId" open="(" separator="," close=")">
+	 			#{creativeId}
+	 		</foreach>
+	 	</if>
+	 	<if test="rtbIds != null">
+	 		and id in 
+	 		<foreach collection="rtbIds" item="rtbId" open="(" separator="," close=")">
+	 			#{rtbId}
+	 		</foreach>
+	 	</if>
+	 </trim>
+	</where>
+	<if test="orderName != null &amp;&amp; orderValue != null">
+		order by ${orderName} ${orderValue}
+	</if>
+	<if test="startRow != null &amp;&amp; limitRows !=null">
+		limit #{startRow}, #{limitRows}
+	</if>
+	
+
+</select>
+
+<select id="getRtbsCount" parameterType="map" resultType="int">
+	select count(*) from  rtb 
+	<where>
+	 <trim prefixOverrides="and |or">
+	 	isDeleted = 0
+	 	<if test="campaignIds !=null">
+	 		and campaignId in 
+	 		<foreach collection="campaignIds" item="campaignId" open="(" separator="," close=")">
+	 			#{campaignId}
+	 		</foreach>
+	 	</if>
+	 	<if test="creativeIds != null">
+	 		and creativeId in
+	 		<foreach collection="creativeIds" item="creativeId" open="(" separator="," close=")">
+	 			#{creativeId}
+	 		</foreach>
+	 	</if>
+	 	<if test="rtbIds != null">
+	 		and id in 
+	 		<foreach collection="rtbIds" item="rtbId" open="(" separator="," close=")">
+	 			#{rtbId}
+	 		</foreach>
+	 	</if>
+	 </trim>
+	 </where>
+
+</select>
+<insert id="batchInsert" parameterType="Rtb">
+  insert into rtb (<include refid="rtbCommonColumns"/>>)
+  values
+	<foreach collection="list" item="rtb" separator="," >
+	 (
+	   <include refid="rtbCommonProperties"/>
+	 )
+	</foreach>
+</insert>
+<insert id="add" parameterType="Rtb" useGeneratedKeys="true" keyProperty="id">
+  insert into rtb (DspId , CarbonId , Name , CampaignId , CreativeId , 
+    StartTime , EndTime , Budget , DailyBudget , DailyPv , DefaultPrice ,
+    FilterHour , FilterWeekDay , FilterGeo , FilterFrequency , AlgorithmId, CreateTime
+  )
+  values	
+  (
+    #{dspId}, #{carbonId}, #{name}, #{campaignId}, #{creativeId}, #{startTime},
+    #{endTime}, #{budget}, #{dailyBudget}, #{dailyPv}, #{defaultPrice}, #{filterHour},
+    #{filterWeekDay}, #{filterGeo}, #{filterFrequency}, #{algorithmId}, #{createTime}
+  )
+</insert>
+
+<update id="batchUpdate" parameterType="Rtb">
+ update rtb  
+ <trim prefix="set" suffixOverrides=",">
+ 	 <trim prefix="dspId =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.dspId !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.dspId}
+	                        </if>	 
+	             </foreach>	 
+	 </trim>
+	<trim prefix="campaignId =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.campaignId !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.campaignId}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+   <trim prefix="CreativeId =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.creativeId !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.creativeId}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+     <trim prefix="Name =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.name !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.name}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+     <trim prefix="StartTime =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.startTime !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.startTime}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+ 	<trim prefix="EndTime =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.endTime!=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.endTime}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="Active =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.active!=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.active}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="OverBudget =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.overBudget !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.overBudget}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+     <trim prefix="OverBudget =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.budget !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.budget}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="dailyBudget =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.dailyBudget !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.dailyBudget}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="DailyPV =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.dailyPV !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.dailyPV}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="defaultPrice =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.defaultPrice !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.defaultPrice}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+	
+ 	<trim prefix="MaxPrice =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.MaxPrice !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.maxPrice}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+	 <trim prefix="filterHour =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.filterHour!=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.filterHour}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="filterWeekDay =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.filterWeekDay!=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.filterWeekDay}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="filterGeo =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.filterGeo!=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.filterGeo}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="filterFrequency=case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.filterFrequency!=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.filterFrequency}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="algorithmId=case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.algorithmId!=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.algorithmId}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="createTime=case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.createTime!=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.createTime}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="updateTime=case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.updateTime!=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.updateTime}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="deleteTime=case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.deleteTime!=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.deleteTime}
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    <trim prefix="isDeleted =case" suffix="end,">	 
+	                <foreach collection="list" item="i"  index="index">	 
+	                        <if test="i.isDeleted !=null">	 
+	                        	 when  (carbonId = #{i.carbonId})
+								 then #{i.isDeleted }
+	                        </if>
+	             </foreach>	 
+	 </trim>
+    
+ </trim>
+	where carbonId in
+	<foreach collection="list" item="i" open="(" separator="," close=")">
+		#{i.carbonId}
+	</foreach>
+</update>
+
+<delete id="batchDelete" parameterType="map">
+	update rtb  set isDeleted = 1
+	<where>
+		<trim prefixOverrides="and | or">
+			<if test="campaignIds != null">
+				campaignId in
+				<foreach collection="campaignIds" item="campaignId" open="(" separator="," close=")">
+					#{campaignId}
+				</foreach>
+			</if>
+			and
+			<if test="creativeIds != null">
+				creativeId in
+				<foreach collection="creativeIds" item="creativeId" open="(" separator="," close=")">
+					#{creativeId}
+				</foreach>
+			</if>
+			and
+			<if test="rtbIds != null">
+				id in
+				<foreach collection="rtbIds" item="rtbId" open="(" separator="," close=")">
+					#{rtbId}
+				</foreach>
+			</if>
+		</trim>
+	</where>
+</delete>
+
+<update id="deleteByRtbId" parameterType="int">
+	update rtb set isDeleted = 1, deleteTime = now()
+	where id = #{rtbId}
+</update>
+
+<select id="getById" parameterType="int" resultType="Rtb">
+	select Id ,
+	<include refid="rtbCommonColumns"/>
+	from  rtb 
+	where isDeleted = 0 and id = #{id}
+</select>
+
+<update id="update" parameterType="Rtb">
+    update rtb set 
+    name = #{name},
+    creativeId = #{creativeId},
+    startTime = #{startTime},
+    endTime = #{endTime},
+    budget = #{budget},
+    dailyBudget = #{dailyBudget},
+    dailyPv = #{dailyPv},
+    defaultPrice = #{defaultPrice},
+    filterHour = #{filterHour},
+    filterWeekDay = #{filterWeekDay},
+    filterGeo = #{filterGeo},
+    filterFrequency = #{filterFrequency},
+    algorithmId = #{algorithmId},
+    updateTime = now()
+    where id = #{id} and isDeleted = 0
+</update>
+
+<select id="checkName" parameterType="map" resultType="Rtb">
+	select * from rtb 
+	where isDeleted = 0 and name = #{name} and campaignId = #{campaignId}
+</select>
+
+<update id="updateActive" parameterType="map">
+	update rtb set active = #{active} 
+	where id = #{id} and isDeleted = 0
+</update>
+
+<select id="getByAlgorithmId" parameterType="int" resultType="Rtb">
+	select Id ,
+	<include refid="rtbCommonColumns"/>
+	from  rtb 
+	where isDeleted = 0 and algorithmId = #{id}
+</select>
+
+<select id="getCountByAlgorithmId" parameterType="int" resultType="int">
+	select count(id) from rtb
+	where isDeleted = 0 and algorithmId = #{algorithmId}
+</select>
+
+<!--  -->
+</mapper>

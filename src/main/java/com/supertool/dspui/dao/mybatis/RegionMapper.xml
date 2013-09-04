@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.RegionMapper">
+	
+	<select id="getAllRegions" resultType="Region">
+		select * from region order by convert(name using gbk) asc
+	</select>
+	<select id="getById" parameterType="int" resultType="Region">
+		select * from region where id = #{id}
+	</select>
+	<select id="getByIds" parameterType="int" resultType="Region">
+		select * from region where id in
+	 	<foreach collection="list" item="id" open="(" separator="," close=")">
+	 		#{id}
+	 	</foreach>
+	</select>
+	<select id="getFirstLevelCount" resultType="Integer">
+		select count(id) from region where parentId = -1
+	</select>
+	
+</mapper>

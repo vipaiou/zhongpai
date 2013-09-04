@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.MaterialMapper">
+	<insert id="insertIntoMaterial" parameterType="Material" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+	insert into  material (carbonId,dspId,name,creativeId,Type,width,height,fileSize,duration,PreviewUrl,description,createTime)
+	values(#{carbonId},#{dspId},#{name},#{creativeId},#{type},#{width},#{height},#{fileSize},#{duration},#{previewUrl},#{description},now())
+	</insert>
+	<select id="checkName" parameterType="map" resultType="boolean">
+		select count(*) from material where isdeleted = 0  and name = #{name}
+		and CreativeId = #{creativeId}
+		<if test="null != id">
+			and id &lt;&gt; #{id}
+		</if>
+	</select>
+	<update id="updateMaterial" parameterType="Material">
+		update material 
+
+		<trim prefix="set" suffixOverrides=",">
+			<if test="null != carbonId &amp;&amp; 0 != carbonId">
+				carbonId = #{carbonId},
+			</if>
+			<if test="null != name">
+				name = #{name},
+			</if>
+			<if test="null != creativeId">
+				creativeId = #{creativeId},
+			</if>
+			<if test="null != type">
+				type = #{type},
+			</if>
+			<if test="null != width">
+				width = #{width},
+			</if>
+			<if test="null != height">
+				height = #{height},
+			</if>
+			<if test="null != fileSize">
+				fileSize = #{fileSize},
+			</if>
+			<if test="null != duration">
+				duration = #{duration},
+			</if>
+			<if test="null != previewUrl">
+				previewUrl = #{previewUrl},
+			</if>
+			<if test="null != description">
+				description = #{description},
+			</if>
+			<if test="null != extension">
+				extension = #{extension},
+			</if>
+			<if test="null != updateTime">
+			updateTime = now()	
+			</if>			
+		</trim>
+
+		where CreativeId = #{creativeId} and id = #{id}
+	</update>
+
+	<resultMap type="Material" id="materialMap">
+	<id column="id" property="id"/>
+	<result column="carbonId" property="carbonId"/>
+	<result column="name" property="name"/>
+	<result column="type" property="type"/>
+	<result column="materialSize" property="materialSize"/>
+	<result column="duration" property="duration"/>
+	<result column="fileSize" property="fileSize"/>
+	<result column="previewUrl" property="previewUrl"/>
+	<result column="creativeId" property="creativeId"/>
+	<result column="width" property="width"/>
+	<result column="height" property="height"/>
+	<association column="id" property="cannotbeDeleted" select="getCannotbeDeleted"></association>
+	<association property="rtbCount" column="id" select="getMaterialRtbCount"></association>
+	</resultMap>
+	<select id="getMaterial" parameterType="int" resultMap="materialMap">
+		select id ,carbonId,name,type,creativeId,width,height,concat(width,'*',height) as materialSize ,duration,fileSize,previewUrl,description
+		
+		 from material where isdeleted = 0 and id = #{id}
+	</select>
+	<select id="getMaterialRtbCount" parameterType="int" resultType="int">
+	  select count(RtbId) from  rtb_adplacement_material_relation where MaterialId = #{id} 
+	</select>
+	<select id="getCannotbeDeleted" parameterType="int" resultType="boolean">
+		select count(id) from rtb where isdeleted = 0 and unix_timestamp(date_format(sysdate(),'%Y-%m-%d %H:%i:%s')) &gt;= unix_timestamp(startTime)
+	 and id in(select RtbId from rtb_adplacement_material_relation where MaterialId = #{id})
+	</select>
+	<select id="getPagedMaterials" parameterType="SelectSQLParam" resultMap="materialMap">
+	    select id ,carbonId,name,type,width,height,concat(width,'*',height) as materialSize ,duration,fileSize ,previewUrl
+	 from material 
+	     <where>
+	 	isDeleted = 0 and creativeId = #{userData.creativeId} and dspId = #{dspId}
+
+	 	<if test="isNeedInIds == true">
+	 		 	<if test="ids!=null">
+	 				and  carbonId in
+	 		 		<foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 			#{id}
+	 				 </foreach>
+	 			</if>
+	 			<if test="ids ==null">
+	 				and false 
+	 			</if>
+	 	  	 
+	 	</if>
+	 	<if test="searchValue != null">
+	 		and (carbonId = #{searchValue} or name like concat('%',#{searchValue},'%'))
+	 	</if> 
+	 	<if test="sqlStr != null">
+	 		${sqlStr}
+	 	</if>
+	 </where>
+	  <if test="orderName!=null &amp;&amp; orderValue!=null">
+	 	order by ${orderName}   ${orderValue}
+	 </if>
+	 <if test="startRow!=null&amp;&amp;limitRows !=null">
+	 	limit #{startRow},#{limitRows}
+	 </if>
+	</select>
+	<select id="getMaterialsCount" parameterType="SelectSQLParam" resultType="int">
+	  select count(id)
+	    from material 
+	     <where>
+	 	isDeleted = 0 and creativeId = #{userData.creativeId} and dspId = #{dspId}
+
+	 	<if test="isNeedInIds == true">
+	 		 	<if test="ids!=null">
+	 				and  carbonId in
+	 		 		<foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 			#{id}
+	 				 </foreach>
+	 			</if>
+	 			<if test="ids ==null">
+	 				and false 
+	 			</if>
+	 	  	 
+	 	</if>
+	 	<if test="searchValue != null">
+	 		and (carbonId = #{searchValue} or name like concat('%',#{searchValue},'%'))
+	 	</if> 
+	 	<if test="sqlStr != null">
+	 		${sqlStr}
+	 	</if>
+	 </where>
+	</select>
+	<select id="getPagedListForRtb" parameterType="map" resultType="Material">
+		select * from material
+		where creativeId = #{creativeId} and width = #{width}
+		and height = #{height} and find_in_set(extension, #{extension})
+		and status != 1 and isDeleted = 0
+		<if test="orderName != null &amp;&amp; orderValue != null">
+			order by ${orderName}  ${orderValue}
+		</if>
+		<if test="startRow != null &amp;&amp; limitRows !=null">
+			limit #{startRow} , #{limitRows}
+		</if>
+		
+	</select>
+	<select id="getCountForRtb" parameterType="map" resultType="int">
+		select count(id) from material
+		where creativeId = #{creativeId} and width = #{width}
+		and height = #{height} and find_in_set(extension, #{extension})
+		and status != 1 and isDeleted = 0
+	</select>
+	
+	<update id="updateStatus" parameterType="map">
+		update material set status = #{status} where carbonId = #{id} and isDeleted = 0
+	</update>
+	<select id="getPagedMaterialRtbs" parameterType="SelectSQLParam" resultType="Rtb">
+		select * from rtb 
+		<where>
+		 isdeleted = 0 and id in(
+		select RtbId from rtb_adplacement_material_relation where materialId = #{userData.materialId}
+		)
+		<if test="isNeedInIds == true">
+	 		 	<if test="ids!=null">
+	 				and  carbonId in
+	 		 		<foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 			#{id}
+	 				 </foreach>
+	 			</if>
+	 			<if test="ids ==null">
+	 				and false 
+	 			</if>
+	 	  	 
+	 	</if>
+	 	<if test="searchValue != null">
+	 		and (carbonId = #{searchValue} or name like concat('%',#{searchValue},'%'))
+	 	</if> 
+	 	<if test="sqlStr != null">
+	 		${sqlStr}
+	 	</if>
+	 </where>
+	  <if test="orderName!=null &amp;&amp; orderValue!=null">
+	 	order by ${orderName}   ${orderValue}
+	 </if>
+	 <if test="startRow!=null&amp;&amp;limitRows !=null">
+	 	limit #{startRow},#{limitRows}
+	 </if>
+	
+	</select>
+	<select id="getMaterialRtbListCount" parameterType="SelectSQLParam" resultType="int">
+	
+	select count(id) from rtb 
+		<where>
+		 isdeleted = 0 and id in(
+		select RtbId from rtb_adplacement_material_relation where materialId = #{userData.materialId}
+		)
+		<if test="isNeedInIds == true">
+	 		 	<if test="ids!=null">
+	 				and  carbonId in
+	 		 		<foreach collection="ids" item="id" open="(" separator="," close=")">
+	 		 			#{id}
+	 				 </foreach>
+	 			</if>
+	 			<if test="ids ==null">
+	 				and false 
+	 			</if>
+	 	  	 
+	 	</if>
+	 	<if test="searchValue != null">
+	 		and (carbonId = #{searchValue} or name like concat('%',#{searchValue},'%'))
+	 	</if> 
+	 	<if test="sqlStr != null">
+	 		${sqlStr}
+	 	</if>
+	 </where>
+	
+	</select>
+	<delete id="deleteMaterialAround" parameterType="int">
+	
+		delete from rtb_adplacement_material_relation where materialId = #{id}
+	</delete>
+	<update id="deleteMaterial" parameterType="int">
+		update material set isdeleted = 1 where id =#{id}
+	</update>
+	
+	
+	<!-- 物料审核 -->
+	<resultMap type="MaterialAuditVO" id="materialAuditMap">
+		<id column="m.id" property="id"/>
+		<result column="m.carbonId" property="carbonId"/>
+		<result column="m.name" property="name"/>
+		<result column="m.extension" property="extension"/>
+		<result column="m.width" property="width"/>
+		<result column="m.height" property="height"/>
+		<result column="m.fileSize" property="fileSize"/>
+		<result column="m.createTime" property="createTime"/>
+		<result column="m.status" property="status"/>
+		<result column="creativeName" property="creativeName"/>
+		<result column="advertiserName" property="advertiserName"/>
+	</resultMap>
+	
+	<select id="getPagedMaterialAuditList" parameterType="Map" resultMap="materialAuditMap">
+		select m.id, m.carbonId, m.name, m.extension, m.width, m.height,
+		m.fileSize, m.createTime, m.status, cr.name as creativeName, a.name as advertiserName
+		from material m
+		join creative cr on m.creativeId = cr.id
+		join campaign ca on cr.campaignId = ca.id
+		join advertiser a on ca.advertiserId = a.id
+		<where>
+			<trim prefixOverrides="and |or">
+				m.dspId = #{dspId} and m.isDeleted = 0 and cr.isDeleted = 0 
+				and ca.isDeleted = 0 and a.isDeleted = 0
+				<if test="extension != null">
+					and extension = #{extension}
+				</if>
+				<if test="searchStr != null &amp;&amp; isNumber == true">
+					and (
+						m.carbonId = #{searchStr} 
+						or m.name like concat('%', #{searchStr}, '%')
+						or cr.name like concat('%', #{searchStr}, '%')
+						or a.name like concat('%', #{searchStr}, '%')
+					) 
+				</if>
+				<if test="searchStr != null &amp;&amp; isNumber == false">
+					and (
+						m.name like concat('%', #{searchStr}, '%')
+						or cr.name like concat('%', #{searchStr}, '%')
+						or a.name like concat('%', #{searchStr}, '%')
+					) 
+				</if>
+				<if test="status != null">
+					and m.status = #{status}
+				</if>
+			</trim>
+		</where>
+		<if test="orderName != null &amp;&amp; orderValue != null">
+			order by 	${orderName}  ${orderValue}
+		</if>
+		<if test="startRow != null &amp;&amp; limitRows !=null">
+			limit #{startRow}, #{limitRows}
+		</if>
+	</select>
+	
+	<select id="getMaterialAuditCount" parameterType="Map" resultType="Integer">
+		select count(m.id) from material m
+		join creative cr on m.creativeId = cr.id
+		join campaign ca on cr.campaignId = ca.id
+		join advertiser a on ca.advertiserId = a.id
+		<where>
+			<trim prefixOverrides="and |or">
+				m.dspId = #{dspId} and m.isDeleted = 0 and cr.isDeleted = 0 
+				and ca.isDeleted = 0 and a.isDeleted = 0
+				<if test="extension != null">
+					and extension = #{extension}
+				</if>
+				<if test="searchStr != null &amp;&amp; isNumber == true">
+					and (
+						m.carbonId = #{searchStr} 
+						or m.name like concat('%', #{searchStr}, '%')
+						or cr.name like concat('%', #{searchStr}, '%')
+						or a.name like concat('%', #{searchStr}, '%')
+					) 
+				</if>
+				<if test="searchStr != null &amp;&amp; isNumber == false">
+					and (
+						m.name like concat('%', #{searchStr}, '%')
+						or cr.name like concat('%', #{searchStr}, '%')
+						or a.name like concat('%', #{searchStr}, '%')
+					) 
+				</if>
+				<if test="status != null">
+					and m.status = #{status}
+				</if>
+			</trim>
+		</where>
+	</select>
+<select id="getMaterialIdsByCreativeIds" parameterType="int" resultType="int">
+	select id  from material where isdeleted = 0  and CreativeId in
+	<foreach collection="list" item="id" open="(" separator="," close=")">
+		#{id}
+	</foreach>
+</select>
+<update id="deleteMaterialsByIds" parameterType="int" >
+ update material set isDeleted = 1  
+ <where>
+ 	<if test="list !=null">
+ 	 	id in
+ 	 	<foreach collection="list" item="id" open="(" separator="," close=")">
+ 	 		#{id}
+ 	 	</foreach>
+ 	</if>
+ </where>
+</update>
+<delete id="batchDeleteAdsRelationByIds" parameterType="int">
+  delete from   rtb_adplacement_material_relation where AdPlacementId in
+ <foreach collection="list" item="id" open="(" separator="," close=")">
+ 		#{id}
+ 	</foreach>
+</delete>
+<select id="getAdIdsByMaterialIds" parameterType="int" resultType="int">
+ select  AdPlacementId from  rtb_adplacement_material_relation where
+  MaterialId in 
+ 	<foreach collection="list" item="id" open="(" separator="," close=")">
+ 		#{id}
+ 	</foreach>
+</select>
+</mapper>

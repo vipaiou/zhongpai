@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.AdvancedSearchComFunMapper">
+
+<cache></cache>
+
+<!--  获取当前媒体及其子媒体的Id  <List> myPath ：从根节点到当前节点的路径(包含当前)；st_media表中path不包含当前；-->
+<!-- CONCAT(CONCAT('%', #{myPath}),'%') -->
+<!-- <select id="getCurrAndChildrenIdsBy" parameterType="String" resultType="int" >
+	select  MediaId
+	 from st_media where IsDeleted='0' and Path like  CONCAT( #{myPath},'%') 
+</select> -->
+<select id="getCurrAndChildrenIdsByIds" parameterType="map" resultType="int">
+  select MediaId from st_media where IsDeleted='0' 
+  <choose>
+  	<when test="ids!=null and ids.size()>0">
+  and (ParentId in 
+  <foreach collection="ids" open="(" separator="," close=")" item="id">
+  	${id}
+  </foreach>
+ 	or  MediaId in 
+ <foreach collection="ids" open="(" separator="," close=")" item="id">
+ 	${id}
+ </foreach>
+  )</when>
+  <otherwise>
+   and 1=2
+  </otherwise>
+  </choose>
+  
+</select>
+<!-- 获取指定分类id或分类名的媒体ids ；当classId，className为null时，表示获取含有分类的媒体ids-->
+<select id="getMediaIdsHaveAsignedClass" parameterType="map" resultType="int">
+    select m.MediaId
+    from st_media m,st_media_class_relation mc,st_class c
+	where m.IsDeleted='0' and m.MediaId =mc.MediaId and mc.ClassId=c.ClassId and c.IsDeleted='0'
+	<if test="classIds!=null">
+	  and c.ClassId in
+	  <foreach collection="classIds" open="(" separator="," close=")" item="classId">
+	  ${classId}
+	  </foreach>
+	</if>
+	<if test="className!=null">
+		and c.ClassName like '%#{className}%'
+	</if>
+</select>
+
+
+
+<!-- 其他，分级获取媒体列表 -->
+<select id="getPagedMediasByParentId" parameterType="map" resultType="Media">
+select * from st_media where isDeleted='0'  and parentId=${parentMediaId} 
+<if test="searchKey!=null and searchKey!=''">
+ 	<if test="searchColumn=='mediaId'">
+ 	 and mediaId=${searchKey}
+ 	</if>
+ 	<if test="searchColumn=='mediaName'">
+ 	 and upper(mediaName) like '%${searchKey}%'
+ 	</if>
+ 	<if test="searchColumn=='type'">
+ 	 and type='${searchKey}'
+ 	</if>
+
+ order by  ${sidx} ${sord} limit ${firstResult},${maxResult}
+</if>
+</select>
+<select id="getMediasCountByParentId" parameterType="map" resultType="int">
+ select count(mediaId) from st_media where isDeleted='0' and parentId=${parentMediaId} 
+ <if test="searchKey!=null and searchKey!=''">
+
+ 	<if test="searchColumn=='mediaId'">
+ 	 and  mediaId=${searchKey}
+ 	</if>
+ 	<if test="searchColumn=='mediaName'">
+ 	  and upper(mediaName) like '%${searchKey}%'
+ 	</if>
+ 	<if test="searchColumn=='type'">
+ 	  and type='${searchKey}'
+ 	</if>
+
+ </if>
+</select>
+
+<!--输入 参数为高级搜索时搜索条件输入的spIds
+	返回 含有指定监测点spId（逗号分开）的广告位路径
+	(再由path获取id)
+	P,N,C
+ -->
+<select id="selectAdPathBySpotIds" parameterType="map" resultType="String">
+select distinct(subMedia.path) from st_media subMedia left join st_spots subSpots on subMedia.mediaId=subSpots.mediaId 
+where subMedia.isDeleted='0' and subMedia.type='A' and subSpots.matchingState='H' and subSpots.isDeleted='0' 
+<if test="ids!=null">
+  and subSpots.spotsId in  
+</if>
+<foreach collection="ids" open="(" separator="," close=")" item="id">
+${id}  
+</foreach>
+</select>
+<!--输入 参数为高级搜索时搜索条件输入的CampaignIDs
+	返回 含有指定广告活动CampaignID(逗号分开)的广告位路径
+	(再由path获取id)
+ -->
+<select id="selectAdPathByCampaignID" parameterType="map" resultType="String">
+select distinct(path) from st_media subMedia left join st_spots subSpots on subMedia.mediaId=subSpots.mediaId left join st_monitor_campaign subCampaign on
+ subSpots.mCampaignId=subCampaign.mCampaignId where subMedia.isDeleted='0' and subMedia.type='A' and subSpots.isDeleted='0' and subCampaign.isDeleted='0' 
+<if test="ids!=null">
+and subCampaign.mCampaignId in 
+<foreach collection="ids" open="(" separator="," close=")" item="id">
+${id}  
+</foreach>
+</if>
+</select>
+
+</mapper>

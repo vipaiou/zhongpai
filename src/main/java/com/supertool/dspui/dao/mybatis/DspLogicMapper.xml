@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.DspLogicMapper">
+
+<resultMap id="setting" type="com.supertool.dspui.model.DspLogic">
+    	<id property="id" column="Id" />
+    	<result property="dspid" column="DspId"/>
+    	<result property="token" column="Token"/>
+    	<result property="description" column="Description"/>
+    	<result property="active" column="Active"/>
+    	<result property="name" column="name"/>
+    	<result property="contacts" column="contacts"/>
+    	<result property="email" column="email"/>
+    	<result property="phone" column="phone"/>
+</resultMap>
+
+<select id="getDspByDspId" parameterType="int" resultType="Dsp">
+	select * from dsp
+	 <where>
+	 	dspId = #{dspId}
+	 </where>
+</select>
+
+<select id="getDspLogicAll" parameterType="int" resultType="com.supertool.dspui.model.DspLogic">
+	select * from dsp 
+	<if test="pageSize != 0">
+		limit #{offset},#{pageSize}
+	</if>
+</select>
+
+<select id="getDspLogicByNameorid"  resultType="com.supertool.dspui.model.DspLogic">
+	select * from dsp
+	 <where>
+	 	name like CONCAT('%','${nameorid}','%' ) or Id = #{nameorid}
+	 </where>
+	 <if test="pageSize != 0">
+		limit #{offset},#{pageSize}
+	 </if>
+</select>
+
+<insert id="insertDspLogic" parameterType="com.supertool.dspui.model.DspLogic">
+	insert into dsp (DspId,Token,name,contacts,email,phone) values (#{dspId},#{token},#{name},#{contacts},#{email},#{phone})
+</insert>
+
+<delete id="deleteDspLogic" parameterType="int">
+	delete from dsp where Id = #{id}
+</delete>
+
+<update id="updateDspLogic" parameterType="com.supertool.dspui.model.DspLogic">
+ 	update dsp set 
+	DspId = #{dspId},
+	Token = #{token},
+	name = #{name},
+	Active = #{active},
+	contacts = #{contacts},
+	email = #{email},
+	phone = #{phone}
+	<where>
+		Id = #{id} and DspId = #{dspId}
+	</where>
+</update>
+
+</mapper>

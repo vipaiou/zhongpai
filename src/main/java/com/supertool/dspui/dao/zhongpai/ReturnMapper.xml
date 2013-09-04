@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.zhongpai.ReturnMapper">
+
+<insert id="save" keyProperty="id">
+	insert into `return` set projectid=#{projectid}, money=${money}, content=#{content},`limit`=#{limit},limitnum=${limitnum},post=#{post},freepost=#{freepost},
+	                       days=${days},createdate=now(),createuser=#{createuser}
+</insert>
+<select id="selectByProjectId" resultType="map">
+	select * from `return` where projectId=#{projectId} order by money asc
+</select>
+</mapper>

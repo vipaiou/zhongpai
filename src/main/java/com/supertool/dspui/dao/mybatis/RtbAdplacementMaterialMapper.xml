@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.mybatis.RtbAdplacementMaterialMapper">
+	
+	<insert id="add" parameterType="RtbAdplacementMaterial">
+	  insert into rtb_adplacement_material_relation (RtbId , MaterialId , AdPlacementId)
+	  values	
+	  (#{rtbId}, #{materialId}, #{adPlacementId})
+	</insert>
+	
+	<delete id="deleteByRtbId" parameterType="Integer">
+	  delete from rtb_adplacement_material_relation 
+	  where rtbId = #{rtbId}
+	</delete>
+	
+	<select id="getByAppointedIds" parameterType="map" resultType="RtbAdplacementMaterial">
+		select * from rtb_adplacement_material_relation
+		<where>
+			<trim prefixOverrides="and |or">
+				<if test="rtbIds !=null">
+					and rtbId in
+					<foreach collection="rtbIds" item="rtbId"
+						open="(" separator="," close=")">
+						#{rtbId}
+					</foreach>
+				</if>
+				<if test="adplacementIds !=null">
+					and adplacementId in
+					<foreach collection="adplacementIds" item="adplacementId"
+						open="(" separator="," close=")">
+						#{adplacementId}
+					</foreach>
+				</if>
+			</trim>
+		</where>
+	</select>
+	
+	<select id="getByRtbId" parameterType="int" resultType="RtbAdplacementMaterial">
+		select * from rtb_adplacement_material_relation
+		where rtbId = #{rtbId}
+	</select>
+	
+	<select id="getAMInfoByRtbId" parameterType="int" resultType="HashMap">
+		select r.adplacementId as adId, m.id as materialId, m.carbonId as materialCarbonId
+		from rtb_adplacement_material_relation r, material m
+		where r.materialId = m.id and r.rtbId = #{rtbId} and m.isDeleted = 0
+	</select>
+	
+</mapper>
