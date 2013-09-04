@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+
+
+	<!-- 引入主配置文件，从context-web.xml引入context.xml，是为了能够保证所有的Bean都确定在Web环境下建立(主要是指context/WebContext.java中的Bean -->
+	<context:annotation-config />
+	<!-- <import resource="context-security.xml" /> -->
+
+	
+	<mvc:annotation-driven />
+	<context:component-scan base-package="com.supertool.dspui.controller" />
+	<context:component-scan base-package="com.supertool.dspui.framework" />
+
+	<!-- <import resource="context-mybatis.xml" /> -->
+	<mvc:interceptors>
+		<bean id="localeChangeInterceptor"
+			class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />
+		<!-- <bean class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor"> 
+			<property name="entityManagerFactory"> <ref bean="entityManagerFactory" /> 
+			</property> </bean> -->
+	</mvc:interceptors>
+
+	<!-- "/" 映射到 "index" 上 -->
+	 <mvc:view-controller path="/" view-name="/index" />
+
+	<!-- 静态的资源。 优化静态资源的响应 -->
+	<mvc:resources order="1" mapping="/css/**" location="/css/" />
+	<mvc:resources order="1" mapping="/theme/**" location="/theme/" />
+	<mvc:resources order="1" mapping="/flash/**" location="/flash/" />
+	<mvc:resources order="1" mapping="/js/**" location="/js/" />
+	<mvc:resources order="1" mapping="/images/**" location="/css/images/" />
+	<mvc:resources order="1" mapping="/demohour-index_files/**" location="/demohour-index_files/" />
+	<mvc:resources order="1" mapping="/manage_files/**" location="/manage_files/" />
+	<mvc:resources order="1" mapping="/manage_files/images/**" location="/manage_files/images/" />
+	<mvc:resources order="1" mapping="/test/**" location="/test/" />
+	<mvc:resources order="1" mapping="/stui/**" location="/stui/" />
+	<mvc:resources order="1" mapping="/swf/**" location="/swf/" />
+	<mvc:resources order="1" mapping="/favicon.ico" location="/favicon.ico" />
+
+	<!-- for logging -->
+	<aop:aspectj-autoproxy />
+
+	<!-- 配置视图解析 -->
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json" />
+			</map>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="suffix" value=".jsp" />
+					<property name="prefix" value="/jsp/" />
+				</bean>
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+			</list>
+		</property>
+		<property name="order" value="1" />
+	</bean>
+
+
+	<bean id="simpleUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<value>
+				/*=simpleViewController
+			</value>
+		</property>
+		<property name="order" value="2" />
+	</bean>
+
+	<bean id="simpleViewController"
+		class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+	<bean id="jsonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+	<bean class="com.supertool.dspui.framework.MessageConverters">
+		<property name="messageConverterMap">
+			<map>
+				<entry key="json" value-ref="jsonHttpMessageConverter">
+				</entry>
+				<entry key="string">
+					<bean
+						class="org.springframework.http.converter.StringHttpMessageConverter">
+						<property name="supportedMediaTypes">
+							<list>
+								<bean class="org.springframework.http.MediaType">
+									<constructor-arg index="0" value="text" />
+									<constructor-arg index="1" value="plain" />
+									<constructor-arg index="2" value="UTF-8" />
+								</bean>
+								<bean class="org.springframework.http.MediaType">
+									<constructor-arg index="0" value="*" />
+									<constructor-arg index="1" value="*" />
+									<constructor-arg index="2" value="UTF-8" />
+								</bean>
+							</list>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+
+	<!--注解方式处理 异常处理 -->
+	 <bean id="methodHandlerExceptionResolver"
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
+	</bean> 
+	<!-- 配置默认异常处理机制 -->
+	
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
+        <!-- 定义默认的异常处理页面，当该异常类型的注册时使用 -->  
+        <property name="defaultErrorView" value="ex"></property>  
+       <!--定义异常处理页面用来获取异常信息的变量名，默认名value为exception-->
+        <property name="exceptionAttribute" value="ex"></property>  
+        <!-- 定义需要特殊处理的异常，用类名或完全路径名作为key，异常也页名作为值 -->  
+        <property name="exceptionMappings">  
+            <props>  
+            	<prop key="java.lang.Exception">exception</prop>
+                <prop key="IOException">exception</prop>  
+                <prop key="com.supertool.dspui.exception.DBException">exception</prop>
+                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">datasource/maxUploadSizeExceeded</prop>  
+            </props>  
+        </property>  
+    </bean>  
+
+	<!-- 自定义异常处理 -->
+	<bean class="com.supertool.dspui.exception.CustomExceptionHandler"></bean>
+	<!-- 国际化 -->
+	 <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="messages" />
+        <property name="useCodeAsDefaultMessage" value="true" />
+    </bean>
+
+   <!--  <bean id="apiMessages" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="api-messages" />
+    </bean>
+
+    <bean id="logMessages" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="log-messages" />
+    </bean> -->
+    
+    <bean id="sysMessages" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="sys-messages" />
+    </bean>
+
+	<!-- 国际化 -->
+	 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="zh" />
+    </bean>
+	
+	<!-- 将请求参数转化为 Params类，供controller使用 -->
+	<bean class="com.supertool.dspui.util.ParamsResolver" />
+	
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize">
+			<value>104857600</value>
+		</property>
+	</bean>
+	<!-- <bean class="com.supertool.dspui.framework.aop.LogAspect"></bean> -->
+</beans>

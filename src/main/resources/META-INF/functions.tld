@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+
+    <description>Supertool EL Functions</description>
+    <tlib-version>1.0</tlib-version>
+    <short-name>st_elf</short-name>
+    <uri>/functions</uri>
+
+    <function>
+        <name>toDate</name>
+        <function-class>com.supertool.dspui.taglib.Format</function-class>
+        <function-signature>String toDate(java.util.Date)</function-signature>
+    </function>
+    <function>
+        <name>toHourMinute</name>
+        <function-class>com.supertool.dspui.taglib.Format</function-class>
+        <function-signature>String toHourMinute(java.util.Date)</function-signature>
+    </function>
+    <function>
+        <name>toMinute</name>
+        <function-class>com.supertool.dspui.taglib.Format</function-class>
+        <function-signature>String toMinute(java.util.Date)</function-signature>
+    </function>
+    <function>
+        <name>endOfDay</name>
+        <function-class>com.supertool.dspui.taglib.Format</function-class>
+        <function-signature>String endOfDay(java.util.Date)</function-signature>
+    </function>
+    <function>
+        <name>number</name>
+        <function-class>com.supertool.dspui.taglib.Format</function-class>
+        <function-signature>String number(double)</function-signature>
+    </function>
+    <function>
+        <name>integer</name>
+        <function-class>com.supertool.dspui.taglib.Format</function-class>
+        <function-signature>String integer(double)</function-signature>
+    </function>
+    <function>
+        <name>cpm</name>
+        <function-class>com.supertool.dspui.taglib.Format</function-class>
+        <function-signature>String cpm(double)</function-signature>
+    </function>
+    <function>
+        <name>percent</name>
+        <function-class>com.supertool.dspui.taglib.Format</function-class>
+        <function-signature>String percent(double)</function-signature>
+    </function>
+    <!-- Reform -->
+    <function>
+        <name>html</name>
+        <function-class>com.supertool.dspui.taglib.Escape</function-class>
+        <function-signature>String html(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>xml</name>
+        <function-class>com.supertool.dspui.taglib.Escape</function-class>
+        <function-signature>String xml(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>js</name>
+        <function-class>com.supertool.dspui.taglib.Escape</function-class>
+        <function-signature>String js(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>htmlAttr</name>
+        <function-class>com.supertool.dspui.taglib.Escape</function-class>
+        <function-signature>String htmlAttr(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>xmlAttr</name>
+        <function-class>com.supertool.dspui.taglib.Escape</function-class>
+        <function-signature>String xmlAttr(java.lang.String)</function-signature>
+    </function>
+</taglib>
