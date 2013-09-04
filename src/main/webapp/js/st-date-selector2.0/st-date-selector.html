@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>日期选择控件</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="css/st-date-selector.css" />
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/st-date-selector_zh.js"></script>
+	<script type="text/javascript" src="js/st-date-selector.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			var limit = {
+				end : function(){return $("#end").val()}
+			};
+			var selector = new dateSelector();
+			selector.bind($("#start"));
+			selector.bind($("#start")).addLimit(limit);
+			var limit1 = {
+							start : function(){return $("#start").val()}
+						};
+			selector.bind($("#end")).addLimit(limit1);
+			var limit2 = {
+							start : function(){return $("#start").val()},
+							end : function(){return $("#end").val()}
+						};
+			selector.bind($("#tt")).addLimit(limit2);
+			selector.onselected = function(a, b){
+				console.log(a, b);
+			}
+			
+			var selector1 = new dateSelector();
+			selector1.bind([$("#start1"),'start2']);
+			selector1.onselected = function(a, b){alert(3);
+				console.log(a, b);
+			}
+		});
+	</script>
+</head>
+<body>
+	<div style="margin:20px;padding:20px;">
+	(depend to) from:<input type="text" id="start"/>
+	<br /><br />
+	(depend from) to:<input id="end" type="text"/>测试 (depend FROM AND TO)<input type="text" id="tt"/>
+	
+	<input type="text" id="start1"/>
+	<input type="text" id="start2"/>
+</div>
+</body>
+</html>

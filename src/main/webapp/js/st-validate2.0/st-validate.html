@@ -1,0 +1,90 @@
+<html>
+<head>
+<link type="text/css" rel="stylesheet" href="css/st-validate.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/st-validate2.0.js"></script>
+<script type="text/javascript">
+    window.onload = function(){
+        valid = new validator({
+			submitNode:'abc'
+		});
+        document.getElementById("name").value = "default";
+        var rules = [{depend:function(){return document.getElementById("bt").checked;}}, "required", "en", {"minLen": 3}, {"maxLen": 5}, {"remote":{url:"manager/test.action", param:function(){return {"name":document.getElementById("name").value};}}}];
+        valid.addElement("name").addRules(rules).message({"required":"名字不能为空!", "en":"must be string", "minLen": "最小长度为3位", "maxLen":"最大长度为5位", "defaultMsg": "名字长度3-5位", "remote":"服务器验证出错！"}).afterValidate(function(v){;});
+        valid.addElement(document.getElementById("ttt")).addRules([{"min": 1}, {"max": 100}, {"myself":function(v){if(v > 2) return 'aa';else return document.getElementById("aaa").value == 4;}}]).message({"required":"年龄不能为空", "min":"最小为1", "max":"最大为100", "defaultMsg": "年龄范围1-100", "myself":"自定义验证不通过！", 'aa':'ddfdaaa'});
+        //关联验证
+        function groupCheck(start, end){
+            if(start && end){
+                return +end >= +start;
+            }
+            return true;
+        }
+        valid.addElement(document.getElementById("start")).addRules([{"required":function(){return document.getElementById("end").value > 0;}}, "number", {"myself":function(){return groupCheck(this.val, document.getElementById("end").value);}}]).message({"required":"开始数字不能为空", "number":"开始数字只能是整数", "myself": "开始数字必须不能大于结束数字！"});
+        valid.addElement(document.getElementById("end")).addRules([{"required":function(){return document.getElementById("start").value > 0;}}, "number", {"myself":function(){return groupCheck(document.getElementById("start").value, this.val);}}]).message({"required":"结束数字不能为空", "number":"结束数字只能是整数", "myself": "结束数字必须不能小于开始数字！"});
+        valid.addElement(document.getElementById("new")).addRules([["required", "新的不能为空测试"], [{"number":function(){return /^\d+$/.test(this.val) && (this.val > 10);}}, "必需输入大于10的数字"]]).setDefaultMsg("新的默认值");
+        
+        
+        valid.addElement('funtest', 'click').addRules([[function(v){return this.val == 4}, '输入错误']]).setDefaultMsg("新增的验证规则");
+        
+        valid.addElement('regtest').addRules([[/^\w+$/, '输入错误']]).setDefaultMsg("新增的验证规则").afterValidate(function(r){
+			//alert(r);
+		});
+		valid.addElement('divId', 'click').addRules(["required", "en"]).message({"required":"DIV获取值不能为空", "en":"只能为英文"}).setDefaultMsg("新增的Div验证规则").overrideFun('getVal', function(){return "aa"});
+        //注册提交表单
+        //document.getElementById("submit").onclick=function(){
+            //return valid.submitForm();
+            //可以支持ajax from 提交，用下面的方法进行ajax提交
+            //return valid.ajaxSubmit("manager/test.action", {"name" : "zsl"}, function(data){alert(data);});
+        //};
+        //注册重置按钮
+        //document.getElementById("reset").onclick = function(){
+            //valid.resetForm();
+        //};
+        //设置在form里面所有未需要验证的元素的默认值。只需要调用这句就可以，不用自己再写代码。这句要在把所有的验证元素都添加都调用。即先addElement。
+        //valid.setOtherDefaultVal();
+		
+	};
+	function validElement(){
+		document.getElementById("funtest").value =  4;
+		//alert(valid.validElement(document.getElementById("name")));
+	}
+	function validateAll(){
+		return true || valid.validateAll();
+	}
+</script>
+</head>
+<body>
+<div id="abc">abc</div>
+<form name="fm" id="fm" method="post" onsubmit="return validateAll();">
+名称：<input type="text" id="name" name="name" /><br />
+年龄：<input type="text" id="ttt" name="age"/><br />
+depend条件，是否验证名称：<input type="checkbox" name="ckname" id="bt" value="0" /><br />
+年龄的自定义条件约束，通过条件是value为4：<input type="text" id="aaa" value="4" name="depend" /><br />
+提交：<input type="submit" value="submit" id="submit"  />
+<input type="checkbox" name="cbx" value="1" />
+<input type="checkbox" name="cbx" value="2" checked />
+<input type="radio" name="rd" value="1" />
+<input type="radio" name="rd" value="2" checked />
+<select id="slt" name="slt">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2" selected >2</option>
+</select>
+<select id="slt2" name="slt2">
+    <option value="0">0</option>
+    <option value="1">1</option>
+    <option value="2" selected >2</option>
+</select>
+工作：<input type="text" name="job" value="teacher"/><br />
+密码：<input type="password" name="pwd" value="123" /><br />
+说明：<textarea cols=15 rows=5 name="note">请输入说明</textarea><br />
+开始数字（要么和结束数字全都输入要么全不输入）：<input type="text" id="start" /><br />
+结束数字（要么和开始数字全都输入要么全不输入）：<input type="text" id="end" /><br />
+新的声明格式测试：<input type="text" id="new" />
+<input type='text' name='funtest' id='funtest' value='函数和消息验证' />
+<input type='text' name='regtest' id='regtest' value='正则测试' />
+<input type="button" value="验证元素name" onclick="validElement();"/>
+<div id="divId">1212</div>
+</form>
+</body>
+</html>

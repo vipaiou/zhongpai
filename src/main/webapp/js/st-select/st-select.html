@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>st-select</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="css/st-select.css" />
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/st-select.js"></script>
+<script type="text/javascript" src="js/st-select_zh.js"></script>
+<script type="text/javascript">
+	document.onclick = function(e) {
+		//alert(12);
+	}
+	$(function() {
+		var list = [];
+		for ( var i = 0; i < 10; i++) {
+			var obj = {};
+			obj.id = i;
+			obj.text = "text" + i;
+			if (i % 2)
+				obj.isDeleted = true;
+			list.push(obj);
+		}
+		var option = {
+			name : 'st-select',
+			holder : $("#selectHd"),
+			width : 200,
+			maxHeight : 100,
+			zIndex : 1000,
+			searchAble : true,
+			mutiAble : true,
+			allCheckAble : true
+		}
+		select = new selector(option);
+		select.change(function() {
+			alert(this.getVal());
+		});
+		select.modifyNode(function(node, row) {
+			if (row.isDeleted) {
+				node.addClass('option-deleted');
+			}
+		});
+		select.afterLoad(function(ele){
+			
+		});
+		select.close(function(){
+			alert(112);
+		});
+		select.loadData(list, [ 1, 2, 3, 5, 6 ]);
+		var list = [];
+		for ( var i = 0; i < 5; i++) {
+			var obj = {};
+			obj.id = i * 5;
+			obj.text = "anothesadadadadadadadadadadadadadadadadadadadadadr" + i;
+			list.push(obj);
+		}
+		list[1].status = 0;
+		list[2] = {
+			id:10,
+			text:'34weererersddfdfdf'
+		};
+		list[3] = {
+			id:15,
+			text:'34weererer',
+			status:0
+		};
+		var option1 = {
+			name : 'campainId',
+			holder : $("#selectHd1"),
+			data : list,
+			width : 200,
+			zIndex : 100
+		}
+		var option2 = {
+			name : 'campainId',
+			holder : $("#selectHd2"),
+			data : list,
+			width : 200,
+			zIndex : 10
+		}
+		select1 = new selector(option1);
+		select1.loadData(list, 5);
+		select2 = new selector(option2);
+		select2.modifyNode(function(node, model){
+			if(node.attr('val') != -1){
+				var status = document.createElement("div");
+				status.innerHTML = "(" + (model.status == 0 ? '计算中' : '就绪') + ")";
+				status.style.position = "absolute";
+				status.style.top = "0px";
+				var detail = document.createElement("a");
+				detail.innerHTML = "详细";
+				detail.style.position = 'absolute';
+				detail.style.right = "17px";
+				detail.style.top = "0px";
+				detail.href = "javascript:alert('detail')";
+				node.append(status);
+				node.append(detail);
+				node.attr('status', model.status);
+				node.attr('time', model.time);
+			}
+		});
+		select2.afterLoad(function(selectNode){
+        var opts = selectNode.find('.option-div');
+        var status = selectNode.is(":hidden");
+        selectNode.show();
+        opts.each(function(){
+            if($(this).attr('val') != -1){
+                var alink = this.lastChild;
+                var statusNode = alink.previousSibling;
+                alink.style.width = alink.scrollWidth + "px";
+                statusNode.style.width = statusNode.scrollWidth + 'px';
+                statusNode.style.right = 22 + alink.scrollWidth + 'px';
+                var textNode = statusNode.previousSibling;
+                textNode.style.width = selectNode.width() - alink.scrollWidth - statusNode.scrollWidth - 30 + 'px';
+            }
+        });
+        if(status){
+            selectNode.hide();
+        }
+    });
+		select2.loadData(list, 5);
+	});
+	var ii = 0;
+	function gg() {
+		select.setVal([ 2, 3 ]);
+		select.setDisabled((ii++ % 2) === 0);
+		alert(select.getVal());
+		alert(select1.getVal());
+		select1.clearOption();
+	};
+</script>
+</head>
+<body>
+	<form name="fm" action="">
+		<div id="selectHd" style="float:left"></div>
+		<div id="selectHd1" style="float:left"></div>
+		<div id="selectHd2" style="float:left"></div>
+		<input type="button" onclick="gg();"
+			value="getValue" />
+    </form>
+</body>
+</html>

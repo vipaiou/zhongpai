@@ -1,0 +1,33 @@
+﻿.ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.sort-asc {
+    background:url('img/up.png') center center no-repeat;
+    padding:0 6px;
+}
+.sort-desc {
+    background:url('img/down.png') center center no-repeat;
+    padding:0 6px;
+}
+.sort-default {
+    background:url('img/sort.png') center center no-repeat;
+    padding:0 6px;
+}
+.mouseout-odd {
+	background: white;
+}
+.mouseout {
+	background: #f5f5f5;
+}
+.mouseover {
+background: #DDF0FF;
+}
+.pageFlip {
+	background: url("img/th_bj.png") repeat-x scroll left center transparent;
+    border-top: 1px solid #FFFFFF;
+    height: 25px;
+    line-height: 22px;
+    text-align: center;
+}

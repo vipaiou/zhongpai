@@ -1,0 +1,13 @@
+.errorMsg {
+	margin : 0 5px;
+	color: #ff7200;
+}
+.validMsg {
+	margin : 0 5px;
+	width : 20px;
+	background : url("../img/check.gif") no-repeat center;
+}
+.defaultMsg {
+	color: gray;
+	margin : 0 5px;
+}

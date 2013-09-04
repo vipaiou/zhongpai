@@ -1,0 +1,178 @@
+.date-holder *{
+	padding:0;
+	margin:0;
+}
+.date-holder{
+	position:absolute;
+	padding:10px 11px 10px 10px;
+	width:200px;
+	display:none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+.date-holder table.date-table{
+	border-collapse:collapse;
+	border-spacing:0;
+	width:100%;
+	color:#5D5D5D;
+	font-family:Verdana,Arial,Helvetica,"宋体",sans-serif;
+	font-size:12px;
+	line-height:19px;
+	background:#fff;
+}
+.date-holder table.date-table thead tr{
+	height:30px;
+}
+.date-holder .date-table td{
+	width:14.4%;
+	border-left:1px solid #ccc;
+	border-top:1px solid #ccc;
+	text-align:center;
+	height:25px;
+}
+.date-holder .top-div{
+	position:relative;
+	text-align:center;
+	width:198px;
+	font-size:14px;
+	padding:5px 0;
+	border:1px solid #cc9;
+	height:20px;
+	line-height:20px;
+	background-color:#ECF1F4;
+	vertical-align:middle;
+}
+.date-holder .pre-year-div{
+	float:left;
+	margin-left:5px;
+	background:url("img/actions.gif") no-repeat scroll 0 0 transparent;
+}
+.date-holder .pre-month-div{
+	float:left;
+	margin-left:2px;
+	background:url("img/actions.gif") no-repeat scroll -16px 0 transparent;
+}
+.date-holder .date-text-span{
+	font-weight:bold;
+	height:20px;
+	line-height:20px;
+	color:#5D5D5D;
+}
+.date-holder .next-month-div{
+	float:right;
+	margin-right:2px;
+	background:url("img/actions.gif") no-repeat scroll -32px 0 transparent;
+}
+.date-holder .next-year-div{
+	float:right;
+	margin-right:5px;
+	background:url("img/actions.gif") no-repeat scroll -48px 0 transparent;
+}
+.date-holder .jump-div{
+	display:inline;
+	width:16px;
+	height:16px;
+	cursor:pointer;
+	font-size:12px;
+	color:#5D5D5D;
+	border:1px solid #ECF1F4;
+}
+.date-holder .mouse-over{
+	background-color:#8ca4c8;
+	cursor:pointer;
+	border-left:1px solid #ccc;
+	border-top:1px solid #ccc;
+	border-right:1px solid #666;
+	border-bottom:1px solid #666;
+	color:#fff;
+}
+.date-holder .selected-date{
+	background-color:#8ca4c8;
+}
+.date-holder .no-border-left{
+	border-left:0;
+}
+.date-holder .no-border-bottom{
+	border-bottom:0;
+}
+.date-holder .action-disabled{
+	visibility:hidden;
+}
+.date-holder .date-disabled{
+	color:#888;
+	cursor:default;
+	border:1px solid #ccc;
+	background-color:#ECF1F4
+}
+.date-holder .current-date-disabled{
+	color:#888;
+	font-weight:bold;
+}
+.date-holder .current-date{
+	background-color:#cc9;
+	color:#fff;
+}
+.date-holder .border-top{
+	background: url("img/white/bt.png") repeat scroll 0 0 transparent;
+    height: 10px;
+    left: 10px;
+    position: absolute;
+    right: 10px;
+    top: 0;
+}
+.date-holder .border-left{
+	background: url("img/white/bl.png") repeat scroll 0 0 transparent;
+    bottom: 10px;
+    left: 0;
+    position: absolute;
+    top: 10px;
+    width: 10px;
+}
+.date-holder .border-bottom{
+	background: url("img/white/bb.png") repeat scroll 0 0 transparent;
+    bottom: 0;
+    height: 10px;
+    left: 10px;
+    position: absolute;
+    right: 10px;
+}
+.date-holder .border-right{
+	background: url("img/white/br.png") repeat scroll 0 0 transparent;
+    bottom: 10px;
+    position: absolute;
+    right: 0;
+    top: 10px;
+    width: 10px;
+}
+.date-holder .left-top{
+	background: url("img/white/lt.png") repeat scroll 0 0 transparent;
+    height: 10px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 10px;
+}
+.date-holder .right-top{
+	background: url("img/white/rt.png") repeat scroll 0 0 transparent;
+    height: 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 10px;
+}
+.date-holder .left-bottom{
+	background: url("img/white/lb.png") repeat scroll 0 0 transparent;
+    bottom: 0;
+    height: 10px;
+    left: 0;
+    position: absolute;
+    width: 10px;
+}
+.date-holder .right-bottom{
+	background: url("img/white/rb.png") repeat scroll 0 0 transparent;
+    bottom: 0;
+    height: 10px;
+    position: absolute;
+    right: 0;
+    width: 10px;
+}
