@@ -104,8 +104,8 @@ if (principal instanceof UserDetails) {
 <div class="head-r">
 <ul class="head-r-menu">
 <li><a href="/intro">服务介绍</a><span class="head-r-menu-l">|</span></li>
-<li><a href="<%=request.getContextPath() %>/signup?url=http%3A%2F%2Fwww.demohour.com%2F">注册</a></li>
-<li><a href="<%=request.getContextPath() %>/login?url=http%3A%2F%2Fwww.demohour.com%2F">登录</a></li>
+<li><a href="<%=request.getContextPath() %>/register?url=http://www.demohour.com/">注册</a></li>
+<li><a href="<%=request.getContextPath() %>/login?url=http://www.demohour.com/">登录</a></li>
 <li class="sns-login">
 <a rel="nofollow" href="/session/connect?provider=sina&amp;url=http%3A%2F%2Fwww.demohour.com%2F"><img title="新浪微博登录" src="<%=request.getContextPath()%>/demohour-index_files/sns_sina-36e6b6e2dbfa277f2e5acfb742150438.gif"></a>
 <a rel="nofollow" href="/session/connect?provider=tencent&amp;url=http%3A%2F%2Fwww.demohour.com%2F"><img title="腾讯微博登录" src="<%=request.getContextPath()%>/demohour-index_files/sns_tencent-7f9e26f43e595fd88a06099083435e34.gif"></a>
