@@ -170,7 +170,7 @@ public class UserService {
 	
 	   List<User> userlist=this.userDAO.getUserByPage(firstResult, maxResults,sidx,sord,commonUserOnly,searchColumn,searchKey);
 	   //总记录数
-	   Integer records= this.userDAO.getUserCount(commonUserOnly,searchColumn,searchKey);
+	   Integer records= this.userDAO.getUserCount(searchColumn,searchKey);
 	   //总页数
 	   Integer total = Utils.getTotalPage(records,pageSize);
 	   
@@ -333,7 +333,7 @@ public class UserService {
 		   else{
 			   searchKey=searchKey.toUpperCase();
 		   }
-		return this.userDAO.getUserCount(commonUserOnly, searchColumn, searchKey);
+		return this.userDAO.getUserCount( searchColumn, searchKey);
 	}
 	@Transactional(readOnly=false,rollbackFor=DBException.class)
 	public boolean modifyUser(User user, List<String> updatAuthNames,
@@ -379,5 +379,34 @@ public class UserService {
 	}
 	public Map<?, ?> getUserById(Object object) {
 		return userDAO.getUserById(object);
+	}
+	
+	/**
+	 * 注册
+	 * @param user
+	 * @return
+	 */
+	public int register(User user) {
+		User result = findUserByUsername(user.getUsername());
+		int result1 = userDAO.getUserCount("email", user.getEmail());
+		if(result1 > 0){//邮箱已被使用
+			return -3;
+		}
+		//如果不存在，就新建权限
+		// 如果该用户不存在存在，或者已删除，就可新建
+		if(null == result ){
+			try {
+				//如果不存在就插入
+				userDAO.insert(user);					
+				//System.out.println("insert");
+				return 1;
+			} catch(DBException e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+				return -1;
+			}
+		} else {//用户名已存在
+			return -2;
+		}
 	}
 }

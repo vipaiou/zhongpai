@@ -90,6 +90,37 @@ public class UserController {
 		return vo;
 
 	}
+	@RequestMapping("/user/register")//
+	public String register(@RequestParam Map<String, Object> p,Model model) {
+		String username = p.get("username") == null ? null : p.get("username")
+				.toString();
+		String password = p.get("password") == null ? null : p.get("password")
+				.toString();
+		String email = p.get("email") == null ? null : p.get(
+				"email").toString();
+		Integer selectAll = -1;
+		System.out.println("email="+email);
+		System.out.println("selectAll=" + selectAll);
+		System.out.println("password=" + password);
+		User user = null;
+		if (null == username || null == password || null == email) {
+			model.addAttribute("result", -1);
+		} else {	
+			user = new User();
+			user.setUsername(username);
+			user.setPassword(SHAEncrypter.getInstance().encrypt(password));
+			user.setEmail(email);
+			user.setCreateDate(new Date());
+			int result = userService.register(user);
+			if(result == 1){
+				return "redirect:/login";
+			}else{
+				model.addAttribute("result", result);
+			}
+		}
+		return "redirect:/register";
+	}
+
 
 	@RequestMapping("/user/adduser")//
 	public @ResponseBody boolean addUser(@RequestParam(value = "permissionList", required = true) List<String> permissionList,@RequestParam(value = "mediaIds", required = true) List<String> mediaIdsStr,@RequestParam Map<String, Object> p) {

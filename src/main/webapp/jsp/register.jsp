@@ -4,7 +4,7 @@
 <%@ taglib prefix="bean"  uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ include file="../include/header.jsp" %>
-<form accept-charset="UTF-8" action="/users?url=http%3A%2F%2Fwww.demohour.com%2F" class="new_user" id="new_user" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="4MEd9ulc0V+2tyLPlgl03mLX77UM0sIfuhfR1MeprGk=" type="hidden"></div>
+<form accept-charset="UTF-8" action="<%=request.getContextPath() %>/user/register?url=http%3A%2F%2Fwww.demohour.com%2F" class="new_user" id="new_user" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="4MEd9ulc0V+2tyLPlgl03mLX77UM0sIfuhfR1MeprGk=" type="hidden"></div>
 <div class="signuploginbg">
 <div class="signuplogin">
 <div class="left">
@@ -15,7 +15,7 @@
 <li id="useremail">
 <div class="ui-text">
 <div class="ui-text-right">
-<input autocomplete="off" class="email-icon" id="user_email" name="user[email]" placeholder="输入邮箱" size="30" type="text">
+<input autocomplete="off" class="email-icon" id="user_email" name="email" placeholder="输入邮箱" size="30" type="text">
 </div>
 </div>
 </li>
@@ -23,7 +23,7 @@
 <li id="username">
 <div class="ui-text">
 <div class="ui-text-right">
-<input autocomplete="off" class="username-icon" id="user_name" name="user[name]" placeholder="昵称（中英文/数字/下划线/减号）" size="30" type="text">
+<input autocomplete="off" class="username-icon" id="user_name" name="username" placeholder="昵称（中英文/数字/下划线/减号）" size="30" type="text">
 </div>
 </div>
 </li>
@@ -31,7 +31,7 @@
 <li id="userpassword">
 <div class="ui-text">
 <div class="ui-text-right">
-<input autocomplete="off" class="password-icon" id="user_password" name="user[password]" placeholder="密码（至少6个字符）" size="30" type="password">
+<input autocomplete="off" class="password-icon" id="user_password" name="password" placeholder="密码（至少6个字符）" size="30" type="password">
 </div>
 </div>
 </li>

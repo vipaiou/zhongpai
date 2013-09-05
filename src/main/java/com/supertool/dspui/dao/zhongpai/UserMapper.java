@@ -171,7 +171,7 @@ public interface UserMapper {
 	 * 获取数据表中有效记录数
 	 * @return long
 	 */
-	public int getUserCount(boolean commonUserOnly,String searchColumn, String searchKey);/*{
+	public int getUserCount(@Param("column")String column, @Param("value") String value);/*{
 		
 		String select="select count(u)  from User u";
 		String where = " where IsDeleted = '0' ";
