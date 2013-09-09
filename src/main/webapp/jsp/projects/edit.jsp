@@ -522,7 +522,8 @@
 		src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js"
 		type="text/javascript"></script>
 	<script
-		src="<%=request.getContextPath()%>/demohour-index_files/projects-1ab927eb13eddbb381c44171a7060594.js"
+		<%-- src="<%=request.getContextPath()%>/demohour-index_files/projects-1ab927eb13eddbb381c44171a7060594.js" --%>
+		src="<%=request.getContextPath()%>/demohour-index_files/demohour.js"
 		type="text/javascript"></script>
 	<script type="text/javascript">
 //<![CDATA[
@@ -597,10 +598,11 @@ $(document).ready(function() {
 
     }),
     $.swfupload.load("project_poster_button", {
-        upload_url: "<%=request.getContextPath()%>/image/upload?sign=422aad69c1d0de87f36699ffee2c20cf89cd5a19fbf3c74aa75aeedca5b188d9&projectId=${projectId}&type=project_poster&user_id=1121568",
+        upload_url: "<%=request.getContextPath()%>/image/upload4Cover?sign=422aad69c1d0de87f36699ffee2c20cf89cd5a19fbf3c74aa75aeedca5b188d9&projectId=${projectId}&type=project_poster&user_id=1121568",
         flash_url: "<%=request.getContextPath()%>/demohour-index_files/swfupload.swf",
         file_size_limit: "5120",
-        file_types: "*.jpg;*.gif;*.png;*.jpeg",
+        //file_types: "*.jpg;*.gif;*.png;*.jpeg",
+        file_types: "*.jpg;*.jpeg",
         file_types_description: "图片文件",
         file_queue_error_handler: function(e, t) {
             t == SWFUpload.QUEUE_ERROR.QUEUE_LIMIT_EXCEEDED ? $.ui_core.notice("project", {
@@ -668,7 +670,7 @@ $(document).ready(function() {
         },
         editor_config_options: {
             minFrameHeight: 350,
-            initialContent: "${project.content}"
+            initialContent: '${project.content}'
         }
     }),
     $("body").on("click", "a.ui-popup-delete", 

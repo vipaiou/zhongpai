@@ -956,19 +956,19 @@
 </div>
 <div class="footerwrap">
 <div class="footer">
-<a href="http://www.demohour.com/projects/new">发起项目</a>
-<a href="http://www.demohour.com/intro">服务介绍</a>
-<a href="http://www.demohour.com/guideline">项目规范</a>
-<a href="http://www.demohour.com/faq">常见问题</a>
-<a href="http://www.demohour.com/terms_of_service">服务条款</a>
-<a href="http://www.demohour.com/privacy_policy">隐私权政策</a>
-<a href="http://www.demohour.com/about">关于我们</a>
-<a href="http://www.demohour.com/projects/313907">建议反馈</a>
+<a href="<%=request.getContextPath()%>/projects/new">发起项目</a>
+<a href="<%=request.getContextPath()%>/intro">服务介绍</a>
+<a href="<%=request.getContextPath()%>/guideline">项目规范</a>
+<a href="<%=request.getContextPath()%>/faq">常见问题</a>
+<a href="<%=request.getContextPath()%>/terms_of_service">服务条款</a>
+<a href="<%=request.getContextPath()%>/privacy_policy">隐私权政策</a>
+<a href="<%=request.getContextPath()%>/about">关于我们</a>
+<a href="<%=request.getContextPath()%>/projects/313907">建议反馈</a>
 <a href="http://weibo.com/demohour" target="_blank">官方微博</a>
 <a href="http://blog.demohour.com/" target="_blank">官方博客</a>
-<a href="http://www.demohour.com/?screen=mobile" class="last">手机版</a>
+<a href="<%=request.getContextPath()%>/?screen=mobile" class="last">手机版</a>
 <p>© 2013北京众拍网科技有限公司　Demohour.com 版权所有<br>电信与信息服务业务经营许可证120183号　京ICP备11032157号　京公网安备110105015321</p>
-<div style="display: none;" id="backtop" class="backtop"><a href="#top"></a></div>
+<div id="backtop" class="backtop"><a href="#top"></a></div>
 </div>
 </div>
 
