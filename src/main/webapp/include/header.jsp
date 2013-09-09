@@ -52,9 +52,12 @@
 <%@ page import="org.springframework.security.core.userdetails.UserDetails"%>
 <%@ page import="com.supertool.dspui.context.UserContext"%>
 <%@ page import="com.supertool.dspui.security.UserDetailsImpl"%>
+<%@ page import="com.supertool.dspui.config.Config"%>
 
 <%
+String imagehost = Config.getImageHost();
 String username = "";
+String avatar = "";
 SecurityContextImpl securityContextImpl = (SecurityContextImpl) request.getSession().getAttribute("SPRING_SECURITY_CONTEXT"); 
 //System.out.println(securityContextImpl);
 Object principal = null;
@@ -63,6 +66,7 @@ if(securityContextImpl != null){
 }   
 if (principal instanceof UserDetails) { 
 	username = ((UserDetailsImpl)principal).getUser().getUsername();
+	avatar = ((UserDetailsImpl)principal).getUser().getAvatar();
 %>
 <div class="head-r">
 <ul class="head-r-menu">
@@ -85,7 +89,7 @@ if (principal instanceof UserDetails) {
 </li>
 <li class="head-mydemohour ui-dropbox">
 <a href="#">
-<img src="<s:url value="/demohour-index_files/user_avatars-files-000-106-730-106730-small.jpg" />" align="absmiddle"><span><%=username %></span></a>
+<img src="<%=imagehost %>avatar-small-<%=avatar %>" align="absmiddle"><span><%=username %></span></a>
 <ul class="menulist" id="mydemohour_list" style="display:none;">
 <li class="toplines"><img src="<s:url value="/demohour-index_files/toplines-77db07bc10a3e6f451da4b801840616c.gif" />"></li>
 <li><a href="<s:url value="/transaction/"/>">支持记录</a></li>
