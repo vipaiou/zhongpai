@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.zhongpai.CategoryMapper">
+
+<insert id="add">
+	<selectKey resultType="int" order="AFTER"  keyProperty="id"> 
+         select LAST_INSERT_ID()
+    </selectKey>
+	insert into category set name=#{name}, createuser=${userid};
+</insert>
+
+<select id="getAll" resultType="map">
+	select * from category ;
+</select>
+</mapper>

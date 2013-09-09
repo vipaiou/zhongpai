@@ -1,5 +1,6 @@
 package com.supertool.dspui.service.zhongpai;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,16 @@ public class ProjectService {
 
 	public void submitaudit(Map<String, Object> map) {
 		projectMapper.submitaudit(map);
+	}
+
+	public List<Map<String, Object>> search(String c) {
+		String[] cs = c.split("_");
+		Map<String,String> map = new HashMap<String, String>();
+		map.put("status", cs[0]);
+		map.put("category", cs[1]);
+		map.put("province", cs[2]);
+		map.put("order", cs[3]);
+		return projectMapper.search(map);
 	}
 
 	

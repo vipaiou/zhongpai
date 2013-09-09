@@ -37,4 +37,19 @@
 <update id="submitaudit" parameterType="map">
 	update project set realname=#{realname}, sex=#{gender}, qq=#{qq}, phone=#{phone}, auditstatus='1', money=#{money}, day=#{day}  where id=#{id}
 </update>
+
+<select id="search" resultType="map">
+	select * from project where id > 0
+	<if test="status != '0'.toString()"> and status=#{status} </if>
+	<if test="category != '0'.toString()"> and category=#{category} </if>
+	<if test="province!='0'.toString()"> and province=#{province} </if>
+	<if test="order=='0'.toString()"> order by id desc; </if>
+	<if test="order=='1'.toString()"> order by money desc; </if>
+	<if test="order=='2'.toString()"> order by id asc; </if>
+	<if test="order=='3'.toString()"> order by id asc; </if>
+	<if test="order=='4'.toString()"> order by id asc; </if>
+	<if test="order=='5'.toString()"> order by id asc; </if>
+	<if test="order=='6'.toString()"> order by starttime desc; </if>
+	
+</select>
 </mapper>

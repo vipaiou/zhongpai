@@ -1,7 +1,10 @@
 package com.supertool.dspui.controller.zhongpai;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.supertool.dspui.config.Config;
 import com.supertool.dspui.model.zhongpai.Project;
+import com.supertool.dspui.service.zhongpai.CategoryService;
 import com.supertool.dspui.service.zhongpai.FocusService;
 import com.supertool.dspui.service.zhongpai.ProjectService;
 import com.supertool.dspui.service.zhongpai.ReturnService;
@@ -35,12 +39,36 @@ public class ProjectController {
 	FocusService focusService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	CategoryService categoryService;
 	
 	@RequestMapping(value={"","/"})
 	public String list(Model model){
 		List<Map<String,Object>> projects = projectService.created();
 		model.addAttribute("projects", projects);
 		model.addAttribute("imagehost", Config.getImageHost());
+		List<Map<String,Object>> categories = categoryService.getAll();
+		model.addAttribute("categories", categories);
+		model.addAttribute("c1", "0");
+		model.addAttribute("c2", "0");
+		model.addAttribute("c3", "0");
+		model.addAttribute("c4", "0");
+		return "projects/index";
+	}
+
+	@RequestMapping(value={"discover/{c}","discover/{c}/"})
+	public String search(@PathVariable String c, Model model, HttpServletRequest request) throws UnsupportedEncodingException{
+		c = new String(c.getBytes("ISO-8859-1"),"UTF-8") ;
+		String[] cs = c.split("_");
+		List<Map<String,Object>> projects = projectService.search(c);
+		model.addAttribute("projects", projects);
+		model.addAttribute("imagehost", Config.getImageHost());
+		List<Map<String,Object>> categories = categoryService.getAll();
+		model.addAttribute("categories", categories);
+		model.addAttribute("c1", cs[0]);
+		model.addAttribute("c2", cs[1]);
+		model.addAttribute("c3", cs[2]);
+		model.addAttribute("c4", cs[3]);
 		return "projects/index";
 	}
 
@@ -73,6 +101,8 @@ public class ProjectController {
 	public String add(Model model){
 		int pid = projectService.add();
 		model.addAttribute("projectId", pid);
+		List<Map<String,Object>> categories = categoryService.getAll();
+		model.addAttribute("categories", categories);
 		System.out.println(pid);
 		return "projects/add";
 	}	
@@ -89,6 +119,8 @@ public class ProjectController {
 		model.addAttribute("project", porject);
 		model.addAttribute("projectId", id);
 		model.addAttribute("imagehost", Config.getImageHost());
+		List<Map<String,Object>> categories = categoryService.getAll();
+		model.addAttribute("categories", categories);
 		return "projects/edit";
 	}
 	

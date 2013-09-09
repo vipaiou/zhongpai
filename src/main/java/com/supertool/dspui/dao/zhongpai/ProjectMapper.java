@@ -24,4 +24,6 @@ public interface ProjectMapper {
 
 	void submitaudit(Map<String, Object> map);
 
+	List<Map<String, Object>> search(Map<String, String> map);
+
 }
