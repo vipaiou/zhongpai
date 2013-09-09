@@ -13,7 +13,7 @@
     </context-param>
      <context-param> 
         <param-name>webAppRootKey</param-name>  
-        <param-value>dspui.root</param-value> 
+        <param-value>zhongpai.root</param-value> 
     </context-param> 
     <listener>  
         <listener-class>org.springframework.web.util.WebAppRootListener</listener-class>  
@@ -25,9 +25,7 @@
     </listener>
     <!-- Spring Request Context Listener -->
     <listener>  
-        <listener-class>  
-            org.springframework.web.context.request.RequestContextListener  
-        </listener-class>  
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>  
     </listener> 
  
     <filter>
@@ -61,6 +59,7 @@
         <filter-name>springSecurityFilterChain</filter-name>  
         <url-pattern>/*</url-pattern>  
     </filter-mapping>  
+    
   <servlet>
     <servlet-name>spring</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -86,11 +85,11 @@
 	
   <error-page>
     <error-code>404</error-code>
-    <location>/jsp/error/error404.jsp</location>
+    <location>/jsp/error404.jsp</location>
   </error-page>
   <error-page>
     <error-code>500</error-code>
-    <location>/jsp/error/error500.jsp</location>
+    <location>/jsp/error404.jsp</location>
   </error-page> 
     <mime-mapping>
     <extension>ico</extension>
