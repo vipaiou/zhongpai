@@ -24,7 +24,7 @@ body {TEXT-ALIGN: center;}
     width: 660px;
     float: left;
     overflow: hidden;
-    /* text-align: center; */
+    text-align: center;
 }
 .userpage_right{
 	float: right;
@@ -51,24 +51,24 @@ body {TEXT-ALIGN: center;}
 <div class="topshow">
 <div class="topshowmenu">
 <div class="profilewarp">
-<img src="${ imagehost }avatar-large-${user.avatar}">
+<img src="<%=request.getContextPath()%>/demohour-index_files/user_avatars-files-000-106-730-106730-large.jpg">
 <div class="profile-bio">
 <div class="profile-bio-r">
 <strong>${user.UserName }</strong>
 </div>
 <div class="post-private-letter">
-	<a href="<%=request.getContextPath()%>/messages?to=${user.UserId}" class="ui-popup-message" title="私信给 ${user.UserName }">发私信</a>
-   <a class="a-btn-add mr10 j a_show_login" href="#" title="关注${user.UserName }">关注</a>
+	<a href="<%=request.getContextPath()%>/messages?recipient_id=${user.UserId}" class="ui-popup-message" title="私信给 aiou">发私信</a>
+   <a class="a-btn-add mr10 j a_show_login" href="#">关注此人</a>
 </div>
 <p class="jiaru">${user.CreateDate } 加入众拍网</p>
-<p><a target="_blank" href="${user.weibo }">新浪微博 </a> <a target="_blank" href="${user.qq }">qq</a> <a target="_blank" href="${user.douban }">豆瓣</a> <a target="_blank" href="${user.renren }">人人</a> </p>
-<p><a>影愿</a>  <a><del>镜头说</del></a>  <a><del>留言板</del></a>  <a><del>收藏秀</del></a></p>
+<p><a>新浪微博 </a> <a>qq</a> <a>豆瓣</a> <a>腾讯微博</a> </p>
+<p><a>影愿</a>  <a>镜头说</a>  <a>留言板</a>  <a>收藏秀</a></p>
 </div>
 </div>
 <div>
 </div>
 <div ><div id="new_post" class="projects-posts-add comment-posts-add">
-<div class="new-comment-top ui-faq-title-size">我要写新鲜事</div>
+<div class="new-comment-top ui-faq-title-size">我要发新鲜事</div>
 <form method="post" data-remote="true" action="<%=request.getContextPath() %>/activity/add" accept-charset="UTF-8"><div style="margin:0;padding:0;display:inline"><input type="hidden" value="✓" name="utf8"><input type="hidden" value="mXPrIAvBs23PnmOfF1PE+JbSsr4Af0qcf0L0VwNiNsQ=" name="authenticity_token"></div>
 <input type="hidden" value="0" name="text_post[sns_sync]">
 <div class="projects-posts-add-title">
@@ -103,166 +103,17 @@ body {TEXT-ALIGN: center;}
 </form></div>
 </div>
 <ul class="topmenutabs">
-<li class="selected"><a href="<%=request.getContextPath()%>/user/${user.UserId}" class="select_projects">全部活动 </a></li>
+<li class="selected"><a href="<%=request.getContextPath()%>/user/${user.UserId}" class="select_projects">全部活动 <span></span></a></li>
 <li><a href="<%=request.getContextPath()%>/user/${user.UserId}/projects/?filter=yingyuan" class="select_projects">影愿<span>0</span></a></li>
 <li><a href="<%=request.getContextPath()%>/user/${user.UserId}/projects" class="select_projects">支持的项目 <span>0</span></a></li>
 <li><a href="<%=request.getContextPath()%>/user/${user.UserId}/supports" class="select_projects">发起的项目 <span>0</span></a></li>
 </ul>
-</div></div>
+</div>
+</div>
+
 <div class="projectwrap myprojects">
 <div class="project-list tabs" id="projects">
-	<c:forEach items="${activities }" var="activity">
-	
-	</c:forEach>
-</div>
-<style>
-.mbtr2 {
-    margin-bottom: 20px;
-    overflow: hidden;
-}.pl2 {
-    color: #666666;
-    font: 14px/150% Arial,Helvetica,sans-serif;
-}#note .note {
-	font-size: 12px;
-    line-height: 1.62;
-}
-body .note {
-    white-space: pre-wrap;
-}
-.note {
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 13px;
-    line-height: 1.62;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
-.note .ll {
-    padding: 0 16px 16px 0;
-}.ll {
-    float: left;
-}
-.content {
-	width:auto;
-}
-.clear {
-    clear: both;
-    font-size: 0;
-    line-height: 0;
-}
-
-.clearfix:after {
-    clear: both;
-    content: ".";
-    display: block;
-    height: 0;
-    visibility: hidden;
-}.clearfix:after {
-    clear: both;
-    content: ".";
-    display: block;
-    height: 0;
-    visibility: hidden;
-}
-.clearfix:after {
-    clear: both;
-    content: ".";
-    display: block;
-    height: 0;
-    visibility: hidden;
-}
-.clearfix:after {
-    clear: both;
-    content: ".";
-    display: block;
-    height: 0;
-    visibility: hidden;
-}.S_txt3 {
-    color: #AEAEAE;
-}
-.S_link1, .S_func1:hover, .SW_fun:hover .S_func1, .SW_fun2:hover .S_func3, .SW_fun2:hover .S_func4 {
-    color: #0A8CD2;
-}
-.WB_handle{
-	float: right;
-}
-#note .title{
-    color: #007722;
-    font: 15px/150% Arial,Helvetica,sans-serif;
-    margin: 0 0 12px;
-}
-</style>
-<div id="note" class=" ">
-    <span class="title">
-        ${user.UserName} 的影愿 &nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·
-            <span class="pl">&nbsp;(<a target="_self" href="http://www.douban.com/people/Pearls/notes">全部</a>) </span>
-    </span>
-    <div class="content">
-        <div class="mbtr2">
-	        <div class="note-header pl2">
-	        <a class="ll" href="http://www.douban.com/note/300400475/" title="布鲁斯教你批量删除Kindle图书馆的已经推送内容">布鲁斯教你批量删除Kindle图书馆的已经推送内容</a>
-	        <br>
-	        </div>
-        <div class="clear"></div>
-        <div id="note_300400475_short" class="note">
-	        <div class="ll">
-		        <a href="http://www.douban.com/note/300400475/">
-		        <img alt="" src="http://img3.douban.com/icon/ul56323439-103.jpg">
-		        </a>
-	        </div>
-        	推送到kindle上的文件都会存放在Kindle Library里，怎么能批量删除Kindle Library里的文件呢？ 最近遇到这个问题了，找到如下方法和大家分享下  可以在安全策略不是那么严格的浏览器(Chrome因为安全原因依旧不可以)下美国主站Amazon.com使用 bookmark 方式也【电视遭遇网络：渐进改良，还是彻底革命？】互联网与电视的结合俨然已是今年最大的产业热点。爱奇艺与TCL婚恋前日，康佳也宣布了推出自己的线上品牌KKTV，互联网势力与传统势力的竞争越发激烈，暗战升级，当然，也有合作与融合。这两种势力，究竟会向何种发向发展？让我们期待！......&nbsp; &nbsp; 
-        </div>
-        <div node-type="feed_list_funcLink" class="WB_func clearfix">
-             <div class="WB_handle">
-                 <a title="喜欢" action-data="version=mini&amp;qid=heart&amp;mid=3619887354692844&amp;like_src=1" action-type="feed_list_like" href="javascript:void(0);"><em class="W_ico20 icon_praised_b"></em>喜欢(16)</a><i class="S_txt3">|</i>
-                 <a action-data="allowForward=1&amp;url=http://weibo.com/1711479641/A8lmnjGP2&amp;mid=3619887354692844&amp;name=北大新媒体&amp;uid=1711479641&amp;domain=looooker" action-type="feed_list_forward" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=repost_by_genius">关注(172)</a><i class="S_txt3">|</i>
-                 <a action-type="feed_list_favorite" diss-data="fuid=1711479641" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=fav_by_genius">竞拍出品人</a><i class="S_txt3">|</i>
-                 <a action-data="ouid=1711479641&amp;location=home" action-type="feed_list_comment" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=comment_by_genius">评论(30)</a>
-             </div>
-             <div class="WB_from">
-             <a suda-data="key=smart_feed&amp;value=details_feed" node-type="feed_list_item_date" class="S_link2 WB_time" date="1378531861000" title="2013-09-07 13:31" href="/1711479641/A8lmnjGP2" target="_blank"><span class="pl">2013-09-06 14:35:37</span></a>
-         	</div>
-         </div>
-        </div>
-        <div class="clear"></div>
-    <div class="clear"></div>
-    </div>
-</div>
-
-<div id="note" class=" ">
-    <span class="title">
-        ${user.UserName} 的镜头说 &nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·
-            <span class="pl">&nbsp;(<a target="_self" href="http://www.douban.com/people/Pearls/notes">全部</a>) </span>
-    </span>
-    <div class="content">
-        <div class="mbtr2">
-	        <div class="note-header pl2">
-	        <a class="ll" href="http://www.douban.com/note/300400475/" title="布鲁斯教你批量删除Kindle图书馆的已经推送内容">布鲁斯教你批量删除Kindle图书馆的已经推送内容</a>
-	        <br>
-	        </div>
-        <div class="clear"></div>
-        <div id="note_300400475_short" class="note">
-	        <div class="ll">
-		        <a href="http://www.douban.com/note/300400475/">
-		        <img alt="" src="http://img3.douban.com/icon/ul56323439-103.jpg">
-		        </a>
-	        </div>
-        	推送到kindle上的文件都会存放在Kindle Library里，怎么能批量删除Kindle Library里的文件呢？ 最近遇到这个问题了，找到如下方法和大家分享下  可以在安全策略不是那么严格的浏览器(Chrome因为安全原因依旧不可以)下美国主站Amazon.com使用 bookmark 方式也【电视遭遇网络：渐进改良，还是彻底革命？】互联网与电视的结合俨然已是今年最大的产业热点。爱奇艺与TCL婚恋前日，康佳也宣布了推出自己的线上品牌KKTV，互联网势力与传统势力的竞争越发激烈，暗战升级，当然，也有合作与融合。这两种势力，究竟会向何种发向发展？让我们期待！......&nbsp; &nbsp; 
-        </div>
-        <div node-type="feed_list_funcLink" class="WB_func clearfix">
-             <div class="WB_handle">
-                 <a title="喜欢" action-data="version=mini&amp;qid=heart&amp;mid=3619887354692844&amp;like_src=1" action-type="feed_list_like" href="javascript:void(0);"><em class="W_ico20 icon_praised_b"></em>喜欢(16)</a><i class="S_txt3">|</i>
-                 <a action-data="allowForward=1&amp;url=http://weibo.com/1711479641/A8lmnjGP2&amp;mid=3619887354692844&amp;name=北大新媒体&amp;uid=1711479641&amp;domain=looooker" action-type="feed_list_forward" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=repost_by_genius">关注(172)</a><i class="S_txt3">|</i>
-                 <a action-type="feed_list_favorite" diss-data="fuid=1711479641" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=fav_by_genius">竞拍出品人</a><i class="S_txt3">|</i>
-                 <a action-data="ouid=1711479641&amp;location=home" action-type="feed_list_comment" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=comment_by_genius">评论(30)</a>
-             </div>
-             <div class="WB_from">
-             <a suda-data="key=smart_feed&amp;value=details_feed" node-type="feed_list_item_date" class="S_link2 WB_time" date="1378531861000" title="2013-09-07 13:31" href="/1711479641/A8lmnjGP2" target="_blank"><span class="pl">2013-09-06 14:35:37</span></a>
-         	</div>
-         </div>
-        </div>
-        <div class="clear"></div>
-    <div class="clear"></div>
-    </div>
+<div class="nocontent">TA还没有支持任何项目，<a href="<%=request.getContextPath()%>/projects">点击这里</a> 发现更多有趣的项目</div>
 </div>
 </div>
 </div>
@@ -320,14 +171,15 @@ body .note {
 <img alt="" class="userface" width="60" height="60" src="http://img3.douban.com/icon/ul56323439-103.jpg">
 <div class="user-info">
 <b style="font-size:20px">众投人</b>&nbsp;&nbsp;TA支持过&nbsp;<a href="<%=request.getContextPath()%>/user/${user.UserId}/projects">2个${projectnum }</a>&nbsp;项目<br>
-常居:&nbsp;<a href="http://shanghai.douban.com/">${user.province }${user.city }</a><br>
+常居:&nbsp;<a href="http://shanghai.douban.com/">上海</a><br>
 <div class="pl">
-财富值：10000 
+Hexuejun <br> 
+2011-11-24加入
 </div>
 </div>
 <div class="user-opt">
    <a class="a-btn-add mr10 j a_show_login" href="#"><img src="" width="10" height="10"/>喜欢&nbsp;34</a>
-   <a class="a-btn-add mr10 j a_show_login" href="#">跟进&nbsp;34</a>
+   <a class="a-btn-add mr10 j a_show_login" href="#">关注&nbsp;34</a>
 </div>
 <div class="sep-line"></div>
 <div class="user-intro">
@@ -512,51 +364,7 @@ body .note {
 <script src="<%=request.getContextPath()%>/demohour-index_files/users-81a8e5c3f0f88ef37b5abe40fcd3aa03.js" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
-$(document).ready(function() {
-    $.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');
-    $('input, textarea').placeholder();
-    $(window).scroll(function() {
-        if ($(window).scrollTop() > 48) {
-            $('#ui_notification').addClass('layer-message-fixed');
-        } else {
-            $('#ui_notification').removeClass('layer-message-fixed');
-        }
-    });
-/*     $.ui_notification.ready({
-        url: 'http://nf-2.demohour.com',
-        data: {
-            "new_comments_count": 0,
-            "new_messages_count": 0,
-            "new_notifications_count": 0,
-            "new_posts_count": 0
-        }
-    }); */
-    $.ui_core.paginate("#project-list-more"),
-    $("body").on("click", "a.ui-popup-delete", 
-    function(e) {
-        $("#ui_popup_delete").find("div.ui-popup-content").css("top", $(window).height() / 2 - 120),
-        $("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),
-        $("#ui_popup_delete").find("a.ui-popup-url").attr("href", $(e.target).attr("href")),
-        $("#ui_popup_delete").toggle(),
-        e.preventDefault()
-    }),
-    $("body").on("click", "a.ui-popup-message", 
-    function(e) {
-        $("#ui_popup_message").find("div.ui-popup-content").css("top", $(window).height() / 2 - 150),
-        $("#ui_popup_message").find("form").attr("action", $(e.target).attr("href")),
-        $("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),
-        $("#ui_popup_message").toggle(),
-        $("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),
-        $("#ui_popup_message").find("textarea").focus(),
-        $(e.target).attr("href").indexOf("?recipient_id=") > 0 ? ($("#ui_popup_message_url").show(), $("#ui_popup_message_email").hide(), $("#ui_popup_message_url").find("a").attr("href", $(e.target).attr("href").replace("?recipient_id=", "/"))) : ($("#ui_popup_message_url").hide(), $("#ui_popup_message_email").show()),
-        e.preventDefault()
-    });;
-    $.ui_core.backtop('#backtop');
-    var dt = new Date()
-    $.ui_core.distance({
-        now: dt
-    });
-});
+$(document).ready(function(){$.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');$('input, textarea').placeholder();$(window).scroll(function(){if($(window).scrollTop() > 48){$('#ui_notification').addClass('layer-message-fixed');}else{$('#ui_notification').removeClass('layer-message-fixed');}});$.ui_notification.ready({url:'http://nf-2.demohour.com',data:{"new_comments_count":0,"new_messages_count":0,"new_notifications_count":0,"new_posts_count":0}});$.ui_core.paginate("#project-list-more"),$("body").on("click","a.ui-popup-delete",function(e){$("#ui_popup_delete").find("div.ui-popup-content").css("top",$(window).height()/2-120),$("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),$("#ui_popup_delete").find("a.ui-popup-url").attr("href",$(e.target).attr("href")),$("#ui_popup_delete").toggle(),e.preventDefault()}),$("body").on("click","a.ui-popup-message",function(e){$("#ui_popup_message").find("div.ui-popup-content").css("top",$(window).height()/2-150),$("#ui_popup_message").find("form").attr("action",$(e.target).attr("href")),$("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),$("#ui_popup_message").toggle(),$("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),$("#ui_popup_message").find("textarea").focus(),$(e.target).attr("href").indexOf("?recipient_id=")>0?($("#ui_popup_message_url").show(),$("#ui_popup_message_email").hide(),$("#ui_popup_message_url").find("a").attr("href",$(e.target).attr("href").replace("?recipient_id=","/"))):($("#ui_popup_message_url").hide(),$("#ui_popup_message_email").show()),e.preventDefault()});;$.ui_core.backtop('#backtop');$.ui_core.distance({now:'2013-09-01 21:16:03 +0800'});});
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-23451409-1']);
 _gaq.push(['_trackPageview']);

@@ -19,8 +19,8 @@
 </div>
 <div class="content" id="edit_login">
 <div class="left">
-<form accept-charset="UTF-8" action="/settings/update_login" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="WgCQl1g0l5r3m2JHy6Ry3Z6wZyCNMrtEtpJ9/hjEy6U=" type="hidden"></div>
-<div id="confirm_popup" class="ui-popup ui-popup-blank ui-popup-verify-password" style="display:none">
+<form accept-charset="UTF-8" action="<%=request.getContextPath() %>/user/updateaccount" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="WgCQl1g0l5r3m2JHy6Ry3Z6wZyCNMrtEtpJ9/hjEy6U=" type="hidden"></div>
+<!-- <div id="confirm_popup" class="ui-popup ui-popup-blank ui-popup-verify-password" style="display:none">
 <div class="ui-popup-background">
 <div class="ui-popup-content ui-draggable">
 <table class="ui-popup-table" align="center" border="0" cellpadding="0" cellspacing="0">
@@ -30,8 +30,8 @@
 <tr><td class="ui-popup-mid-l"></td>
 <td class="ui-popup-mid">
 <ul>
-<li><label>输入原密码：</label><div class="ui-text"><div class="ui-text-right"><input id="origin_password" name="user[origin_password]" size="30" type="password"></div></div>
-<div class="ui-button ui-button-green"><span><button type="submit">确定</button></span></div>	
+<li><label>输入原密码：</label><div class="ui-text"><div class="ui-text-right"><input id="origin_password" name="oldpassword" size="30" type="password"></div></div>
+
 </li>
 </ul>
 </td>
@@ -40,16 +40,17 @@
 </tbody></table>
 </div>
 </div>
-</div>
+</div> -->
 <ul class="gerenleft ui-settings">
 <li><label for="user_email">我的邮箱:</label>
-<input class="inputregoff" id="user_email" name="user[email]" onblur="this.className='inputregoff'" onfocus="this.className='inputregon'" size="30" value="vipaiou@gmail.com" type="text"></li>
+<input class="inputregoff" id="user_email" name="email" value="${user.Email }" onblur="this.className='inputregoff'" onfocus="this.className='inputregon'" size="30" value="" type="text"></li>
 <li><label>我的密码:</label> <a id="change_password" href="#">更新我的密码</a></li>
-<li class="change_password change_passwordss"><label>新密码:</label><input class="inputregoff" disabled="disabled" id="user_password" name="user[password]" onblur="this.className='inputregoff'" onfocus="this.className='inputregon'" size="30" type="password"><span>至少需要6个字符</span></li>
-<li class="change_password"><label>确认密码:</label><input class="inputregoff" disabled="disabled" id="user_password_confirmation" name="user[password_confirmation]" onblur="this.className='inputregoff'" onfocus="this.className='inputregon'" size="30" type="password"><span>必须与上吻合</span></li>
+<li class="change_password change_passwordss"><label>新密码:</label><input class="inputregoff" disabled="disabled" id="user_password" name="password" onblur="this.className='inputregoff'" onfocus="this.className='inputregon'" size="30" type="password"><span>至少需要6个字符</span></li>
+<li class="change_password"><label>确认密码:</label><input class="inputregoff" disabled="disabled" id="user_password_confirmation" name="passwordconfirm" onblur="this.className='inputregoff'" onfocus="this.className='inputregon'" size="30" type="password"><span>必须与上吻合</span></li>
 </ul>
 <div class="form-submit">
-<div class="ui-button ui-button-green"><span><a href="#ui_confirm_popup" class="ui-popup-open">保存最新的设置</a></span></div>
+<%-- <div class="ui-button ui-button-green"><span><a href="#ui_confirm_popup" class="ui-popup-open">保存最新的设置</a></span></div> --%>
+<div class="ui-button ui-button-green"><span><button type="submit">确定</button></span></div>	
 </div>
 </form></div>
 </div>

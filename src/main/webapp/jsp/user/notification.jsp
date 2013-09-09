@@ -19,14 +19,17 @@
 </div>
 
 <div class="content" id="edit_notifications">
-<form accept-charset="UTF-8" action="/settings/update_notifications" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="WgCQl1g0l5r3m2JHy6Ry3Z6wZyCNMrtEtpJ9/hjEy6U=" type="hidden"></div>
+<form accept-charset="UTF-8" action="<%=request.getContextPath()%>/user/updatenotification" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="WgCQl1g0l5r3m2JHy6Ry3Z6wZyCNMrtEtpJ9/hjEy6U=" type="hidden"></div>
 <ul class="notifications">
 
 <li class="notificationszb">当有以下情况时，发送邮件给我</li>
-<li><input name="email_notifications[new_notification]" value="0" type="hidden"><input checked="checked" id="email_notifications_new_notification" name="email_notifications[new_notification]" value="1" type="checkbox"><label for="email_notifications_new_notification">新消息通知</label></li>
-<li><input name="email_notifications[project_status]" value="0" type="hidden"><input checked="checked" id="email_notifications_project_status" name="email_notifications[project_status]" value="1" type="checkbox"><label for="email_notifications_project_status">我关注的项目达到目标/成功/失败</label></li>
+<li>
+<input <c:if test="${user.newsnotify=='1' }">checked="checked" </c:if> id="email_notifications_new_notification" name="newsnotify" value="1" type="checkbox"><label for="email_notifications_new_notification">新消息通知</label></li>
+<li>
+<input <c:if test="${user.projectnotify=='1' }">checked="checked" </c:if>  id="email_notifications_project_status" name="projectnotify" value="1" type="checkbox"><label for="email_notifications_project_status">我关注的项目达到目标/成功/失败</label></li>
 <li class="notificationszb"></li>
-<li><input name="email_notifications[new_event]" value="0" type="hidden"><input checked="checked" id="email_notifications_new_event" name="email_notifications[new_event]" value="1" type="checkbox"><label for="email_notifications_new_event">众拍网活动通知</label></li>
+<li>
+<input <c:if test="${user.actionnotify=='1' }">checked="checked" </c:if>  id="email_notifications_new_event" name="actionnotify" value="1" type="checkbox"><label for="email_notifications_new_event">众拍网活动通知</label></li>
 </ul>
 <div class="form-submit">
 <div class="ui-button ui-button-green"><span><button type="submit">保存最新的设置</button></span></div>	
