@@ -433,7 +433,8 @@ $.cascade.options = {.32: ["花地玛堂区", "圣安多尼堂区", "大堂区",
     .3: ["杭州", "宁波", "温州", "嘉兴", "湖州", "绍兴", "金华", "衢州", "舟山", "台州", "丽水"]
 };
 var SWFUpload;
-"function" == typeof SWFUpload && (SWFUpload.queue = {},
+"function" == typeof SWFUpload && (
+SWFUpload.queue = {},
 SWFUpload.prototype.initSettings = function(t) {
     return function() {
         "function" == typeof t && t.call(this),
@@ -446,7 +447,8 @@ SWFUpload.prototype.initSettings = function(t) {
         this.settings.upload_start_handler = SWFUpload.queue.uploadStartHandler,
         this.settings.queue_complete_handler = this.settings.queue_complete_handler || null
     }
-} (SWFUpload.prototype.initSettings), SWFUpload.prototype.startUpload = function(t) {
+} (SWFUpload.prototype.initSettings), 
+SWFUpload.prototype.startUpload = function(t) {
     this.queueSettings.queue_cancelled_flag = !1,
     this.callFlash("StartUpload", [t])
 },
@@ -470,7 +472,9 @@ SWFUpload.queue.uploadCompleteHandler = function(t) {
         var n = this.getStats();
         n.files_queued > 0 && this.queueSettings.queue_cancelled_flag === !1 ? this.startUpload() : this.queueSettings.queue_cancelled_flag === !1 ? (this.queueEvent("queue_complete_handler", [this.queueSettings.queue_upload_count]), this.queueSettings.queue_upload_count = 0) : (this.queueSettings.queue_cancelled_flag = !1, this.queueSettings.queue_upload_count = 0)
     }
-});
+}
+);
+/*swfupload.js*/
 var SWFUpload;
 void 0 == SWFUpload && (SWFUpload = function(t) {
     this.initSWFUpload(t)
@@ -923,6 +927,8 @@ SWFUpload.Console.writeLine = function(t) {
         alert("Exception: " + n.name + " Message: " + n.message)
     }
 },
+/*end swfupload*/
+/*swfupload ext*/
 function(t) {
     t.swfupload = {
         settings: {},
@@ -979,6 +985,8 @@ function(t) {
         }
     })
 } (jQuery),
+/*end swfupload ext*/
+
 function($) {
     var escapeable = /["\\\x00-\x1f\x7f-\x9f]/g,
     meta = {
@@ -1050,6 +1058,8 @@ function($) {
         }) + '"': '"' + t + '"'
     }
 } (jQuery),
+
+/*function for ueditor*/
 function(t) {
     function e(t, e, n, s) {
         if (!t.tag.isInline && n.length > 0) for (n.push("\n"), i = 0; s > i; i++) n.push("	")
@@ -1260,6 +1270,10 @@ function(t) {
     S = [[], "img", ["alt"]],
     x = [" ", " ", "	", "\n", "\r", "\f"]
 } (jQuery),
+
+/*end function for ueditor*/
+
+/*ueditor app*/
 function() {
     var t = "http://" + window.location.host + "/ueditor2/";
     UEDITOR_CONFIG = {
@@ -1521,6 +1535,8 @@ function() {
         }
     }
 } (),
+/*end ueditor app*/
+/*ueditor.js*/
 UEDITOR_CONFIG = window.UEDITOR_CONFIG || {};
 var baidu = window.baidu || {};
 window.baidu = baidu,
@@ -3531,6 +3547,8 @@ function() {
     },
     utils.inherits(n, EventBase)
 } (),
+/*end ueditor.js*/
+/*ueditor plugin*/
 UE.commands.inserthtml = {
     execCommand: function(t, e) {
         var i,
@@ -3871,7 +3889,7 @@ UE.commands["delete"] = {
         return this.currentSelectedArr && this.currentSelectedArr.length > 0 ? 0: this.selection.getRange().collapsed ? -1: 0
     }
 },
-function() {
+/*function() {
     function t(t) {
         var e = this.document;
         if (!e.getElementById("baidu_pastebin")) {
@@ -3918,7 +3936,40 @@ function() {
                     }
                     for (var m, g = t.querySelectorAll("meta"), l = 0; m = g[l++];) domUtils.remove(m);
                     var d = t.querySelectorAll("br");
-                    for (l = 0; m = d[l++];) / ^apple - /.test(m)&&domUtils.remove(m)}if(browser.gecko){var v=t.querySelectorAll("[_moz_dirty]");for(l=0;m=v[l++];)m.removeAttribute("_moz_dirty")}if(!browser.ie)for(var m,b=t.querySelectorAll("span.apple-style-span"),l=0;m=b[l++];)domUtils.remove(m,!0);e=$.htmlClean(t.innerHTML,{allowedTags:["p","a"]});var y=i.serialize;if(y)try{var _=y.transformInput(y.parseHTML(y.word(e)),n);if(_=y.filter(_,s?{whiteList:{p:{br:1,BR:1},br:{$:{}}},blackList:{style:1,script:1,object:1}}:null,s?null:o),browser.webkit)for(var w,S=_.children.length;(w=_.children[S-1])&&"br"==w.tag;)_.children.splice(S-1,1),S=_.children.length;e=y.toHTML(_,s)}catch(x){}e={html:e},i.fireEvent("beforepaste",e),i.execCommand("insertHtml",e.html),i.fireEvent("afterpaste")}}var i=this,n={flag:""},s=i.options.pasteplain,o={flag:""};i.commands.pasteplain={queryCommandState:function(){return s},execCommand:function(){s=0|!s},notNeedUndo:1},i.addListener("ready",function(){domUtils.on(i.body,"cut",function(){var t=i.selection.getRange();!t.collapsed&&i.undoManger&&i.undoManger.save()}),browser.opera&&(baidu.editor.browser.mac?domUtils.on(i.body,"keydown",function(t){17==t.keyCode&&alert("暂不支持此浏览器！")}):domUtils.on(i.body,"keydown",function(n){n.ctrlKey&&"86"==n.keyCode&&t.call(i,function(t){e(t)})})),domUtils.on(i.body,browser.ie?"keydown":"paste",function(s){(!browser.ie||s.ctrlKey&&"86"==s.keyCode)&&t.call(i,function(t){function s(){i.ui.hideToolbarMsg(),i.removeListener("selectionchange",s)}e(t),o.flag&&i.ui&&(o.flag="",setTimeout(function(){i.addListener("selectionchange",s)},100)),n.flag&&!i.queryCommandState("pasteplain")&&i.ui&&(n.flag="",setTimeout(function(){i.addListener("selectionchange",s)},100))})})})}}(),UE.plugins.enterkey=function(){var t,e=this,i=e.options.enterTag;e.addListener("keyup",function(i,n){var s=n.keyCode||n.which;if(13==s){var o,a=e.selection.getRange(),r=a.startContainer;if(!browser.ie&&/h\d / i.test(t)) {
+                    for (l = 0; m = d[l++];) / ^apple - /.test(m)&&domUtils.remove(m)
+                }
+                if(browser.gecko){
+                	var v=t.querySelectorAll("[_moz_dirty]");
+                	for(l=0;m=v[l++];)m.removeAttribute("_moz_dirty")
+                }
+                if(!browser.ie)
+                	for(var m,b=t.querySelectorAll("span.apple-style-span"),l=0;m=b[l++];)
+                	domUtils.remove(m,!0);
+                    e=$.htmlClean(t.innerHTML,{allowedTags:["p","a"]});
+                    var y=i.serialize;
+                    if(y)
+                    	try{
+                    		var _=y.transformInput(y.parseHTML(y.word(e)),n);
+                    		if(_=y.filter(_,s?{whiteList:{p:{br:1,BR:1},br:{$:{}}},blackList:{style:1,script:1,object:1}}:null,s?null:o),browser.webkit)
+                    			for(var w,S=_.children.length;(w=_.children[S-1])&&"br"==w.tag;)
+                    				_.children.splice(S-1,1),S=_.children.length;
+                    		e=y.toHTML(_,s)
+                    		}catch(x){}
+                    		e={html:e},
+                    		i.fireEvent("beforepaste",e),
+                    		i.execCommand("insertHtml",e.html),
+                    		i.fireEvent("afterpaste")
+                    		}
+            }
+        var i=this,n={flag:""},s=i.options.pasteplain,o={flag:""};
+        i.commands.pasteplain={
+        		queryCommandState:function(){return s},
+        		execCommand:function(){s=0|!s},notNeedUndo:1},
+        		i.addListener("ready",function(){
+        			domUtils.on(i.body,"cut",function(){var t=i.selection.getRange();!t.collapsed&&i.undoManger&&i.undoManger.save()}),
+        			browser.opera&&(baidu.editor.browser.mac?domUtils.on(i.body,"keydown",function(t){17==t.keyCode&&alert("暂不支持此浏览器！")}):domUtils.on(i.body,"keydown",function(n){n.ctrlKey&&"86"==n.keyCode&&t.call(i,function(t){e(t)})})
+        					),
+        					domUtils.on(i.body,browser.ie?"keydown":"paste",function(s){(!browser.ie||s.ctrlKey&&"86"==s.keyCode)&&t.call(i,function(t){function s(){i.ui.hideToolbarMsg(),i.removeListener("selectionchange",s)}e(t),o.flag&&i.ui&&(o.flag="",setTimeout(function(){i.addListener("selectionchange",s)},100)),n.flag&&!i.queryCommandState("pasteplain")&&i.ui&&(n.flag="",setTimeout(function(){i.addListener("selectionchange",s)},100))})})})}}(),UE.plugins.enterkey=function(){var t,e=this,i=e.options.enterTag;e.addListener("keyup",function(i,n){var s=n.keyCode||n.which;if(13==s){var o,a=e.selection.getRange(),r=a.startContainer;if(!browser.ie&&/h\d / i.test(t)) {
                         if (browser.gecko) {
                             var l = domUtils.findParentByTagName(r, ["h1", "h2", "h3", "h4", "h5", "h6", "blockquote"], !0);
                             l || (e.document.execCommand("formatBlock", !1, "<p>"), o = 1)
@@ -3984,7 +4035,7 @@ function() {
                     a.insertNode(h).setStartAfter(h).setCursor()
                 }
             })
-        },
+        },*/
         UE.plugins.keystrokes = function() {
             var t = this,
             e = 0,
