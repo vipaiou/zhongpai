@@ -39,6 +39,7 @@
 	<mvc:resources order="1" mapping="/js/**" location="/js/" />
 	<mvc:resources order="1" mapping="/images/**" location="/css/images/" />
 	<mvc:resources order="1" mapping="/demohour-index_files/**" location="/demohour-index_files/" />
+	<mvc:resources order="1" mapping="/team_files/**" location="/team_files/" />
 	<mvc:resources order="1" mapping="/manage_files/**" location="/manage_files/" />
 	<mvc:resources order="1" mapping="/manage_files/images/**" location="/manage_files/images/" />
 	<mvc:resources order="1" mapping="/test/**" location="/test/" />
@@ -142,7 +143,7 @@
     </bean>  
 
 	<!-- 自定义异常处理 -->
-	<bean class="com.supertool.dspui.exception.CustomExceptionHandler"></bean>
+<!-- 	<bean class="com.supertool.dspui.exception.CustomExceptionHandler"></bean> -->
 	<!-- 国际化 -->
 	 <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basename" value="messages" />

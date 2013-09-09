@@ -12,7 +12,7 @@
      <!-- 该路径下的资源不用过滤 -->  
    <http pattern="/css/**" security='none' />
 	<http pattern="/js/**" security='none' />
-	<http pattern="/images/**" security='none' />
+	<!-- <http pattern="/images/**" security='none' /> -->
 	<http pattern="/demohour-index_files/**" security='none' />
 	<http pattern="/captcha/*" security='none' />
 	<http pattern="/local/*" security='none'/>
