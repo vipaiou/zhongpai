@@ -1,5 +1,8 @@
 package com.supertool.dspui.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ValidationException;
+
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -15,28 +24,117 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.supertool.dspui.config.Config;
 import com.supertool.dspui.constant.Constant;
+import com.supertool.dspui.context.UserContext;
 import com.supertool.dspui.model.Authority;
 import com.supertool.dspui.model.Media;
 import com.supertool.dspui.model.User;
 import com.supertool.dspui.security.UserDetailsImpl;
+import com.supertool.dspui.service.zhongpai.ActivityService;
 import com.supertool.dspui.service.zhongpai.UserService;
+import com.supertool.dspui.util.ImageUtil;
+import com.supertool.dspui.util.MD5;
 import com.supertool.dspui.util.ParamValidateUtils;
 import com.supertool.dspui.util.SHAEncrypter;
 import com.supertool.dspui.util.StringUtil;
 import com.supertool.dspui.util.Utils;
 import com.supertool.dspui.vo.PagedResultVO;
+import com.supertool.dspui.vo.ResultVO;
 
 @Controller
 public class UserController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private ActivityService activityService;
 
+
+	@RequestMapping(value={"/user/home"})
+	public String home(@RequestParam Map<String, Object> map, Model model){
+		Object user = userService.getUserById(UserContext.getLoginUserId());
+		List<Map<String,Object>> activities = activityService.getActivityByUserid(UserContext.getLoginUserId());
+		model.addAttribute("activities", activities);
+		model.addAttribute("user", user);
+		model.addAttribute("imagehost", Config.getImageHost());
+		return "/user/home";
+	}
+
+	@RequestMapping(value={"/user/{id}", "/user/{id}/"})
+	public String view(@RequestParam Map<String, Object> map, @PathVariable int id, Model model){
+		Object user = userService.getUserById(id);
+		List<Map<String,Object>> activities = activityService.getActivityByUserid(id);
+		model.addAttribute("activities", activities);
+		model.addAttribute("user", user);
+		model.addAttribute("imagehost", Config.getImageHost());
+		return "/user/home";
+	}
+
+	@RequestMapping(value={"/user/profile"})
+	public String profile(@RequestParam Map<String, Object> map, Model model){
+		Object user = userService.getUserById(UserContext.getLoginUserId());
+		model.addAttribute("user", user);
+		model.addAttribute("imagehost", Config.getImageHost());
+		return "/user/profile";
+	}
+	
+	@RequestMapping(value={"/user/updateprofile"})
+	public String updateProfile(@RequestParam Map<String, Object> map, Model model){
+		userService.updateProfile(map);
+		return "redirect:/user/profile";
+	}
+
+	@RequestMapping(value={"/user/account"})
+	public String account(@RequestParam Map<String, Object> map, Model model){
+		Object user = userService.getUserById(UserContext.getLoginUserId());
+		model.addAttribute("user", user);
+		return "/user/account";
+	}
+
+	@RequestMapping(value={"/user/updateaccount"})
+	public String updateAccount(@RequestParam Map<String, Object> map, Model model){
+		int result = userService.updateAccount(map);
+		model.addAttribute("result", result);
+		return "redirect:/user/account";
+	}
+	
+	@RequestMapping(value={"/user/notification"})
+	public String notification(@RequestParam Map<String, Object> map, Model model){
+		Object user = userService.getUserById(UserContext.getLoginUserId());
+		model.addAttribute("user", user);
+		return "/user/notification";
+	}
+
+	@RequestMapping(value={"/user/updatenotification"})
+	public String updateNotification(@RequestParam Map<String, Object> map, Model model){
+		int result = userService.updateNotification(map);
+		model.addAttribute("result", result);
+		return "redirect:/user/notification";
+	}
+	
+	@RequestMapping(value={"/user/sns"})
+	public String sns(@RequestParam Map<String, Object> map, Model model){
+		Object user = userService.getUserById(UserContext.getLoginUserId());
+		model.addAttribute("user", user);
+		return "/user/sns";
+	}
+	
+	@RequestMapping(value={"/user/addtag"})
+	public @ResponseBody String addtag(@RequestParam Map<String, Object> map, Model model){
+		String result = userService.edittag(map);
+		model.addAttribute("result", result);
+		return result;
+	}
+	
 	@RequestMapping("/user/userlist*")
 	public @ResponseBody
 	PagedResultVO getUserList(@RequestParam Map<String, Object> p) {

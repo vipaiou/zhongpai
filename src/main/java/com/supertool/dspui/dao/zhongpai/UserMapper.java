@@ -249,4 +249,9 @@ public interface UserMapper {
 	public int update(User user);
 	public void insert(User user);
 	public Map<?, ?> getUserById(Object object);
+	public void updateAvatar(@Param("userid")Object object, @Param("picture")String picture);
+	public void updateProfile(Map<String, Object> map);
+	public void updateAccount(Map<String, Object> map);
+	public void updateNotification(Map<String, Object> map);
+	public void updateTags(Map<String, Object> map);
 }

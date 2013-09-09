@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.zhongpai.ActivityMapper">
+
+<insert id="add">
+	<selectKey resultType="int" order="AFTER"  keyProperty="id"> 
+         select LAST_INSERT_ID()
+    </selectKey>
+	insert into activity set category=#{category}, content=#{content},createdate=now(), userid=${userid};
+</insert>
+
+<select id="getActivityByUserid" parameterType="int" resultType="map">
+	select * from activity where userid=${userid} order by id desc
+</select>
+</mapper>

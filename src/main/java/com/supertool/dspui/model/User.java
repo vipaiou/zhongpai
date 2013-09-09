@@ -62,6 +62,123 @@ public class User implements Serializable{
 	
 	private String zipcode;
 	
+	private String avatar;
+	private String qq;
+	private String weibo;
+	private String douban;
+	private String renren;
+	private String province;
+	private String city;
+	private String newsnotify;
+	private String projectnotify;
+	private String actionnotify;
+	private String tags;
+	
+	public String getAvatar() {
+		return avatar;
+	}
+
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
+
+	public String getQq() {
+		return qq;
+	}
+
+
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+
+
+	public String getWeibo() {
+		return weibo;
+	}
+
+
+	public void setWeibo(String weibo) {
+		this.weibo = weibo;
+	}
+
+
+	public String getDouban() {
+		return douban;
+	}
+
+
+	public void setDouban(String douban) {
+		this.douban = douban;
+	}
+
+
+	public String getRenren() {
+		return renren;
+	}
+
+
+	public void setRenren(String renren) {
+		this.renren = renren;
+	}
+
+
+	public String getProvince() {
+		return province;
+	}
+
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+
+	public String getCity() {
+		return city;
+	}
+
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+
+	public String getNewsnotify() {
+		return newsnotify;
+	}
+
+
+	public void setNewsnotify(String newsnotify) {
+		this.newsnotify = newsnotify;
+	}
+
+
+	public String getProjectnotify() {
+		return projectnotify;
+	}
+
+
+	public void setProjectnotify(String projectnotify) {
+		this.projectnotify = projectnotify;
+	}
+
+
+	public String getActionnotify() {
+		return actionnotify;
+	}
+
+
+	public void setActionnotify(String actionnotify) {
+		this.actionnotify = actionnotify;
+	}
+
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+
 	public User() {
 		super();
 		this.address="";
@@ -83,6 +200,16 @@ public class User implements Serializable{
 		this.updateDate=common.stringToUtilDate("1970-01-01 08:00:00");
 		this.website = "";
 		this.zipcode = "";
+		this.avatar = "";
+		this.qq = "";
+		this.weibo = "";
+		this.douban = "";
+		this.renren = "";
+		this.province = "";
+		this.city = "";
+		this.newsnotify = "";
+		this.projectnotify = "";
+		this.actionnotify = "";
 	}
 	
 	
@@ -294,6 +421,16 @@ public class User implements Serializable{
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+	}
+
+
+	public String getTags() {
+		return tags;
+	}
+
+
+	public void setTags(String tags) {
+		this.tags = tags;
 	}
 
 

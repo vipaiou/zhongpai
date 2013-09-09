@@ -5,8 +5,7 @@
 
 <select id="findByUserName" resultType="com.supertool.dspui.model.User" >
  select * from st_user
- where username= '${username}' and isdeleted='0'
-
+ where (username= '${username}' or email=#{username}) and isdeleted='0'
 </select>
 
 <select id="getUserById" resultType="map" parameterType="Object" >
@@ -35,9 +34,42 @@
 	Password = #{password}
 	where UserName = #{username}
 </update>
+
 <insert id="insert" parameterType="User" useGeneratedKeys="true" keyColumn="UserId" keyProperty="userId">
  insert into st_user (UserName,Password,Email,createDate)
  values (#{username},#{password},#{email},now())
 </insert>
+
+<update id="updateAvatar" parameterType="map">
+	update st_user set avatar=#{picture} where userid=${userid}
+</update>
+
+<update id="updateProfile" parameterType="map">
+	update st_user set username=#{username}, province=#{province}, city=#{city}, description=#{description}, qq=#{qq}, weibo=#{weibo}, douban=#{douban}, renren=#{renren} where userid=${userid}
+</update>
+
+<update id="updateAccount" parameterType="map">
+	update st_user set email=#{email}, password=#{password} where userid=${userid}
+</update>
+
+<update id="updateNotification" parameterType="map">
+	update st_user set 
+	<choose>
+		<when test="projectnotify != null">projectnotify=#{projectnotify}</when>
+		<otherwise>projectnotify='0'</otherwise>
+	</choose>, 
+	<choose>
+		<when test="actionnotify != null">actionnotify=#{actionnotify}</when>
+		<otherwise>actionnotify='0'</otherwise>
+	</choose>, 
+	<choose>
+		<when test="newsnotify != null">newsnotify=#{newsnotify}</when>
+		<otherwise>newsnotify='0'</otherwise>
+	</choose> where userid=${userid}
+</update>
+
+<update id="updateTags" parameterType="map">
+	update st_user set tags=#{tags} where userid=${userid}
+</update>
 <!-- function  -->
 </mapper>

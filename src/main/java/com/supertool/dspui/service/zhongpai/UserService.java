@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.supertool.dspui.constant.Constant;
+import com.supertool.dspui.context.UserContext;
 import com.supertool.dspui.dao.mybatis.AuthorityDAO;
 import com.supertool.dspui.dao.mybatis.UserAuthorityDAO;
 import com.supertool.dspui.dao.zhongpai.UserMapper;
@@ -45,7 +46,7 @@ public class UserService {
 	
 	static Logger logger=Logger.getLogger(UserService.class.getName());
 	/**
-	 * 根据用户名查找 未删除用户,不论账户是否禁用
+	 * 根据用户名查找 未删除用户,不论账户是否禁用,为登录
 	 * @param username
 	 * @return
 	 */
@@ -408,5 +409,45 @@ public class UserService {
 		} else {//用户名已存在
 			return -2;
 		}
+	}
+	/**
+	 * 修改头像
+	 * @param object
+	 * @param string
+	 */
+	public void updateAvatar(Object object, String string) {
+		userDAO.updateAvatar(object, string);
+	}
+	public void updateProfile(Map<String, Object> map) {
+		map.put("userid",UserContext.getLoginUserId());
+		userDAO.updateProfile(map);
+	}
+	public int updateAccount(Map<String, Object> map) {
+		map.put("userid",UserContext.getLoginUserId());
+		String password = (String)map.get("password");
+		if(map.get("password").equals(map.get("passwordconfirm"))){
+			if(!password.isEmpty()){
+				map.put("password", SHAEncrypter.getInstance().encrypt(password));
+			}else{
+				map.put("password", UserContext.getLoginUser().getPassword());
+			}
+		}else{
+			return 0;
+		}
+		userDAO.updateAccount(map);
+		return 1;
+	}
+	public int updateNotification(Map<String, Object> map) {
+		map.put("userid",UserContext.getLoginUserId());
+		userDAO.updateNotification(map);
+		return 1;
+	}
+	public String edittag(Map<String, Object> map) {
+		String tags = UserContext.getLoginUser().getTags() + " " +map.get("tag");
+		map.put("tags", tags);
+		map.put("userid", UserContext.getLoginUserId());
+		userDAO.updateTags(map);
+		UserContext.getLoginUser().setTags(tags);
+		return "1";
 	}
 }

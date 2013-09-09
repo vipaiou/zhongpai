@@ -33,9 +33,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.supertool.dspui.config.Config;
 import com.supertool.dspui.constant.Constant;
+import com.supertool.dspui.context.UserContext;
 import com.supertool.dspui.model.Material;
 import com.supertool.dspui.service.SettingService;
 import com.supertool.dspui.service.zhongpai.ProjectService;
+import com.supertool.dspui.service.zhongpai.UserService;
 import com.supertool.dspui.util.HttpFileUpload;
 import com.supertool.dspui.util.ImageUtil;
 import com.supertool.dspui.util.MD5;
@@ -53,9 +55,181 @@ public class ImageController {
 	private SettingService settingService;
 	@Autowired
 	private ProjectService projectService;
+	@Autowired
+	private UserService userService;
 
 	Logger logger = Logger.getLogger(this.getClass());
 
+	@RequestMapping(value = "/upload4Cover")
+	public void upload4Cover(@RequestParam("Filedata") MultipartFile upload,
+			HttpServletResponse resp, HttpServletRequest req, @RequestParam Map<String, Object> map)
+			throws IOException {
+		 MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) req;  
+	        CommonsMultipartFile file1 = (CommonsMultipartFile) multipartRequest.getFile("Filedata");
+	        
+		String userAgent = req.getHeader("User-Agent").toUpperCase();
+		if (userAgent.contains("MSIE")) {
+			resp.setCharacterEncoding("gbk");
+		} else {
+			resp.setCharacterEncoding("utf8");
+		}
+		Writer writer = resp.getWriter();
+		ResultVO vo = new ResultVO();
+
+		// 物料大小
+		// 文件后缀
+		if (!upload.isEmpty()) {
+			String fileName = StringUtil.trimSRN(upload.getOriginalFilename());
+			try {
+				long size = upload.getSize();
+				String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+				String tmppath = Config.getDatasourceFilePath() + fileName;
+				File tmpfile = new File(tmppath);
+				if(!tmpfile.exists()){
+					upload.transferTo(tmpfile);
+				}
+				String tmp = System.getProperty("java.io.tmpdir");
+				
+				String largeName = "project-large-" + MD5.getFileMD5String(tmpfile) + "."+ ext;
+			    String largepath = Config.getDatasourceFilePath() + largeName;
+			    String largeTmpPath = tmp + largeName;
+			    //ImageUtil.smartCut(tmpfile, largeName, Config.getDatasourceFilePath(), 570, 422);
+			    //ImageUtil.smartCut(tmpfile, largeName, Config.getDatasourceFilePath(), 422, 570);
+			    ImageUtil.scale3(tmppath, largeTmpPath, 422, 570, true);
+			    //ImageUtil.cut3(largeTmpPath, largepath, 422, 570);
+			    File bf = new File(largeTmpPath);
+				ImageUtil.cutting(bf, largeName, Config.getDatasourceFilePath(), 0, 0, 570, 422);
+			    //File largefile = new File(largepath);
+				//upload.transferTo(largefile);
+				
+				String mediumName = "project-medium-" + MD5.getFileMD5String(tmpfile) + "."+ ext;
+			    String mediumpath = Config.getDatasourceFilePath() + mediumName;
+			    String mediumTmpPath = tmp + mediumName;
+			    //ImageUtil.smartCut(tmpfile, largeName, Config.getDatasourceFilePath(), 165, 223);
+			    ImageUtil.scale3(tmppath, mediumTmpPath, 165, 223, true);//.smartCut(tmpfile, largeName, Config.getDatasourceFilePath(), 223, 165);
+			    File mf = new File(mediumTmpPath);
+				ImageUtil.cutting(mf, mediumName, Config.getDatasourceFilePath(), 0, 0, 223, 165);
+				//this.saveFileFromInputStream(upload.getInputStream(), path);
+				//processImage(path);
+					// return ;
+				projectService.updateImage(map.get("projectId"), MD5.getFileMD5String(tmpfile) + "." + ext);
+				String imagehost = Config.getImageHost();
+//				vo.setResultCode(Constant.RESULT_SUCCESS);
+//				vo.setMessage(imagehost + mediumName);
+				writer.write(imagehost + mediumName + "?" + new Date().getTime());
+				return;
+
+			} catch (ValidationException e) {
+				logger.error(e.getMessage());
+				vo.setResultCode(Constant.RESULT_FAIL);
+				vo.setMessage(e.getMessage());
+				// return vo;
+				writer.write(JSONObject.fromObject(vo).toString());
+				return;
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				vo.setResultCode(Constant.RESULT_FAIL);
+				vo.setMessage(e.getMessage());
+				// return vo;
+				writer.write(JSONObject.fromObject(vo).toString());
+				return;
+			}
+		}
+		// return vo;
+		writer.write(JSONObject.fromObject(vo).toString());
+		return;
+
+	}
+	@RequestMapping(value = {"/uploadavatar"})
+	public void upload4Avatar(@RequestParam("Filedata") MultipartFile upload,
+			HttpServletResponse resp, HttpServletRequest req, @RequestParam Map<String, Object> map)
+			throws IOException {
+		 MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) req;  
+	        CommonsMultipartFile file1 = (CommonsMultipartFile) multipartRequest.getFile("Filedata");
+	        
+		String userAgent = req.getHeader("User-Agent").toUpperCase();
+		if (userAgent.contains("MSIE")) {
+			resp.setCharacterEncoding("gbk");
+		} else {
+			resp.setCharacterEncoding("utf8");
+		}
+		Writer writer = resp.getWriter();
+		ResultVO vo = new ResultVO();
+
+		// 物料大小
+		// 文件后缀
+		if (!upload.isEmpty()) {
+			String fileName = StringUtil.trimSRN(upload.getOriginalFilename());
+			try {
+				long size = upload.getSize();
+				String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+				String tmppath = Config.getDatasourceFilePath() + fileName;
+				File tmpfile = new File(tmppath);
+				if(!tmpfile.exists()){
+					upload.transferTo(tmpfile);
+				}
+				String tmp = System.getProperty("java.io.tmpdir");
+				
+				String largeName = "avatar-large-" + MD5.getFileMD5String(tmpfile) + "."+ ext;
+			    String largepath = Config.getDatasourceFilePath() + largeName;
+			    String largeTmpPath = tmp + largeName;
+			    //ImageUtil.smartCut(tmpfile, largeName, Config.getDatasourceFilePath(), 570, 422);
+			    //ImageUtil.smartCut(tmpfile, largeName, Config.getDatasourceFilePath(), 422, 570);
+			    ImageUtil.scale3(tmppath, largeTmpPath, 220, 220, true);
+			    //ImageUtil.cut3(largeTmpPath, largepath, 422, 570);
+			    File bf = new File(largeTmpPath);
+				ImageUtil.cutting(bf, largeName, Config.getDatasourceFilePath(), 0, 0, 220, 220);
+			    //File largefile = new File(largepath);
+				//upload.transferTo(largefile);
+				
+				String mediumName = "avatar-medium-" + MD5.getFileMD5String(tmpfile) + "."+ ext;
+			    String mediumpath = Config.getDatasourceFilePath() + mediumName;
+			    String mediumTmpPath = tmp + mediumName;
+			    //ImageUtil.smartCut(tmpfile, largeName, Config.getDatasourceFilePath(), 165, 223);
+			    ImageUtil.scale3(tmppath, mediumTmpPath, 80, 80, true);//.smartCut(tmpfile, largeName, Config.getDatasourceFilePath(), 223, 165);
+			    File mf = new File(mediumTmpPath);
+				ImageUtil.cutting(mf, mediumName, Config.getDatasourceFilePath(), 0, 0, 80, 80);
+				//this.saveFileFromInputStream(upload.getInputStream(), path);
+				//processImage(path);
+					// return ;
+
+				String smallName = "avatar-small-" + MD5.getFileMD5String(tmpfile) + "."+ ext;
+			    String smallpath = Config.getDatasourceFilePath() + smallName;
+			    String smallTmpPath = tmp + smallName;
+			    //ImageUtil.smartCut(tmpfile, largeName, Config.getDatasourceFilePath(), 165, 223);
+			    ImageUtil.scale3(tmppath, smallTmpPath, 40, 40, true);//.smartCut(tmpfile, largeName, Config.getDatasourceFilePath(), 223, 165);
+			    File sf = new File(smallTmpPath);
+				ImageUtil.cutting(sf, smallName, Config.getDatasourceFilePath(), 0, 0, 40, 40);
+				
+				userService.updateAvatar(map.get("userid"), MD5.getFileMD5String(tmpfile) + "." + ext);
+				String imagehost = Config.getImageHost();
+//				vo.setResultCode(Constant.RESULT_SUCCESS);
+//				vo.setMessage(imagehost + mediumName);
+				writer.write(imagehost + mediumName + "?" + new Date().getTime());
+				return;
+
+			} catch (ValidationException e) {
+				logger.error(e.getMessage());
+				vo.setResultCode(Constant.RESULT_FAIL);
+				vo.setMessage(e.getMessage());
+				// return vo;
+				writer.write(JSONObject.fromObject(vo).toString());
+				return;
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+				vo.setResultCode(Constant.RESULT_FAIL);
+				vo.setMessage(e.getMessage());
+				// return vo;
+				writer.write(JSONObject.fromObject(vo).toString());
+				return;
+			}
+		}
+		// return vo;
+		writer.write(JSONObject.fromObject(vo).toString());
+		return;
+
+	}
+	
 	@RequestMapping(value = "/upload")
 	public void upload(@RequestParam("Filedata") MultipartFile upload,
 			HttpServletResponse resp, HttpServletRequest req, @RequestParam Map<String, Object> map)
@@ -108,7 +282,7 @@ public class ImageController {
 				//this.saveFileFromInputStream(upload.getInputStream(), path);
 				//processImage(path);
 					// return ;
-				projectService.updateImage(map.get("projectId"), MD5.getFileMD5String(tmpfile) + "." + ext);
+				//projectService.updateImage(map.get("projectId"), MD5.getFileMD5String(tmpfile) + "." + ext);
 				String imagehost = Config.getImageHost();
 //				vo.setResultCode(Constant.RESULT_SUCCESS);
 //				vo.setMessage(imagehost + mediumName);
