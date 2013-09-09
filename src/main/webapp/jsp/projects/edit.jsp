@@ -42,7 +42,10 @@
 				<ul class="launchprojects">
 					<li class="projecttype"><label>选择类别:</label>
 						<div class="ui-radio">
-							<a href="#927151" class="project_category">设计</a> <a
+						<c:forEach items="${categories }" var="category">
+							<a href="#${category.id }" class="project_category">${category.name }</a>
+						</c:forEach>
+							<!-- <a href="#927151" class="project_category">设计</a> <a
 								href="#927158" class="project_category">科技</a> <a href="#927159"
 								class="project_category">音乐</a> <a href="#927156"
 								class="project_category">影视</a> <a href="#927163"
@@ -51,7 +54,7 @@
 								class="project_category">出版</a> <a href="#927164"
 								class="project_category">游戏</a> <a href="#927157"
 								class="project_category">摄影</a> <a href="#927162"
-								class="project_category">其他</a>
+								class="project_category">其他</a> -->
 						</div> <input id="project_category_id" name="category" type="hidden" value=""${project.category }>
 					</li>
 					<li><label for="a001">项目名称:</label>

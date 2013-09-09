@@ -6,9 +6,10 @@
 <%@ include file="../../include/header.jsp" %>
 <div class="ui-tab">
 <div class="categories-top">
-<a href="http://www.demohour.com/projects/discover/0_0_0_0">浏览项目</a>
+<%-- <a href="<%=request.getContextPath()%>/projects/discover/0_0_0_0">浏览项目</a>
 <span>/</span>
-推荐项目
+推荐项目 --%>
+浏览项目
 </div>
 </div>
 <div class="ui-categories">
@@ -17,22 +18,24 @@
 <div class="ui-categories-l-line"></div>
 <div class="ui-categories-icon-1">分类：</div>
 <div class="ui-categories-l-line"></div>
-<div class="ui-categories-icon-1">地区：</div>
+<div class="ui-categories-icon-1" style="height:93px">地区：</div>
 <div class="ui-categories-l-line"></div>
 <div class="ui-categories-icon-2">排序：</div>
 </div>
 <div class="ui-categories-r">
-<a href="http://www.demohour.com/projects/discover/0_0_0_6" id="attribute_0">所有项目</a>
-<a class="ui-categories-current" href="http://www.demohour.com/projects/discover/1_0_0_6" id="attribute_1">推荐项目</a>
-<a href="http://www.demohour.com/projects/discover/2_0_0_6" id="attribute_2">经典项目</a>
-<a href="http://www.demohour.com/projects/discover/3_0_0_6" id="attribute_3">预热中</a>
-<a href="http://www.demohour.com/projects/discover/4_0_0_6" id="attribute_4">筹资中</a>
-<a href="http://www.demohour.com/projects/discover/5_0_0_6" id="attribute_5">筹资成功</a>
-<a href="http://www.demohour.com/projects/discover/6_0_0_6" id="attribute_6">筹资失败</a>
+<a href="<%=request.getContextPath()%>/projects/discover/0_${c2 }_${c3 }_${c4 }" id="attribute_0">所有项目</a>
+<a class="ui-categories-current" href="<%=request.getContextPath()%>/projects/discover/1_${c2 }_${c3 }_${c4 }" id="attribute_1">推荐项目</a>
+<a href="<%=request.getContextPath()%>/projects/discover/2_${c2 }_${c3 }_${c4 }" id="attribute_2">经典项目</a>
+<a href="<%=request.getContextPath()%>/projects/discover/3_${c2 }_${c3 }_${c4 }" id="attribute_3">预热中</a>
+<a href="<%=request.getContextPath()%>/projects/discover/4_${c2 }_${c3 }_${c4 }" id="attribute_4">筹资中</a>
+<a href="<%=request.getContextPath()%>/projects/discover/5_${c2 }_${c3 }_${c4 }" id="attribute_5">筹资成功</a>
+<a href="<%=request.getContextPath()%>/projects/discover/6_${c2 }_${c3 }_${c4 }" id="attribute_${c4 }">筹资失败</a>
 <div class="ui-categories-r-line"></div>
-<a class="ui-categories-current" href="http://www.demohour.com/projects/discover/1_0_0_6" id="category_0">所有分类</a>
-<a href="http://www.demohour.com/projects/discover/1_927151_0_6" id="category_927151">设计</a>
-<a href="http://www.demohour.com/projects/discover/1_927158_0_6" id="category_927158">科技</a>
+<a class="ui-categories-current" href="<%=request.getContextPath()%>/projects/discover/${c1}_0_${c3 }_${c4 }" id="category_0">所有分类</a>
+<c:forEach items="${categories }" var="category">
+<a href="<%=request.getContextPath() %>/projects/discover/${c1 }_${category.id }_${c3 }_${c4 }" id="category_${category.id }">${category.name }</a>
+</c:forEach>
+<!-- <a href="http://www.demohour.com/projects/discover/1_927158_0_6" id="category_927158">科技</a>
 <a href="http://www.demohour.com/projects/discover/1_927159_0_6" id="category_927159">音乐</a>
 <a href="http://www.demohour.com/projects/discover/1_927156_0_6" id="category_927156">影视</a>
 <a href="http://www.demohour.com/projects/discover/1_927163_0_6" id="category_927163">食品</a>
@@ -40,33 +43,52 @@
 <a href="http://www.demohour.com/projects/discover/1_927161_0_6" id="category_927161">出版</a>
 <a href="http://www.demohour.com/projects/discover/1_927164_0_6" id="category_927164">游戏</a>
 <a href="http://www.demohour.com/projects/discover/1_927157_0_6" id="category_927157">摄影</a>
-<a href="http://www.demohour.com/projects/discover/1_927162_0_6" id="category_927162">其他</a>
+<a href="http://www.demohour.com/projects/discover/1_927162_0_6" id="category_927162">其他</a> -->
 <div class="ui-categories-r-line"></div>
-<a class="ui-categories-current" href="http://www.demohour.com/projects/discover/1_0_0_6" id="location_0">所有地区</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E5%8C%97%E4%BA%AC_6" id="location_北京">北京</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E5%B9%BF%E4%B8%9C_6" id="location_广东">广东</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E4%B8%8A%E6%B5%B7_6" id="location_上海">上海</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E6%B5%99%E6%B1%9F_6" id="location_浙江">浙江</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E6%B1%9F%E8%8B%8F_6" id="location_江苏">江苏</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E5%9B%9B%E5%B7%9D_6" id="location_四川">四川</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E6%B5%B7%E5%A4%96_6" id="location_海外">海外</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E5%B1%B1%E4%B8%9C_6" id="location_山东">山东</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E7%A6%8F%E5%BB%BA_6" id="location_福建">福建</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E6%B9%96%E5%8D%97_6" id="location_湖南">湖南</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E6%B9%96%E5%8C%97_6" id="location_湖北">湖北</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E5%A4%A9%E6%B4%A5_6" id="location_天津">天津</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E9%87%8D%E5%BA%86_6" id="location_重庆">重庆</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E4%BA%91%E5%8D%97_6" id="location_云南">云南</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E9%99%95%E8%A5%BF_6" id="location_陕西">陕西</a>
-<a href="http://www.demohour.com/projects/discover/1_0_%E8%BE%BD%E5%AE%81_6" id="location_辽宁">辽宁</a>
+<a class="ui-categories-current" href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_0_${c4 }" id="location_0">所有地区</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E5%8C%97%E4%BA%AC_${c4 }" id="location_北京">北京</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E5%B9%BF%E4%B8%9C_${c4 }" id="location_广东">广东</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E4%B8%8A%E6%B5%B7_${c4 }" id="location_上海">上海</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E6%B5%99%E6%B1%9F_${c4 }" id="location_浙江">浙江</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E6%B1%9F%E8%8B%8F_${c4 }" id="location_江苏">江苏</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E5%9B%9B%E5%B7%9D_${c4 }" id="location_四川">四川</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E5%B1%B1%E4%B8%9C_${c4 }" id="location_山东">山东</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E7%A6%8F%E5%BB%BA_${c4 }" id="location_福建">福建</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E6%B9%96%E5%8D%97_${c4 }" id="location_湖南">湖南</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E6%B9%96%E5%8C%97_${c4 }" id="location_湖北">湖北</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E5%A4%A9%E6%B4%A5_${c4 }" id="location_天津">天津</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E9%87%8D%E5%BA%86_${c4 }" id="location_重庆">重庆</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E4%BA%91%E5%8D%97_${c4 }" id="location_云南">云南</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E9%99%95%E8%A5%BF_${c4 }" id="location_陕西">陕西</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_%E8%BE%BD%E5%AE%81_${c4 }" id="location_辽宁">辽宁</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_安徽_${c4 }" id="location_安徽">安徽</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_甘肃_${c4 }" id="location_甘肃">甘肃</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_广西_${c4 }" id="location_广西">广西</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_贵州_${c4 }" id="location_贵州">贵州</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_海南_${c4 }" id="location_海南">海南</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_河北_${c4 }" id="location_河北">河北</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_河北_${c4 }" id="location_河南">河南</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_黑龙江_${c4 }" id="location_黑龙江">黑龙江</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_吉林_${c4 }" id="location_吉林">吉林</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_江西_${c4 }" id="location_江西">江西</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_内蒙古_${c4 }" id="location_内蒙古">内蒙古</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_宁夏_${c4 }" id="location_宁夏">宁夏</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_青海_${c4 }" id="location_青海">青海</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_陕西_${c4 }" id="location_陕西">陕西</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_西藏_${c4 }" id="location_西藏">西藏</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_新疆_${c4 }" id="location_新疆">新疆</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_香港_${c4 }" id="location_香港">香港</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_澳门_${c4 }" id="location_澳门">澳门</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_台湾_${c4 }" id="location_台湾">台湾</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_海外_${c4 }" id="location_海外">海外</a>
 <div class="ui-categories-r-line"></div>
-<a href="http://www.demohour.com/projects/discover/1_0_0_0" id="sort_0">最近更新</a>
-<a href="http://www.demohour.com/projects/discover/1_0_0_1" id="sort_1">金额最高</a>
-<a href="http://www.demohour.com/projects/discover/1_0_0_2" id="sort_2">话题最多</a>
-<a href="http://www.demohour.com/projects/discover/1_0_0_3" id="sort_3">支持最多</a>
-<a href="http://www.demohour.com/projects/discover/1_0_0_4" id="sort_4">关注最多</a>
-<a href="http://www.demohour.com/projects/discover/1_0_0_5" id="sort_5">评价最高</a>
-<a class="ui-categories-current" href="http://www.demohour.com/projects/discover/1_0_0_6" id="sort_6">最新上线</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_0" id="sort_0">创建时间</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_1" id="sort_1">金额最高</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_2" id="sort_2">话题最多</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_3" id="sort_3">支持最多</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_4" id="sort_4">关注最多</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_5" id="sort_5">评价最高</a>
+<a class="ui-categories-current" href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_6" id="sort_6">最新上线</a>
 </div>
 </div>
 
@@ -851,9 +873,9 @@
 <a href="http://www.demohour.com/projects/316683" title="防弹衣材料的背包" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-009-725-9725-medium.jpg"></a></li>
 <li class="project-titile"><a href="http://www.demohour.com/projects/316683" title="防弹衣材料的背包">防弹衣材料的背包</a></li>
 <li class="project-function">
-<a href="http://www.demohour.com/projects/316683/posts" title="此项目有90个话题" class="project-p-on">话题：90</a>
-<a href="http://www.demohour.com/projects/316683/subscribers" title="771用户关注此项目" class="project-g-on">关注：771</a>
-<a href="http://www.demohour.com/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
+<a href="<%=request.getContextPath()%>/projects/316683/posts" title="此项目有90个话题" class="project-p-on">话题：90</a>
+<a href="<%=request.getContextPath()%>/projects/316683/subscribers" title="771用户关注此项目" class="project-g-on">关注：771</a>
+<a href="<%=request.getContextPath()%>/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
 </li>
 <li class="project-list-stats">
 <div class="projectpledgedwrap">
@@ -887,7 +909,7 @@
 <li><p>为什么需要设置回报？</p>         
 众筹具有一定的公益属性，回报是吸引公众支持的重要因素，也是区别于传统公益的主要特征。<br><br>公众基于对项目、发起人和回报的认同，通过资助的方式参与和支持创新。项目发起人在接受支持的同时给予支持者一定的回报（可以是实物，也可以是非实物，但不能涉及资金或股权）作为感谢。
 </li>
-<li><a href="http://www.demohour.com/intro" target="_blank" class="h-media-reports-b-r-more">查看完整服务介绍</a></li>
+<li><a href="<%=request.getContextPath()%>/intro" target="_blank" class="h-media-reports-b-r-more">查看完整服务介绍</a></li>
 </ul>
 </div>
 
@@ -942,7 +964,7 @@
 </div>
 </div>
 <div class="ui-popup-textarea-b">
-<span id="ui_popup_message_url"><a href="http://www.demohour.com/messages">查看私信记录</a></span>
+<span id="ui_popup_message_url"><a href="<%=request.getContextPath()%>/messages">查看私信记录</a></span>
 <span id="ui_popup_message_email" style="display:none"><label><input name="message[email_sync]" value="1" type="checkbox"> 同时发送邮件</label></span>
 <span id="message_content_error"></span>
 <div class="ui-button ui-button-green ui-button-ajax"><span><button type="submit">发送</button></span></div>
