@@ -10,5 +10,12 @@
 	select * from focus where projectId=#{projectId}
 </select>
 
+<insert id="focus" keyProperty="id">
+	insert into focus set projectid=${id}, userid=${userid}, createdate=now();
+</insert>
+
+<select id="checkFocusByUserid" resultType="int">
+	select count(*) from focus where projectid=${id} and userid=${userid};
+</select>
 
 </mapper>

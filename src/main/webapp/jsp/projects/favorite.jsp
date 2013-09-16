@@ -27,15 +27,17 @@
 <td width="12%"></td>
 <td width="12%">操作</td>
 </tr>
-<tr id="project_320283_favorite4">
-<td align="left" valign="middle"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-011-546-11546-medium.jpg"></td>
-<td align="left" valign="middle"><p><a href="<%=request.getContextPath() %>/projects/320283">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a></p></td>
+<c:forEach items="${projects}" var="project" varStatus="s"> 
+<tr id="project_${project.id}">
+<td align="left" valign="middle"><img src="${ imagehost }project-medium-${project.picture}"></td>
+<td align="left" valign="middle"><p><a href="<%=request.getContextPath()%>/projects/view/${project.id}">${project.name}</a></p></td>
 <td valign="middle"></td>
 <td valign="middle"></td>
 <td valign="middle"></td>
 <td valign="middle"></td>
 <td valign="middle"><a href="<%=request.getContextPath() %>/favorites/320283?type=project" class="ui-button-operate-blue" data-method="delete" data-remote="true" rel="nofollow">取消关注</a></td>
 </tr>
+</c:forEach>
 </tbody></table>
 <div class="ui-pagination"><ul></ul></div>
 </div>

@@ -21,7 +21,10 @@
 <a href="<%=request.getContextPath()%>/projects/discover/4_0_0_6">筹资中</a>
 <a href="<%=request.getContextPath()%>/projects/discover/2_0_0_0">经典项目</a>
 <a href="#">|</a>
-<a href="<%=request.getContextPath()%>/projects/discover/0_927151_0_6">设计</a>
+<c:forEach items="${categories }" var="category">
+<a href="<%=request.getContextPath() %>/projects/discover/0_${category.id }_0_0" >${category.name }</a>
+</c:forEach>
+<%-- <a href="<%=request.getContextPath()%>/projects/discover/0_927151_0_6">设计</a>
 <a href="<%=request.getContextPath()%>/projects/discover/0_927158_0_6">科技</a>
 <a href="<%=request.getContextPath()%>/projects/discover/0_927159_0_6">音乐</a>
 <a href="<%=request.getContextPath()%>/projects/discover/0_927156_0_6">影视</a>
@@ -30,7 +33,7 @@
 <a href="<%=request.getContextPath()%>/projects/discover/0_927161_0_6">出版</a>
 <a href="<%=request.getContextPath()%>/projects/discover/0_927164_0_6">游戏</a>
 <a href="<%=request.getContextPath()%>/projects/discover/0_927157_0_6">摄影</a>
-<a href="<%=request.getContextPath()%>/projects/discover/0_927162_0_6">其他</a>
+<a href="<%=request.getContextPath()%>/projects/discover/0_927162_0_6">其他</a> --%>
 </div>
 </div>
 
@@ -164,107 +167,6 @@
 </ul>
 </c:forEach>
 
-<ul class="project-one">
-<li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/317125" title="史上第一部众筹电影《十万个冷笑话》，征求十万个微赞助商" target="_blank"><img src="<s:url value="/demohour-index_files/project_posters-files-000-010-784-10784-medium.jpg" />"></a></li>
-<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/317125" title="史上第一部众筹电影《十万个冷笑话》，征求十万个微赞助商">史上第一部众筹电影《十万个冷笑话》，征求十万个微赞助商</a></li>
-<li class="project-function">
-<a href="<%=request.getContextPath()%>/projects/317125/posts" title="此项目有414个话题" class="project-p-on">话题：414</a>
-<a href="<%=request.getContextPath()%>/projects/317125/backers" title="5408用户支持此项目" class="project-g-on">支持：5408</a>
-<a href="<%=request.getContextPath()%>/projects/discover/4_0_0_0" class="project-g-running">筹资中</a>
-</li>
-<li class="project-list-stats">
-<div class="projectpledgedwrap">
-<div style="width:100%;" class="projectpledged"></div>
-</div>
-<div class="projectstats">
-<p class="widtha"><strong>135%</strong>达到</p>
-<p class="widthb"><strong><span><b>¥</b>1,354,394</span></strong>已获支持</p>
-<p class="widthc"><strong>
-9天
-</strong>剩余时间</p>
-</div>
-</li>
-</ul>
-
-<ul class="project-one">
-<li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/321626" title="中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作" target="_blank"><img src="<s:url value="/demohour-index_files/project_posters-files-000-012-089-12089-medium.jpg" />"></a></li>
-<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/321626" title="中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作">中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作</a></li>
-<li class="project-function">
-<a href="<%=request.getContextPath()%>/projects/321626/posts" title="此项目有23个话题" class="project-p-on">话题：23</a>
-<a href="<%=request.getContextPath()%>/projects/321626/backers" title="41用户支持此项目" class="project-g-on">支持：41</a>
-<a href="<%=request.getContextPath()%>/projects/discover/4_0_0_0" class="project-g-running">筹资中</a>
-</li>
-<li class="project-list-stats">
-<div class="projectpledgedwrap">
-<div style="width:40%;" class="projectpledged"></div>
-
-
-
-</div>
-<div class="projectstats">
-<p class="widtha"><strong>40%</strong>达到</p>
-<p class="widthb"><strong><span><b>¥</b>12,200</span></strong>已获支持</p>
-<p class="widthc"><strong>
-30天
-</strong>剩余时间</p>
-</div>
-</li>
-</ul>
-
-<ul class="project-one">
-<li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/320867" title=" Dr.drinks星球系统征集：无添加纯天然饮料试饮体验者" target="_blank"><img src="<s:url value="/demohour-index_files/project_posters-files-000-011-844-11844-medium.jpg" />"></a></li>
-<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/320867" title=" Dr.drinks星球系统征集：无添加纯天然饮料试饮体验者"> Dr.drinks星球系统征集：无添加纯天然饮料试饮体验者</a></li>
-<li class="project-function">
-<a href="<%=request.getContextPath()%>/projects/320867/posts" title="此项目有30个话题" class="project-p-on">话题：30</a>
-<a href="<%=request.getContextPath()%>/projects/320867/backers" title="42用户支持此项目" class="project-g-on">支持：42</a>
-<a href="<%=request.getContextPath()%>/projects/discover/4_0_0_0" class="project-g-running">筹资中</a>
-</li>
-<li class="project-list-stats">
-<div class="projectpledgedwrap">
-<div style="width:69%;" class="projectpledged"></div>
-
-
-
-</div>
-<div class="projectstats">
-<p class="widtha"><strong>69%</strong>达到</p>
-<p class="widthb"><strong><span><b>¥</b>34,666</span></strong>已获支持</p>
-<p class="widthc"><strong>
-19天
-</strong>剩余时间</p>
-</div>
-</li>
-</ul>
-
-<ul class="project-one">
-<li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/320148" title="股票医生Android版 - 炒股不再是赌博" target="_blank"><img src="<s:url value="/demohour-index_files/project_posters-files-000-011-426-11426-medium.jpg" />"></a></li>
-<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/320148" title="股票医生Android版 - 炒股不再是赌博">股票医生Android版 - 炒股不再是赌博</a></li>
-<li class="project-function">
-<a href="<%=request.getContextPath()%>/projects/320148/posts" title="此项目有44个话题" class="project-p-on">话题：44</a>
-<a href="<%=request.getContextPath()%>/projects/320148/backers" title="7用户支持此项目" class="project-g-on">支持：7</a>
-<a href="<%=request.getContextPath()%>/projects/discover/4_0_0_0" class="project-g-running">筹资中</a>
-</li>
-<li class="project-list-stats">
-<div class="projectpledgedwrap">
-<div style="width:30%;" class="projectpledged"></div>
-
-
-
-</div>
-<div class="projectstats">
-<p class="widtha"><strong>30%</strong>达到</p>
-<p class="widthb"><strong><span><b>¥</b>1,233</span></strong>已获支持</p>
-<p class="widthc"><strong>
-63天
-</strong>剩余时间</p>
-</div>
-</li>
-</ul>
-
 </div>
 </div>
 
@@ -298,89 +200,6 @@
 </ul>
 </c:forEach>
 
-<ul class="project-one">
-<li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/318267" title="我们心中的iwatch——@watch智能手表" target="_blank"><img src="<s:url value="/demohour-index_files/project_posters-files-000-011-426-11426-medium.jpg" />"></a></li>
-<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/318267" title="我们心中的iwatch——@watch智能手表">我们心中的iwatch——@watch智能手表</a></li>
-<li class="project-function">
-<a href="<%=request.getContextPath()%>/projects/318267/posts" title="此项目有90个话题" class="project-p-on">话题：90</a>
-<a href="<%=request.getContextPath()%>/projects/318267/subscribers" title="571用户关注此项目" class="project-g-on">关注：571</a>
-<a href="<%=request.getContextPath()%>/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
-</li>
-<li class="project-list-stats">
-<div class="projectpledgedwrap">
-<div style="width:69%;" class="projectpledged projectpledged-funding"></div>
-</div>
-<div class="projectstats">
-<p class="widtha"><strong>69%</strong>热度</p>
-<p class="widthb"><strong><span>19075</span></strong>浏览人数</p>
-<p class="widthc"><strong>117天</strong>已经预热</p>
-</div>
-</li>
-</ul>
-
-<ul class="project-one">
-<li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/320375" title="UShare Music：唤醒你的音箱，让音乐Wi-Fi起来" target="_blank"><img src="<s:url value="/demohour-index_files/project_posters-files-000-011-870-11870-medium.jpg" />"></a></li>
-<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/320375" title="UShare Music：唤醒你的音箱，让音乐Wi-Fi起来">UShare Music：唤醒你的音箱，让音乐Wi-Fi起来</a></li>
-<li class="project-function">
-<a href="<%=request.getContextPath()%>/projects/320375/posts" title="此项目有55个话题" class="project-p-on">话题：55</a>
-<a href="<%=request.getContextPath()%>/projects/320375/subscribers" title="337用户关注此项目" class="project-g-on">关注：337</a>
-<a href="<%=request.getContextPath()%>/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
-</li>
-<li class="project-list-stats">
-<div class="projectpledgedwrap">
-<div style="width:100%;" class="projectpledged projectpledged-funding"></div>
-</div>
-<div class="projectstats">
-<p class="widtha"><strong>122%</strong>热度</p>
-<p class="widthb"><strong><span>7257</span></strong>浏览人数</p>
-<p class="widthc"><strong>34天</strong>已经预热</p>
-</div>
-</li>
-</ul>
-
-<ul class="project-one">
-<li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/316214" title="“Sushi”； 移动电源的内涵和品位" target="_blank"><img src="<s:url value="/demohour-index_files/project_posters-files-000-009-497-9497-medium.jpg" />"></a></li>
-<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/316214" title="“Sushi”； 移动电源的内涵和品位">“Sushi”； 移动电源的内涵和品位</a></li>
-<li class="project-function">
-<a href="<%=request.getContextPath()%>/projects/316214/posts" title="此项目有52个话题" class="project-p-on">话题：52</a>
-<a href="<%=request.getContextPath()%>/projects/316214/subscribers" title="574用户关注此项目" class="project-g-on">关注：574</a>
-<a href="<%=request.getContextPath()%>/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
-</li>
-<li class="project-list-stats">
-<div class="projectpledgedwrap">
-<div style="width:100%;" class="projectpledged projectpledged-funding"></div>
-</div>
-<div class="projectstats">
-<p class="widtha"><strong>104%</strong>热度</p>
-<p class="widthb"><strong><span>13897</span></strong>浏览人数</p>
-<p class="widthc"><strong>148天</strong>已经预热</p>
-</div>
-</li>
-</ul>
-
-<ul class="project-one">
-<li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/319150" title="充电器" target="_blank"><img src="<s:url value="/demohour-index_files/project_posters-files-000-012-323-12323-medium.jpg" />"></a></li>
-<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/319150" title="充电器">充电器</a></li>
-<li class="project-function">
-<a href="<%=request.getContextPath()%>/projects/319150/posts" title="此项目有13个话题" class="project-p-on">话题：13</a>
-<a href="<%=request.getContextPath()%>/projects/319150/subscribers" title="56用户关注此项目" class="project-g-on">关注：56</a>
-<a href="<%=request.getContextPath()%>/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
-</li>
-<li class="project-list-stats">
-<div class="projectpledgedwrap">
-<div style="width:5%;" class="projectpledged projectpledged-funding"></div>
-</div>
-<div class="projectstats">
-<p class="widtha"><strong>5%</strong>热度</p>
-<p class="widthb"><strong><span>2090</span></strong>浏览人数</p>
-<p class="widthc"><strong>5天</strong>已经预热</p>
-</div>
-</li>
-</ul>
 
 </div>
 </div>

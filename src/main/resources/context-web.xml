@@ -91,7 +91,7 @@
 		class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
 	<bean id="jsonHttpMessageConverter"
 		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
-	<bean class="com.supertool.dspui.framework.MessageConverters">
+<!-- 	<bean class="com.supertool.dspui.framework.MessageConverters">
 		<property name="messageConverterMap">
 			<map>
 				<entry key="json" value-ref="jsonHttpMessageConverter">
@@ -117,7 +117,24 @@
 				</entry>
 			</map>
 		</property>
+	</bean> -->
+	<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>  
+                    <value>text/plain;charset=UTF-8</value>  
+                    <value>text/html;charset=UTF-8</value>  
+                    <value>*/*;charset=UTF-8</value>  
+                </list>  
+		</property>
 	</bean>
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <ref bean="stringHttpMessageConverter" />
+                <ref bean="jsonHttpMessageConverter" />
+            </list>
+        </property>
+    </bean>
 
 
 	<!--注解方式处理 异常处理 -->

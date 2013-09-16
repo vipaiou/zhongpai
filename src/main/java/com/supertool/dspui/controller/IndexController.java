@@ -25,6 +25,7 @@ import com.supertool.dspui.context.UserContext;
 import com.supertool.dspui.dao.mybatis.DspLogicMapper;
 import com.supertool.dspui.model.Dsp;
 import com.supertool.dspui.model.User;
+import com.supertool.dspui.service.zhongpai.CategoryService;
 import com.supertool.dspui.service.zhongpai.ProjectService;
 import com.supertool.dspui.service.zhongpai.UserService;
 
@@ -36,17 +37,17 @@ public class IndexController {
 	@Autowired
 	ProjectService projectService;
 	
+	@Autowired
+	CategoryService categoryService;
+	
     @RequestMapping(value = {"/", "", "/index"})
     public String index(Model model, HttpServletRequest request, HttpServletResponse response) {
-    	//User u = UserContext.getLoginUser();
-//        if ("1".equals(u.getIsSuperAdmin())) {
-//            return "redirect:/campaign/index";
-//        }
-//        return "redirect:/campaign/index";
     	List<Map<String,Object>> financiongProjects = projectService.selectByStatus("2");
     	List<Map<String,Object>> preparingProjects = projectService.selectByStatus("1");
     	model.addAttribute("financiongProjects", financiongProjects);
     	model.addAttribute("preparingProjects", preparingProjects);
+		List<Map<String,Object>> categories = categoryService.getAll();
+		model.addAttribute("categories", categories);
 		model.addAttribute("imagehost", Config.getImageHost());
     	return "index";
     }

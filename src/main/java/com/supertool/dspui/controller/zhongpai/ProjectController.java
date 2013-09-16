@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.supertool.dspui.config.Config;
+import com.supertool.dspui.context.UserContext;
 import com.supertool.dspui.model.zhongpai.Project;
 import com.supertool.dspui.service.zhongpai.CategoryService;
 import com.supertool.dspui.service.zhongpai.FocusService;
@@ -56,7 +57,7 @@ public class ProjectController {
 		return "projects/index";
 	}
 
-	@RequestMapping(value={"discover/{c}","discover/{c}/"})
+	@RequestMapping(value={"discover/{c}","discover/{c}/"} )
 	public String search(@PathVariable String c, Model model, HttpServletRequest request) throws UnsupportedEncodingException{
 		c = new String(c.getBytes("ISO-8859-1"),"UTF-8") ;
 		String[] cs = c.split("_");
@@ -89,6 +90,9 @@ public class ProjectController {
 		model.addAttribute("imagehost", Config.getImageHost());
 		Map<?,?> createuser = userService.getUserById(project.get("createuser"));
 		model.addAttribute("createuser", createuser);
+		int focused = focusService.checkFocusByUserid(id, UserContext.getLoginUserId());
+		model.addAttribute("focused", focused);
+		
 		return "projects/view";
 	}
 	
@@ -204,8 +208,17 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value={"backed"})
-	public void backed(){
-		
+	public void backed(Model model){
+		List<Map<String,Object>> projects = projectService.supported();
+		model.addAttribute("projects", projects);
+		model.addAttribute("imagehost", Config.getImageHost());
+	}
+
+	@RequestMapping(value={"favorite"})
+	public void favorite(Model model){
+		List<Map<String,Object>> projects = projectService.favorite();
+		model.addAttribute("projects", projects);
+		model.addAttribute("imagehost", Config.getImageHost());
 	}
 
 	@RequestMapping(value={"topics/{id}"})
@@ -244,6 +257,13 @@ public class ProjectController {
 		Map<?,?> createuser = userService.getUserById(project.get("createuser"));
 		model.addAttribute("createuser", createuser);
 		return "projects/focuses";
+	}
+	
+	@RequestMapping(value={"focus/{id}","focus/{id}/"})
+	public @ResponseBody int focus(@PathVariable int id, Model model){
+		focusService.focus(id, UserContext.getLoginUserId());
+		int focuses = focusService.getFocusnumByProjectId(id);
+		return focuses;
 	}
 
 }

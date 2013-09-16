@@ -69,5 +69,13 @@ public class ProjectService {
 		return projectMapper.search(map);
 	}
 
+	public List<Map<String, Object>> favorite() {
+		return projectMapper.selectByFavoriteUserid(UserContext.getLoginUserId());
+	}
+
+	public List<Map<String, Object>> supported() {
+		return projectMapper.selectBySupportUserid(UserContext.getLoginUserId());
+	}
+
 	
 }

@@ -22,5 +22,13 @@ public class FocusService {
 		return focusMapper.getFocusnumByProjectId(id);
 	}
 
+	public void focus(int id, int loginUserId) {
+		focusMapper.focus(id, loginUserId);
+	}
+
+	public int checkFocusByUserid(int id, int loginUserId) {
+		return focusMapper.checkFocusByUserid(id, loginUserId);
+	}
+
 	
 }

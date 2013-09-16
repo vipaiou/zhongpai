@@ -17,7 +17,17 @@
 </ul>
 <div class="ui-tab-menu-right">
 <div class="ui-button ui-button-blue"><span><a href="#ui_invite_popup" class="ui-popup-open invite_popup" data-popup-height="180" title="帮忙转发">帮忙转发</a></span></div>
-<div id="project_322072_favorite1" class="ui-button ui-button-blue ui-button-ajax"><span><a href="<%=request.getContextPath()%>/projects/focus/${project.id }" data-remote="true">+关注此项目</a></span>
+<div id="project_322072_favorite1" class="ui-button ui-button-blue ui-button-ajax">
+<span>
+<c:choose>
+	<c:when test="focused > 0">
+	<a id="focus" href="javascript:void(0);">已关注</a>
+	</c:when>
+	<c:otherwise>
+		<a id="focus" href="<%=request.getContextPath()%>/projects/focus/${project.id }" data-remote="true">+关注此项目</a>
+	</c:otherwise>
+</c:choose>
+</span>
 <div class="ui-help ui-help-prompt-left">
 <div class="ui-help-prompt">
 <p>关注后，你将会在此项目有<br>新的动态时收到通知提醒。</p>
@@ -126,11 +136,11 @@ ${project.content }
 <div class="new-comment" id="posts">
 <div class="new-tab">
 <ul class="new-tab-menu">
-<li><a id="filter_all" href="<%=request.getContextPath()%>/posts/list?project_id=322072&amp;refresh=1376757331.657914" data-remote="true" class="new-tab-current"><div class="new-tab-left-radius"></div>全部<span>${topicnum}</span></a></li>
-<li><a href="<%=request.getContextPath()%>/posts/list?filter=0&amp;project_id=322072" data-remote="true">公告<span>1</span></a></li>
-<li><a href="<%=request.getContextPath()%>/posts/list?filter=1&amp;project_id=322072" data-remote="true">问答<span>10</span></a></li>
-<li><a href="<%=request.getContextPath()%>/posts/list?filter=2&amp;project_id=322072" data-remote="true">顶<span>29</span></a></li>
-<li><a href="<%=request.getContextPath()%>/posts/list?filter=3&amp;project_id=322072" data-remote="true">倒<span>0</span></a></li>
+<li><a id="filter_all" href="<%=request.getContextPath()%>/posts/list?project_id=322072&refresh=1376757331.657914" data-remote="true" class="new-tab-current"><div class="new-tab-left-radius"></div>全部<span>${topicnum}</span></a></li>
+<li><a href="<%=request.getContextPath()%>/posts/list?filter=0&project_id=322072" data-remote="true">公告<span>1</span></a></li>
+<li><a href="<%=request.getContextPath()%>/posts/list?filter=1&project_id=322072" data-remote="true">问答<span>10</span></a></li>
+<li><a href="<%=request.getContextPath()%>/posts/list?filter=2&project_id=322072" data-remote="true">顶<span>29</span></a></li>
+<li><a href="<%=request.getContextPath()%>/posts/list?filter=3&project_id=322072" data-remote="true">倒<span>0</span></a></li>
 </ul>
 </div>
 <table class="new-comment-list" border="0" cellpadding="0" cellspacing="0">
@@ -145,7 +155,7 @@ ${project.content }
 <c:forEach items="${topics}" var="topic" varStatus="s"> 
 <tr class="new-comment-ding">
 <td align="center">
-<div class="comment-icon">[<a href="<%=request.getContextPath()%>/posts/list?filter=0&amp;limit=40&amp;project_id=${topic.projectId}" data-remote="true">告</a>]</div>
+<div class="comment-icon">[<a href="<%=request.getContextPath()%>/posts/list?filter=0&limit=40&project_id=${topic.projectId}" data-remote="true">告</a>]</div>
 </td>
 <td align="left" width="336"><a href="<%=request.getContextPath()%>/posts/${topic.id }" class="c5 c5-length" title="#${topic.title }">${topic.title }</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-08-17 13:15:59 +0800" data-visited-id="20518">新</div></td>
 <td align="left">
@@ -157,14 +167,14 @@ ${project.content }
 </c:forEach>
 <tr class="new-comment-ding">
 <td align="center">
-<div class="comment-icon">[<a href="http://www.demohour.com/posts/list?filter=0&amp;limit=40&amp;project_id=322072" data-remote="true">告</a>]</div>
+<div class="comment-icon">[<a href="<%=request.getContextPath()%>/posts/list?filter=0&limit=40&project_id=322072" data-remote="true">告</a>]</div>
 </td>
-<td align="left" width="336"><a href="http://www.demohour.com/posts/20518" class="c5 c5-length" title="#Talking Timer（对讲提示器）#上线了！">#Talking Timer（对讲提示器）#上线了！</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-08-17 13:15:59 +0800" data-visited-id="20518">新</div></td>
+<td align="left" width="336"><a href="<%=request.getContextPath()%>/posts/20518" class="c5 c5-length" title="#Talking Timer（对讲提示器）#上线了！">#Talking Timer（对讲提示器）#上线了！</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-08-17 13:15:59 +0800" data-visited-id="20518">新</div></td>
 <td align="left">
-<a href="http://www.demohour.com/1013487" class="c9 c9-length" target="_blank" title="众拍网客服">众拍网客服</a>
+<a href="<%=request.getContextPath()%>/1013487" class="c9 c9-length" target="_blank" title="众拍网客服">众拍网客服</a>
 </td>
-<td align="center"><a href="http://www.demohour.com/posts/20518" class="c5">4</a></td>
-<td class="timeline-posted-at" align="right"><a href="http://www.demohour.com/posts/20518?latest=1" data-timestamp="2013-08-17 13:15:59 +0800">11小时以前</a></td>
+<td align="center"><a href="<%=request.getContextPath()%>/posts/20518" class="c5">4</a></td>
+<td class="timeline-posted-at" align="right"><a href="<%=request.getContextPath()%>/posts/20518?latest=1" data-timestamp="2013-08-17 13:15:59 +0800">11小时以前</a></td>
 </tr>
 </tbody>
 </table>
@@ -198,8 +208,8 @@ ${project.content }
 <div class="edui-popup-top" id="ueditor_link_popup_top0">
 <span class="edui-dialog-caption">添加链接</span><a href="#" title="关闭" onfocus="this.blur();" class="ueditor_link_close0">关闭</a></div>
 <div class="edui-popup-table-content"><input id="ueditor_link_href0" placeholder="输入链接地址" type="text"><span id="ueditor_link_error_msg0"></span><div class="upload-img-list-b"><div class="upload-img-list-b-r"><a href="#" class="ueditor_link_close0" title="取消" onfocus="this.blur();">取消</a><a href="#" id="ueditor_link_submit0" title="确定" class="edui-upload-button" onfocus="this.blur();">确定</a></div></div></div></div></div></div></div>
-<div id="ueditor_video_popup0" class="edui-popup-all edui-popup-img" style="display:none;"><div class="edui-popup-background"><div style="top: 296.5px;" class="edui-popup-all-content"><div class="edui-popup-table"><div class="edui-popup-top" id="ueditor_video_popup_top0"><span class="edui-dialog-caption">添加视频</span><a href="#" title="关闭" onfocus="this.blur();" class="ueditor_video_close0">关闭</a></div><div class="edui-popup-table-content"><input id="ueditor_video_convert_url0" +="" value="/attachments?sign=fe20660471609e35acc4dbf24af782fdba18fd536a3147090103407ee9b68495&amp;type=post_video&amp;user_id=1121568" style="display:none"><input id="ueditor_video_url0" placeholder="输入视频地址（支持优酷、土豆、酷6、新浪视频）" type="text"><span id="ueditor_video_error_msg0"></span><div class="upload-img-list-b"><div class="upload-img-list-b-r"><a href="#" class="ueditor_video_close0" title="取消" onfocus="this.blur();">取消</a><a href="#" id="ueditor_video_submit0" title="确定" class="edui-upload-button" onfocus="this.blur();">确定</a></div></div></div></div></div></div></div><div id="ueditor_image_popup0" class="edui-popup-all edui-popup-img" style="display:none;"><div class="edui-popup-background"><div style="top: 296.5px;" class="edui-popup-all-content"><div class="edui-popup-table"><div class="edui-popup-top" id="ueditor_image_popup_top0"><span class="edui-dialog-caption">添加图片</span><a href="#" title="关闭" onfocus="this.blur();" class="ueditor_image_upload_close0">关闭</a></div><div class="edui-popup-table-content"><div class="edui-popup-table-upload">
-<!-- <object id="SWFUpload_0" type="application/x-shockwave-flash" data="demohour-index_files/swfupload.swf" class="swfupload" height="32" width="78"><param name="wmode" value="window"><param name="movie" value="/assets/swfupload/swfupload.swf?preventswfcaching=1376758794020"><param name="quality" value="high"><param name="menu" value="false"><param name="allowScriptAccess" value="always"><param name="wmode" value="transparent"><param name="flashvars" value="movieName=SWFUpload_0&amp;uploadURL=%2Fattachments%3Fsign%3D6d2c0f52ea30040e8c3c0aff34adc72431e2ef08ca5ee6f52371940156737d85%26amp%3Btype%3Dpost_photo%26amp%3Buser_id%3D1121568&amp;useQueryString=false&amp;requeueOnError=false&amp;httpSuccess=&amp;assumeSuccessTimeout=0&amp;params=&amp;filePostName=Filedata&amp;fileTypes=*.jpg%3B*.gif%3B*.png%3B*.jpeg&amp;fileTypesDescription=JPG%20Images&amp;fileSizeLimit=5%20MB&amp;fileUploadLimit=6&amp;fileQueueLimit=6&amp;debugEnabled=false&amp;buttonImageURL=%2Fassets%2Fueditor%2Fdefault%2Fimages%2Fupload.gif&amp;buttonWidth=78&amp;buttonHeight=32&amp;buttonText=&amp;buttonTextTopPadding=0&amp;buttonTextLeftPadding=0&amp;buttonTextStyle=color%3A%20%23000000%3B%20font-size%3A%2016pt%3B&amp;buttonAction=-110&amp;buttonDisabled=false&amp;buttonCursor=-2"></object> -->
+<div id="ueditor_video_popup0" class="edui-popup-all edui-popup-img" style="display:none;"><div class="edui-popup-background"><div style="top: 296.5px;" class="edui-popup-all-content"><div class="edui-popup-table"><div class="edui-popup-top" id="ueditor_video_popup_top0"><span class="edui-dialog-caption">添加视频</span><a href="#" title="关闭" onfocus="this.blur();" class="ueditor_video_close0">关闭</a></div><div class="edui-popup-table-content"><input id="ueditor_video_convert_url0" +="" value="/attachments?sign=fe20660471609e35acc4dbf24af782fdba18fd536a3147090103407ee9b68495&type=post_video&user_id=1121568" style="display:none"><input id="ueditor_video_url0" placeholder="输入视频地址（支持优酷、土豆、酷6、新浪视频）" type="text"><span id="ueditor_video_error_msg0"></span><div class="upload-img-list-b"><div class="upload-img-list-b-r"><a href="#" class="ueditor_video_close0" title="取消" onfocus="this.blur();">取消</a><a href="#" id="ueditor_video_submit0" title="确定" class="edui-upload-button" onfocus="this.blur();">确定</a></div></div></div></div></div></div></div><div id="ueditor_image_popup0" class="edui-popup-all edui-popup-img" style="display:none;"><div class="edui-popup-background"><div style="top: 296.5px;" class="edui-popup-all-content"><div class="edui-popup-table"><div class="edui-popup-top" id="ueditor_image_popup_top0"><span class="edui-dialog-caption">添加图片</span><a href="#" title="关闭" onfocus="this.blur();" class="ueditor_image_upload_close0">关闭</a></div><div class="edui-popup-table-content"><div class="edui-popup-table-upload">
+<!-- <object id="SWFUpload_0" type="application/x-shockwave-flash" data="demohour-index_files/swfupload.swf" class="swfupload" height="32" width="78"><param name="wmode" value="window"><param name="movie" value="/assets/swfupload/swfupload.swf?preventswfcaching=1376758794020"><param name="quality" value="high"><param name="menu" value="false"><param name="allowScriptAccess" value="always"><param name="wmode" value="transparent"><param name="flashvars" value="movieName=SWFUpload_0&uploadURL=%2Fattachments%3Fsign%3D6d2c0f52ea30040e8c3c0aff34adc72431e2ef08ca5ee6f52371940156737d85%26amp%3Btype%3Dpost_photo%26amp%3Buser_id%3D1121568&useQueryString=false&requeueOnError=false&httpSuccess=&assumeSuccessTimeout=0&params=&filePostName=Filedata&fileTypes=*.jpg%3B*.gif%3B*.png%3B*.jpeg&fileTypesDescription=JPG%20Images&fileSizeLimit=5%20MB&fileUploadLimit=6&fileQueueLimit=6&debugEnabled=false&buttonImageURL=%2Fassets%2Fueditor%2Fdefault%2Fimages%2Fupload.gif&buttonWidth=78&buttonHeight=32&buttonText=&buttonTextTopPadding=0&buttonTextLeftPadding=0&buttonTextStyle=color%3A%20%23000000%3B%20font-size%3A%2016pt%3B&buttonAction=-110&buttonDisabled=false&buttonCursor=-2"></object> -->
 <div id="post_content_1"></div>
 <span>单张最大5 MB，每次最多传6张，总共允许上传20张。</span>
 </div>
@@ -305,7 +315,7 @@ ${project.content }
 </li>
 <li>	
 <div class="project-invite-title">别错过了项目的最新动态！请立即关注此项目</div>
-<div class="ui-button ui-button-blue"><span><a href="http://www.demohour.com/projects/322072/invite" title="+关注此项目">+关注此项目</a></span></div>	
+<div class="ui-button ui-button-blue"><span><a href="<%=request.getContextPath()%>/projects/322072/invite" title="+关注此项目">+关注此项目</a></span></div>	
 </li>
 </ul>
 </td>
@@ -318,17 +328,17 @@ ${project.content }
 
 </div>
 </div>
-<div class="bottom-interest-title"><a href="http://www.demohour.com/projects/slide?target=footer" data-remote="true">换一换</a>你可能感兴趣的项目</div>
+<div class="bottom-interest-title"><a href="<%=request.getContextPath()%>/projects/slide?target=footer" data-remote="true">换一换</a>你可能感兴趣的项目</div>
 <div class="bottom-interest" id="footer_slides">
 <div id="projects" class="project-list">
 <ul class="project-one">
 <li class="project-thumbnail">
-<a href="http://www.demohour.com/projects/321583" title="T-EYE， 让智能手机变身google眼镜" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-012-069-12069-medium.jpg"></a></li>
-<li class="project-titile"><a href="http://www.demohour.com/projects/321583" title="T-EYE， 让智能手机变身google眼镜">T-EYE， 让智能手机变身google眼镜</a></li>
+<a href="<%=request.getContextPath()%>/projects/321583" title="T-EYE， 让智能手机变身google眼镜" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/project_posters-files-000-012-069-12069-medium.jpg"></a></li>
+<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/321583" title="T-EYE， 让智能手机变身google眼镜">T-EYE， 让智能手机变身google眼镜</a></li>
 <li class="project-function">
-<a href="http://www.demohour.com/projects/321583/posts" title="此项目有41个话题" class="project-p-on">话题：41</a>
-<a href="http://www.demohour.com/projects/321583/subscribers" title="318用户关注此项目" class="project-g-on">关注：318</a>
-<a href="http://www.demohour.com/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
+<a href="<%=request.getContextPath()%>/projects/321583/posts" title="此项目有41个话题" class="project-p-on">话题：41</a>
+<a href="<%=request.getContextPath()%>/projects/321583/subscribers" title="318用户关注此项目" class="project-g-on">关注：318</a>
+<a href="<%=request.getContextPath()%>/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
 </li>
 <li class="project-list-stats">
 <div class="projectpledgedwrap">
@@ -344,12 +354,12 @@ ${project.content }
 
 <ul class="project-one">
 <li class="project-thumbnail">
-<a href="http://www.demohour.com/projects/316845" title="超 •手柄革命 多功能蓝牙游戏手柄 Dark Hammer " target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-010-037-10037-medium.png"></a></li>
-<li class="project-titile"><a href="http://www.demohour.com/projects/316845" title="超 •手柄革命 多功能蓝牙游戏手柄 Dark Hammer ">超 •手柄革命 多功能蓝牙游戏手柄 Dark Hammer </a></li>
+<a href="<%=request.getContextPath()%>/projects/316845" title="超 •手柄革命 多功能蓝牙游戏手柄 Dark Hammer " target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/project_posters-files-000-010-037-10037-medium.png"></a></li>
+<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/316845" title="超 •手柄革命 多功能蓝牙游戏手柄 Dark Hammer ">超 •手柄革命 多功能蓝牙游戏手柄 Dark Hammer </a></li>
 <li class="project-function">
-<a href="http://www.demohour.com/projects/316845/posts" title="此项目有24个话题" class="project-p-on">话题：24</a>
-<a href="http://www.demohour.com/projects/316845/subscribers" title="115用户关注此项目" class="project-g-on">关注：115</a>
-<a href="http://www.demohour.com/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
+<a href="<%=request.getContextPath()%>/projects/316845/posts" title="此项目有24个话题" class="project-p-on">话题：24</a>
+<a href="<%=request.getContextPath()%>/projects/316845/subscribers" title="115用户关注此项目" class="project-g-on">关注：115</a>
+<a href="<%=request.getContextPath()%>/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
 </li>
 <li class="project-list-stats">
 <div class="projectpledgedwrap">
@@ -365,12 +375,12 @@ ${project.content }
 
 <ul class="project-one">
 <li class="project-thumbnail">
-<a href="http://www.demohour.com/projects/319612" title="ppt多能助手（iphone手机外挂设备）" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-011-344-11344-medium.jpg"></a></li>
-<li class="project-titile"><a href="http://www.demohour.com/projects/319612" title="ppt多能助手（iphone手机外挂设备）">ppt多能助手（iphone手机外挂设备）</a></li>
+<a href="<%=request.getContextPath()%>/projects/319612" title="ppt多能助手（iphone手机外挂设备）" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/project_posters-files-000-011-344-11344-medium.jpg"></a></li>
+<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/319612" title="ppt多能助手（iphone手机外挂设备）">ppt多能助手（iphone手机外挂设备）</a></li>
 <li class="project-function">
-<a href="http://www.demohour.com/projects/319612/posts" title="此项目有18个话题" class="project-p-on">话题：18</a>
-<a href="http://www.demohour.com/projects/319612/subscribers" title="108用户关注此项目" class="project-g-on">关注：108</a>
-<a href="http://www.demohour.com/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
+<a href="<%=request.getContextPath()%>/projects/319612/posts" title="此项目有18个话题" class="project-p-on">话题：18</a>
+<a href="<%=request.getContextPath()%>/projects/319612/subscribers" title="108用户关注此项目" class="project-g-on">关注：108</a>
+<a href="<%=request.getContextPath()%>/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
 </li>
 <li class="project-list-stats">
 <div class="projectpledgedwrap">
@@ -386,12 +396,12 @@ ${project.content }
 
 <ul class="project-one">
 <li class="project-thumbnail">
-<a href="http://www.demohour.com/projects/321626" title="中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-012-089-12089-medium.jpg"></a></li>
-<li class="project-titile"><a href="http://www.demohour.com/projects/321626" title="中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作">中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作</a></li>
+<a href="<%=request.getContextPath()%>/projects/321626" title="中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/project_posters-files-000-012-089-12089-medium.jpg"></a></li>
+<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/321626" title="中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作">中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作</a></li>
 <li class="project-function">
-<a href="http://www.demohour.com/projects/321626/posts" title="此项目有24个话题" class="project-p-on">话题：24</a>
-<a href="http://www.demohour.com/projects/321626/backers" title="45用户支持此项目" class="project-g-on">支持：45</a>
-<a href="http://www.demohour.com/projects/discover/4_0_0_0" class="project-g-running">筹资中</a>
+<a href="<%=request.getContextPath()%>/projects/321626/posts" title="此项目有24个话题" class="project-p-on">话题：24</a>
+<a href="<%=request.getContextPath()%>/projects/321626/backers" title="45用户支持此项目" class="project-g-on">支持：45</a>
+<a href="<%=request.getContextPath()%>/projects/discover/4_0_0_0" class="project-g-running">筹资中</a>
 </li>
 <li class="project-list-stats">
 <div class="projectpledgedwrap">
@@ -438,20 +448,20 @@ ${project.content }
 <li><p>为什么需要设置回报？</p>         
 众筹具有一定的公益属性，回报是吸引公众支持的重要因素，也是区别于传统公益的主要特征。<br><br>公众基于对项目、发起人和回报的认同，通过资助的方式参与和支持创新。项目发起人在接受支持的同时给予支持者一定的回报（可以是实物，也可以是非实物，但不能涉及资金或股权）作为感谢。
 </li>
-<li><a href="http://www.demohour.com/intro" target="_blank" class="h-media-reports-b-r-more">查看完整服务介绍</a></li>
+<li><a href="<%=request.getContextPath()%>/intro" target="_blank" class="h-media-reports-b-r-more">查看完整服务介绍</a></li>
 </ul>
 </div>
 
 <div class="h-media-reports">
 <p>感谢国内外媒体报道支持</p>
-<a href="http://site.douban.com/widget/notes/4422127/note/218531103/" title="新周刊" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-01-04e39a7307d5119ac4df50d9e51dbbbd.gif"></a>
-<a href="http://site.douban.com/widget/notes/4422127/note/215977583/" title="南方都市报" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-02-39101939abd2a818f930b2c3f436e38a.gif"></a>
-<a href="http://site.douban.com/widget/notes/4422127/note/216279901/" title="南方周刊" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-03-bf5f2628a4a9548b1fd6750de0d8f05e.gif"></a>
-<a href="http://finance.cnr.cn/gs/201201/t20120112_509051989.shtml" title="经济之声" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-04-1a732a930611e6960263b399816b0a1a.gif"></a>
-<a href="http://news.xinhuanet.com/book/2012-06/25/c_123324750.htm" title="北京青年报" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-05-bd5f1c3bab1f62bd218702c792f4222c.gif"></a>
-<a href="http://site.douban.com/widget/notes/4422127/note/217068128/" title="北京晚报" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-06-dbe57a3ff106dfdc5bf5d26734595676.gif"></a>
-<a href="http://site.douban.com/widget/notes/4422127/note/213505558/" title="商业周刊/中文版" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-07-f940ef6cca208ef3e8ca12c58aa4cc7b.gif"></a>
-<a href="http://news.xinhuanet.com/2013-04/12/c_115370793.htm" title="新华网" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/new.jpg"></a>
+<a href="http://site.douban.com/widget/notes/4422127/note/218531103/" title="新周刊" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-01-04e39a7307d5119ac4df50d9e51dbbbd.gif"></a>
+<a href="http://site.douban.com/widget/notes/4422127/note/215977583/" title="南方都市报" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-02-39101939abd2a818f930b2c3f436e38a.gif"></a>
+<a href="http://site.douban.com/widget/notes/4422127/note/216279901/" title="南方周刊" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-03-bf5f2628a4a9548b1fd6750de0d8f05e.gif"></a>
+<a href="http://finance.cnr.cn/gs/201201/t20120112_509051989.shtml" title="经济之声" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-04-1a732a930611e6960263b399816b0a1a.gif"></a>
+<a href="http://news.xinhuanet.com/book/2012-06/25/c_123324750.htm" title="北京青年报" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-05-bd5f1c3bab1f62bd218702c792f4222c.gif"></a>
+<a href="http://site.douban.com/widget/notes/4422127/note/217068128/" title="北京晚报" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-06-dbe57a3ff106dfdc5bf5d26734595676.gif"></a>
+<a href="http://site.douban.com/widget/notes/4422127/note/213505558/" title="商业周刊/中文版" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-07-f940ef6cca208ef3e8ca12c58aa4cc7b.gif"></a>
+<a href="http://news.xinhuanet.com/2013-04/12/c_115370793.htm" title="新华网" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/new.jpg"></a>
 
 
 
@@ -493,7 +503,7 @@ ${project.content }
 </div>
 </div>
 <div class="ui-popup-textarea-b">
-<span id="ui_popup_message_url"><a href="http://www.demohour.com/messages">查看私信记录</a></span>
+<span id="ui_popup_message_url"><a href="<%=request.getContextPath()%>/messages">查看私信记录</a></span>
 <span id="ui_popup_message_email" style="display:none"><label><input name="message[email_sync]" value="1" type="checkbox"> 同时发送邮件</label></span>
 <span id="message_content_error"></span>
 <div class="ui-button ui-button-green ui-button-ajax"><span><button type="submit">发送</button></span></div>
@@ -507,25 +517,25 @@ ${project.content }
 </div>
 <div class="footerwrap">
 <div class="footer">
-<a href="http://www.demohour.com/projects/new">发起项目</a>
-<a href="http://www.demohour.com/intro">服务介绍</a>
-<a href="http://www.demohour.com/guideline">项目规范</a>
-<a href="http://www.demohour.com/faq">常见问题</a>
-<a href="http://www.demohour.com/terms_of_service">服务条款</a>
-<a href="http://www.demohour.com/privacy_policy">隐私权政策</a>
-<a href="http://www.demohour.com/about">关于我们</a>
-<a href="http://www.demohour.com/projects/313907">建议反馈</a>
-<a href="http://weibo.com/demohour" target="_blank">官方微博</a>
-<a href="http://blog.demohour.com/" target="_blank">官方博客</a>
-<a href="http://www.demohour.com/?screen=mobile" class="last">手机版</a>
-<p>© 2013北京众拍网科技有限公司　Demohour.com 版权所有<br>电信与信息服务业务经营许可证120183号　京ICP备11032157号　京公网安备110105015321</p>
+<a href="<%=request.getContextPath()%>/projects/new">发起项目</a>
+<a href="<%=request.getContextPath()%>/intro">服务介绍</a>
+<a href="<%=request.getContextPath()%>/guideline">项目规范</a>
+<a href="<%=request.getContextPath()%>/faq">常见问题</a>
+<a href="<%=request.getContextPath()%>/terms_of_service">服务条款</a>
+<a href="<%=request.getContextPath()%>/privacy_policy">隐私权政策</a>
+<a href="<%=request.getContextPath()%>/about">关于我们</a>
+<a href="<%=request.getContextPath()%>/projects/313907">建议反馈</a>
+<a href="http://weibo.com/zhongpai" target="_blank">官方微博</a>
+<a href="http://blog.zhongpai.com/" target="_blank">官方博客</a>
+<a href="<%=request.getContextPath()%>/?screen=mobile" class="last">手机版</a>
+<p>© 2013北京众拍网科技有限公司　zhongpai.com 版权所有<br>电信与信息服务业务经营许可证120183号　京ICP备11032157号　京公网安备110105015321</p>
 <div style="display: block;" id="backtop" class="backtop"><a href="#top"></a></div>
 </div>
 </div>
 
 
-<script src="<s:url value="/demohour-index_files/jia.js"/>" async="" type="text/javascript"></script>
-<script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script>
+<%-- <script src="<s:url value="/demohour-index_files/jia.js"/>" async="" type="text/javascript"></script> --%>
+<%-- <script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script> --%>
 <script src="<s:url value="/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js"/>" type="text/javascript"></script>
 <script src="<s:url value="/demohour-index_files/projects-1ab927eb13eddbb381c44171a7060594.js"/>" type="text/javascript"></script>
 <script type="text/javascript">
@@ -557,8 +567,8 @@ $(document).ready(function() {
     }),
     $.ui_core.flash("project_intro", []),
     jiathis_config = {
-        summary: "Talking Timer是什么？很简单，如同它的名字，是一款可以对话的提示器。",
-        title: "#Talking Timer（对讲提示器）#"
+        summary: "${project.summary}",
+        title: "${project.name}"
     },
     function() {
         var e = document.createElement("script");
@@ -569,7 +579,7 @@ $(document).ready(function() {
         t.parentNode.insertBefore(e, t)
     } (),
     $(".invite_popup").click(function() {
-        jiathis_config.url = "http://www.demohour.com/projects/322072?u=1121568"
+        jiathis_config.url = "<%=request.getContextPath()%>/projects/322072?u=1121568"
     }),
     $("#invite_url").click(function() {
         $(this).select();
@@ -584,13 +594,13 @@ $(document).ready(function() {
     editors = $("#post_content_1").ueditor({
         autosave: !1,
         image: {
-            url: "/attachments?sign=6d2c0f52ea30040e8c3c0aff34adc72431e2ef08ca5ee6f52371940156737d85&amp;type=post_photo&amp;user_id=1121568",
+            url: "/attachments?sign=6d2c0f52ea30040e8c3c0aff34adc72431e2ef08ca5ee6f52371940156737d85&type=post_photo&user_id=1121568",
             flash_url: "/assets/swfupload/swfupload.swf",
             button_image_url: "/assets/ueditor/default/images/upload.gif",
             total_file_upload_limit: "20"
         },
         video: {
-            url: "/attachments?sign=fe20660471609e35acc4dbf24af782fdba18fd536a3147090103407ee9b68495&amp;type=post_video&amp;user_id=1121568",
+            url: "/attachments?sign=fe20660471609e35acc4dbf24af782fdba18fd536a3147090103407ee9b68495&type=post_video&user_id=1121568",
             default_image: "/assets/ueditor/default/images/video.png"
         },
         editor_config_options: {
@@ -630,6 +640,10 @@ $(document).ready(function() {
     $.ui_core.backtop('#backtop');
     $.ui_core.distance({
         now: '2013-08-18 00:59:49 +0800'
+    });
+    $("#focus").on('ajax:success', function(data) {
+    	$("#focus").parent().html('<a id="focus" href="javascript:void(0);">已关注</a>');
+    	$("#favorites_count").text(data);
     });
 });
 var _gaq = _gaq || [];

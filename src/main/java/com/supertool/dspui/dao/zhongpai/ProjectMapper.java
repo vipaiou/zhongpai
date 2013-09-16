@@ -26,4 +26,8 @@ public interface ProjectMapper {
 
 	List<Map<String, Object>> search(Map<String, String> map);
 
+	List<Map<String, Object>> selectByFavoriteUserid(@Param("userId")int userId);
+
+	List<Map<String, Object>> selectBySupportUserid(@Param("userId")int userId);
+
 }

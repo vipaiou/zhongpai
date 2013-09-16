@@ -52,4 +52,13 @@
 	<if test="order=='6'.toString()"> order by starttime desc; </if>
 	
 </select>
+
+<select id="selectBySupportUserid" resultType="map">
+	select * from project p right join support s on(p.id=s.projectId) where s.userid=${userId};
+</select>
+
+<select id="selectByFavoriteUserid" resultType="map">
+	select * from project p right join focus f on(p.id=f.projectId) where f.userid=${userId};
+</select>
+
 </mapper>
