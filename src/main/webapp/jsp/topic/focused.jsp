@@ -26,6 +26,21 @@
 <td align="right" width="68">最后回应</td>
 <td class="new-comment-list-my-01" align="left">项目</td>
 </tr>
+
+<c:forEach items="${topices }" var="topic">
+<tr>
+<td align="center" width="30">
+<div class="comment-icon">[${topic.type }]</div>
+</td><td width="330"><a href="<%=request.getContextPath()%>/posts/19724" class="c5 c5-length" title="${topic.title }" target="_blank">${topic.title }</a>
+	<div style="display: none;" class="list-icon-new" data-visited-time="${topic.createdate }" data-visited-id="19724">新</div></td>
+<td align="left"><a href="<%=request.getContextPath()%>/user/${topic.userid }" class="c9 c9-length" target="_blank" title="${topic.userid }">${topic.userid }</a></td>
+<td align="center"><a href="<%=request.getContextPath()%>/topic/${topic.id }" class="c5">1</a></td>
+<td align="right"><a href="<%=request.getContextPath()%>/topic/${topic.id }?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="${topic.createdate }"></a></td>
+<td class="my-01" align="left">
+<a href="<%=request.getContextPath()%>/projects/view/${topic.projectid }" target="_blank" title="${topic.name }">${topic.name }</a>
+</td>    
+</tr>
+</c:forEach>
 <tr>
 <td align="center" width="30">
 <div class="comment-icon">[顶]</div>
@@ -231,7 +246,57 @@
 <script src="<%=request.getContextPath()%>/demohour-index_files/posts-cee7846e0147c9be9a0b484efae2fd79.js" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
-$(document).ready(function(){$.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');$('input, textarea').placeholder();$(window).scroll(function(){if($(window).scrollTop() > 48){$('#ui_notification').addClass('layer-message-fixed');}else{$('#ui_notification').removeClass('layer-message-fixed');}});$.ui_notification.ready({url:'http://nf-2.demohour.com',data:{"new_comments_count":0,"new_messages_count":0,"new_notifications_count":0,"new_posts_count":0}});$.ui_core.paginate("#project-list-more"),$.ui_core.visit({until:"2013-09-01 17:43:40 +0800"}),$("a").on("click",function(e){$(e.target).parent().find("div.list-icon-new").hide()}),$("body").on("click","a.ui-popup-delete",function(e){$("#ui_popup_delete").find("div.ui-popup-content").css("top",$(window).height()/2-120),$("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),$("#ui_popup_delete").find("a.ui-popup-url").attr("href",$(e.target).attr("href")),$("#ui_popup_delete").toggle(),e.preventDefault()}),$("body").on("click","a.ui-popup-message",function(e){$("#ui_popup_message").find("div.ui-popup-content").css("top",$(window).height()/2-150),$("#ui_popup_message").find("form").attr("action",$(e.target).attr("href")),$("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),$("#ui_popup_message").toggle(),$("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),$("#ui_popup_message").find("textarea").focus(),$(e.target).attr("href").indexOf("?recipient_id=")>0?($("#ui_popup_message_url").show(),$("#ui_popup_message_email").hide(),$("#ui_popup_message_url").find("a").attr("href",$(e.target).attr("href").replace("?recipient_id=","/"))):($("#ui_popup_message_url").hide(),$("#ui_popup_message_email").show()),e.preventDefault()});;$.ui_core.backtop('#backtop');$.ui_core.distance({now:'2013-09-01 21:43:40 +0800'});});
+$(document).ready(function() {
+    $.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');
+    $('input, textarea').placeholder();
+    $(window).scroll(function() {
+        if ($(window).scrollTop() > 48) {
+            $('#ui_notification').addClass('layer-message-fixed');
+        } else {
+            $('#ui_notification').removeClass('layer-message-fixed');
+        }
+    });
+/*     $.ui_notification.ready({
+        url: 'http://nf-2.demohour.com',
+        data: {
+            "new_comments_count": 0,
+            "new_messages_count": 0,
+            "new_notifications_count": 0,
+            "new_posts_count": 0
+        }
+    }); */
+    $.ui_core.paginate("#project-list-more"),
+    $.ui_core.visit({
+        until: "2013-09-01 17:43:40 +0800"
+    }),
+    $("a").on("click", 
+    function(e) {
+        $(e.target).parent().find("div.list-icon-new").hide()
+    }),
+    $("body").on("click", "a.ui-popup-delete", 
+    function(e) {
+        $("#ui_popup_delete").find("div.ui-popup-content").css("top", $(window).height() / 2 - 120),
+        $("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),
+        $("#ui_popup_delete").find("a.ui-popup-url").attr("href", $(e.target).attr("href")),
+        $("#ui_popup_delete").toggle(),
+        e.preventDefault()
+    }),
+    $("body").on("click", "a.ui-popup-message", 
+    function(e) {
+        $("#ui_popup_message").find("div.ui-popup-content").css("top", $(window).height() / 2 - 150),
+        $("#ui_popup_message").find("form").attr("action", $(e.target).attr("href")),
+        $("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),
+        $("#ui_popup_message").toggle(),
+        $("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),
+        $("#ui_popup_message").find("textarea").focus(),
+        $(e.target).attr("href").indexOf("?recipient_id=") > 0 ? ($("#ui_popup_message_url").show(), $("#ui_popup_message_email").hide(), $("#ui_popup_message_url").find("a").attr("href", $(e.target).attr("href").replace("?recipient_id=", "/"))) : ($("#ui_popup_message_url").hide(), $("#ui_popup_message_email").show()),
+        e.preventDefault()
+    });;
+    $.ui_core.backtop('#backtop');
+    $.ui_core.distance({
+        now: '2013-09-01 21:43:40 +0800'
+    });
+});
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-23451409-1']);
 _gaq.push(['_trackPageview']);

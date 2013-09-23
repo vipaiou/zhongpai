@@ -26,6 +26,21 @@
 <td align="right" width="68">最后回应</td>
 <td class="new-comment-list-my-01" align="left">项目</td>
 </tr>
+
+<c:forEach items="${topices }" var="topic">
+<tr>
+<td align="center" width="30">
+<div class="comment-icon">${topic.type }[顶]</div>
+</td><td width="330"><a href="<%=request.getContextPath()%>/posts/19724" class="c5 c5-length" title="${topic.title }" target="_blank">${topic.title }</a>
+	<div style="display: none;" class="list-icon-new" data-visited-time="2013-08-21 17:59:08 +0800" data-visited-id="19724">新</div></td>
+<td align="left"><a href="<%=request.getContextPath()%>/user/${topic.userid }" class="c9 c9-length" target="_blank" title="${topic.userid }">${topic.userid }</a></td>
+<td align="center"><a href="<%=request.getContextPath()%>/topic/${topic.id }" class="c5">1</a></td>
+<td align="right"><a href="<%=request.getContextPath()%>/topic/${topic.id }?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-08-21 17:59:08 +0800">11天以前</a></td>
+<td class="my-01" align="left">
+<a href="<%=request.getContextPath()%>/projects/view/${topic.projectid }" target="_blank" title="${topic.name }">${topic.name }</a>
+</td>    
+</tr>
+</c:forEach>
 <tr>
 <td align="center" width="30">
 <div class="comment-icon">[顶]</div>

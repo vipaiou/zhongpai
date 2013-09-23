@@ -26,17 +26,20 @@
 <td align="right" width="68">最后回应</td>
 <td class="new-comment-list-my-01" align="left">项目</td>
 </tr>
+<c:forEach items="${topices }" var="topic">
 <tr>
 <td align="center" width="30">
-<div class="comment-icon">[顶]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/19724" class="c5 c5-length" title="什么时候开始筹款啊？" target="_blank">什么时候开始筹款啊？</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-08-21 17:59:08 +0800" data-visited-id="19724">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1075802" class="c9 c9-length" target="_blank" title="阿舞游泳和存钱要两手抓">阿舞游泳和存钱要两手抓</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/19724" class="c5">1</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/19724?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-08-21 17:59:08 +0800">11天以前</a></td>
+<div class="comment-icon">${topic.type }[顶]</div>
+</td><td width="330"><a href="<%=request.getContextPath()%>/posts/19724" class="c5 c5-length" title="${topic.title }" target="_blank">${topic.title }</a>
+	<div style="display: none;" class="list-icon-new" data-visited-time="2013-08-21 17:59:08 +0800" data-visited-id="19724">新</div></td>
+<td align="left"><a href="<%=request.getContextPath()%>/user/${topic.userid }" class="c9 c9-length" target="_blank" title="${topic.userid }">${topic.userid }</a></td>
+<td align="center"><a href="<%=request.getContextPath()%>/topic/${topic.id }" class="c5">1</a></td>
+<td align="right"><a href="<%=request.getContextPath()%>/topic/${topic.id }?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-08-21 17:59:08 +0800">11天以前</a></td>
 <td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
+<a href="<%=request.getContextPath()%>/projects/${topic.projectid }" target="_blank" title="${topic.name }">${topic.name }</a>
 </td>    
 </tr>
+</c:forEach>
 
 <tr>
 <td align="center" width="30">
