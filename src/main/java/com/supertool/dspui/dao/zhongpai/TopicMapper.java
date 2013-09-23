@@ -12,4 +12,8 @@ public interface TopicMapper {
 
 	Object add(Map<String, Object> map);
 
+	List<Map<String, Object>> getFocusedTopicByUserId(int userid);
+
+	List<Map<String, Object>> getCreatedTopicByUserId(int userid);
+
 }

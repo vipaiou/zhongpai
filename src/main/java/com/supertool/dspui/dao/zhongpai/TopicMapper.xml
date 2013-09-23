@@ -13,4 +13,17 @@
 	                      type=#{category},createdate=now(),projectid=#{projectid},
 	                      userid=#{userid},pid=${pid}
 </insert>
+
+<select id="getFocusedTopicByUserId" resultType="map">
+	select * from topic t right join project p on (t.projectid=p.id) right join focus f on (f.projectid=p.id) where f.userid=#{userid} and isfirst='1'
+</select>
+
+<select id="getCreatedTopicByUserId" resultType="map">
+	select * from topic t left join project p on (t.projectid=p.id) where t.userid=#{userid} and t.isfirst='1'
+</select>
+
+<select id="getCommentedTopicByUserId" resultType="map">
+	select DISTINCT t.*  from topic t right join topic t1 on (t1.pid=t.id) where t1.userid=#{userid} and t.isfirst='1'
+</select>
+
 </mapper>

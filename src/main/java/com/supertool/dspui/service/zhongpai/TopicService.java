@@ -31,5 +31,13 @@ public class TopicService {
 		return topicMapper.add(map);
 	}
 
+	public List<Map<String, Object>> getFocusedTopicByUserId() {
+		return topicMapper.getFocusedTopicByUserId(UserContext.getLoginUserId());
+	}
+
+	public List<Map<String, Object>> getCreatedTopicByUserId() {
+		return topicMapper.getCreatedTopicByUserId(UserContext.getLoginUserId());
+	}
+
 	
 }
