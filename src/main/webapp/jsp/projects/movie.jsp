@@ -3,13 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="bean"  uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ include file="../../include/header.jsp" %>
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:wb="http://open.weibo.com/wb" xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <title>众拍网</title>
 
 <meta name="keywords" content="众拍网"/>
-<meta name="description" content="众拍网"/>
+<meta name="description" content="众拍网"/> -->
 <!--上面是title-->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/team_files/style.css"/><!--主样式-->
 <script src="<%=request.getContextPath()%>/team_files/analytics.js" async="true"></script>
@@ -17,54 +18,16 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/team_files/hebing.js"></script>
 
 
-</head>
+<!-- </head>
 
-<body>
+<body> -->
 	<!--side scroll beginning-->
     <div id="hm_code"></div>
 	<div id="hm_code_img"></div>
     <a style="display: none;" id="hm_gotop" href="javascript:void(0)"></a>
     <!--side scroll end -->
 	<div class="hm_mainBody">
-	<!--header wrap beiginning-->
-    <div style="height: 6038px;" class="hm_leftNav">
-        <h1><a href="http://www.iheima.com/"><img src="<%=request.getContextPath()%>/team_files/logo.png" alt="i黑马" title="点击回到i黑马首页"/></a></h1>
-        <ul class="hm_mainNav">
-            <li class="hm_navHome current"><a class="hm_current" href="http://www.iheima.com/">首&nbsp;&nbsp;页</a></li>
-            <li class="hm_navContribute"><a href="http://www.iheima.com/tougao">出品人</a></li>
-            <li class="hm_navIdea"><a href="http://www.iheima.com/archives/category/evaluation">主创团队</a></li>
-            <li class="hm_navHeima"><a href="http://www.iheima.com/archives/category/heima">创意设计</a></li>
-			<li class="hm_navxsb"><a href="http://www.iheima.com/archives/category/tongxunshe">城市见面会</a></li>
-            <li class="hm_navHot"><a href="http://www.iheima.com/archives/category/for-inspiration">预算回报</a></li>
-            <li class="hm_navMore"><a href="">更多栏目</a>
-				<dl style="display: none;">
-					<dt>更多栏目</dt>
-					<dd><a href="http://www.iheima.com/archives/category/top10">i黑马TOP10</a></dd><dd><a href="http://www.iheima.com/archives/category/top">头条</a></dd><dd><a href="http://www.iheima.com/archives/category/qnews">快新闻</a></dd><dd><a href="http://www.iheima.com/archives/category/shuzhai">书摘</a></dd><dd><a href="http://www.iheima.com/archives/category/false">败局</a></dd><dd><a href="http://www.iheima.com/archives/category/zhuanlan">专栏</a></dd>
-				</dl>
-			</li>
-		</ul>
-<!--         <ul class="hm_magNav">
-			<li><a href="http://www.iheima.com/renrenindex" target="_blank" style="color:black;">发现创业优才</a></li>
-        </ul>
-        <ul class="hm_productsNav">
-			<li><a href="http://cywlts.tmall.com/shop/view_shop.htm" rel="nofollow">杂志订阅</a></li>
-            <li><a href="http://hmds.iheima.com/" target="_blank">黑马大赛</a></li>
-            <li><a href="http://hmy.iheima.com/" target="_blank">黑马成长营</a></li>
-            <li><a href="http://www.iheima.com/huawei" target="_blank">黑马-华为特训营</a></li>
-			<li class="hm_last"><a href="http://app.iheima.com/" target="_blank">移动客户端</a></li>
-        </ul> -->
-        <ul class="hm_snsNav">
-            <li>
-                <a href=""><img src="<%=request.getContextPath()%>/team_files/sns_weixin.png" alt="微信" title="点击关注i黑马官方微信" height="64" width="64"></a>
-            </li>
-            <li class="no">
-                <a href="http://weibo.com/iheimawang" target="_blank"><img src="<%=request.getContextPath()%>/team_files/sns_weibo.png" alt="微博" title="点击关注i黑马官微博" height="64" width="64"></a>
-            </li>
-        </ul>
-    </div>
-	<div class="clear"></div>
-	<!--轮播-->
-	<style>
+		<style>
 	#wenchuan{ overflow:hidden; height:80px;}
 #wenchuan a:link,#wenchuan a:visited{color:#333;text-decoration:none;}
 #wenchuan a:hover,#wenchuan a:active{color:#000;text-decoration:underline;}
@@ -106,7 +69,7 @@ var timer1 = setInterval(function(){
 */
 </script>
 
-        <div class="hm_login-shareWrap">
+<%--         <div class="hm_login-shareWrap">
             <span class="hm_share"><a href="http://feed.feedsky.com/iheima" class="hm_rssBtn">RSS</a><a href="http://list.qq.com/cgi-bin/qf_invite?id=cf9ad1c0880c1b3a1e5caeff7ad23843de85664a859b34d2" rel="nofollow" class="hm_subscriptionBtn">订阅</a></span>
 <!--登陆-->		
 		<span class="hm_login">
@@ -115,8 +78,8 @@ var timer1 = setInterval(function(){
 			
 		</span>
 		
-		</div>
-		 <div class="hm_tagsSearchWrap">
+		</div> --%>
+<!-- 		 <div class="hm_tagsSearchWrap">
 			<div class="hm_tagsColorWrap hm_tagsScroll" id="hm_tagsColorWrap">
             <h5>热门标签</h5>
              <div class="biaoqian">
@@ -140,10 +103,49 @@ var timer1 = setInterval(function(){
 			</div>
         </div>
         
-		</div>
+		</div> -->
     </div>
+	<!--header wrap beiginning-->
+    <div style="height: 6038px;" class="hm_leftNav">
+        <%-- <h1><a href="http://www.iheima.com/"><img src="<%=request.getContextPath()%>/team_files/logo.png" alt="i黑马" title="点击回到i黑马首页"/></a></h1> --%>
+        <ul class="hm_mainNav">
+            <li class="hm_navHome current"><a class="hm_current" href="http://www.iheima.com/">首&nbsp;&nbsp;页</a></li>
+            <li class="hm_navContribute"><a href="http://www.iheima.com/tougao">出品人</a></li>
+            <li class="hm_navIdea"><a href="http://www.iheima.com/archives/category/evaluation">主创团队</a></li>
+            <li class="hm_navHeima"><a href="http://www.iheima.com/archives/category/heima">创意设计</a></li>
+			<li class="hm_navxsb"><a href="http://www.iheima.com/archives/category/tongxunshe">城市见面会</a></li>
+            <li class="hm_navHot"><a href="http://www.iheima.com/archives/category/for-inspiration">预算回报</a></li>
+            <li class="hm_navMore"><a href="">更多栏目</a>
+				<dl style="display: none;">
+					<dt>更多栏目</dt>
+					<dd><a href="http://www.iheima.com/archives/category/top10">i黑马TOP10</a></dd><dd><a href="http://www.iheima.com/archives/category/top">头条</a></dd><dd><a href="http://www.iheima.com/archives/category/qnews">快新闻</a></dd><dd><a href="http://www.iheima.com/archives/category/shuzhai">书摘</a></dd><dd><a href="http://www.iheima.com/archives/category/false">败局</a></dd><dd><a href="http://www.iheima.com/archives/category/zhuanlan">专栏</a></dd>
+				</dl>
+			</li>
+		</ul>
+<!--         <ul class="hm_magNav">
+			<li><a href="http://www.iheima.com/renrenindex" target="_blank" style="color:black;">发现创业优才</a></li>
+        </ul>
+        <ul class="hm_productsNav">
+			<li><a href="http://cywlts.tmall.com/shop/view_shop.htm" rel="nofollow">杂志订阅</a></li>
+            <li><a href="http://hmds.iheima.com/" target="_blank">黑马大赛</a></li>
+            <li><a href="http://hmy.iheima.com/" target="_blank">黑马成长营</a></li>
+            <li><a href="http://www.iheima.com/huawei" target="_blank">黑马-华为特训营</a></li>
+			<li class="hm_last"><a href="http://app.iheima.com/" target="_blank">移动客户端</a></li>
+        </ul> -->
+        <ul class="hm_snsNav">
+            <li>
+                <a href=""><img src="<%=request.getContextPath()%>/team_files/sns_weixin.png" alt="微信" title="点击关注i黑马官方微信" height="64" width="64"></a>
+            </li>
+<%--             <li class="no">
+                <a href="http://weibo.com/iheimawang" target="_blank"><img src="<%=request.getContextPath()%>/team_files/sns_weibo.png" alt="微博" title="点击关注i黑马官微博" height="64" width="64"></a>
+            </li> --%>
+        </ul>
+    </div>
+	<div class="clear"></div>
+	<!--轮播-->
+
     <!--header wrap end-->
-	<div id="light" class="white_content">
+	<%-- <div id="light" class="white_content">
       <div class="close"><span class="deng">登录</span><a href="javascript:void(0)" onclick="hide('light')">X关闭</a></div>
       <div class="con"> 
       <span></span>
@@ -156,7 +158,7 @@ var timer1 = setInterval(function(){
 	  <a href="http://www.iheima.com/wp-register.php"><input name="" class="" id="zhuce" value="" type="button"></a></p>
       </form>
       </div>
-</div>
+</div> --%>
 <div id="fade" class="black_overlay"></div>
     <!--main wrap beginning-->
     <div id="hm_mainContainer">
@@ -176,26 +178,6 @@ var timer1 = setInterval(function(){
             <div class="hm_roadshow">
             	<h6><a href="http://www.iheima.com/archives/category/heima" style="color:#fff;" alt="黑马路演" title="黑马路演" target="_blank">黑马路演</a></h6>
                 <ul class="hm_roadList">
-				
-            			 
-												
-                	
-			  
-												
-                	
-			  
-												
-                	
-			  
-												
-                	
-			  
-												
-                	
-			  
-												
-                	
-			 				
 			
                 <li style="margin-top: -20.7014px;" class="hm_roadList">
                 <div class="hm_titleWrap">
@@ -1326,7 +1308,8 @@ Hughes)在《三张嘴传遍全世界——口碑行销威力大》书中曾提�
     <!--footer warp end-->
 	</div>
 
-
+<script src="<s:url value="/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js"/>" type="text/javascript"></script>
+<script src="<s:url value="/demohour-index_files/projects-1ab927eb13eddbb381c44171a7060594.js"/>" type="text/javascript"></script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
