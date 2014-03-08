@@ -39,17 +39,29 @@
 </update>
 
 <select id="search" resultType="map">
-	select * from project where id > 0
-	<if test="status != '0'.toString()"> and status=#{status} </if>
+	select p.* ,
+		(select count(t.id) from topic t where t.projectId=p.id and isfirst='1') as topicnum,
+		(select count(s.id) from support s where s.projectid=p.id) as supportnum,
+		(select count(f.id) from focus f where f.projectid=p.id) as focusnum,
+		(select ifnull(SUM(r.money),0) from support s1 left join `return` r on (r.id=s1.returnid)  where s1.projectid=p.id) as totalmoney,
+		if(p.status='2', p.begintime, p.starttime) as timeorder
+	from project p  where id > 0
+	<if test="status == '0'.toString() "> and status in ('2','3','4','5') </if>
+	<if test="status == '3'.toString() "> and status='2' </if>
+	<if test="status == '4'.toString() "> and status='3' </if>
+	<if test="status == '5'.toString() "> and status='4' </if>
+	<if test="status == '6'.toString() "> and status='5' </if>
+	<if test="status == '1'.toString()"> and recommend='1' </if>
+	<if test="status == '2'.toString()"> and classic='1' </if>
 	<if test="category != '0'.toString()"> and category=#{category} </if>
 	<if test="province!='0'.toString()"> and province=#{province} </if>
 	<if test="order=='0'.toString()"> order by id desc; </if>
 	<if test="order=='1'.toString()"> order by money desc; </if>
-	<if test="order=='2'.toString()"> order by id asc; </if>
-	<if test="order=='3'.toString()"> order by id asc; </if>
-	<if test="order=='4'.toString()"> order by id asc; </if>
+	<if test="order=='2'.toString()"> order by topicnum asc; </if>
+	<if test="order=='3'.toString()"> order by supportnum asc; </if>
+	<if test="order=='4'.toString()"> order by focusnum asc; </if>
 	<if test="order=='5'.toString()"> order by id asc; </if>
-	<if test="order=='6'.toString()"> order by starttime desc; </if>
+	<if test="order=='6'.toString()"> order by timeorder asc; </if>
 	
 </select>
 
@@ -60,5 +72,9 @@
 <select id="selectByFavoriteUserid" resultType="map">
 	select * from project p right join focus f on(p.id=f.projectId) where f.userid=${userId};
 </select>
+
+<update id="updateViewtime">
+	update project set viewnum=viewnum+1 where id=#{projectId}
+</update>
 
 </mapper>

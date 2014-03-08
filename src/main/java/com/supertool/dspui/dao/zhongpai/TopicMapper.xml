@@ -6,7 +6,9 @@
 	select count(*) from topic where projectId=#{projectId} and isfirst='1'
 </select>
 <select id="getTopicByProjectId" resultType="map">
-	select * from topic where projectId=#{projectId} and isfirst='1'
+	select t.*, u.username as username, u.avatar as avatar,
+	(select count(t1.id) from topic t1 where t1.pid=t.id) as commentnum 	
+	from topic t left join st_user u on(t.userid=u.UserId) where projectId=#{projectId} and isfirst='1'
 </select>
 <insert id="add" keyProperty="id">
 	insert into topic set title=#{title}, content=#{content}, isfirst=${isfirst},
@@ -15,15 +17,44 @@
 </insert>
 
 <select id="getFocusedTopicByUserId" resultType="map">
-	select * from topic t right join project p on (t.projectid=p.id) right join focus f on (f.projectid=p.id) where f.userid=#{userid} and isfirst='1'
+	select t.*,p.*,f.*,(select u.username from st_user u where u.userid=t.userId) as username from topic t right join project p on (t.projectid=p.id) right join focus f on (f.projectid=p.id) where f.userid=#{userid} and isfirst='1'
 </select>
 
 <select id="getCreatedTopicByUserId" resultType="map">
-	select * from topic t left join project p on (t.projectid=p.id) where t.userid=#{userid} and t.isfirst='1'
+	select t.*,p.*,(select u.username from st_user u where u.userid=t.userId) as username from topic t left join project p on (t.projectid=p.id) where t.userid=#{userid} and t.isfirst='1'
 </select>
 
 <select id="getCommentedTopicByUserId" resultType="map">
-	select DISTINCT t.*  from topic t right join topic t1 on (t1.pid=t.id) where t1.userid=#{userid} and t.isfirst='1'
+	select DISTINCT t.*,p.*, u.UserName as username from topic t LEFT JOIN comments c on (c.topicid=t.id) LEFT JOIN st_user u ON (u.UserId=c.userid) right join project p on (t.projectid=p.id)  where c.userid=#{userid} and t.isfirst='1'
 </select>
+
+<select id="getTopicMetaByProjectId" resultType="map">
+	select (select count(*) from topic where projectId=#{projectId} and isfirst='1') as total,
+	 		(select count(*) from topic where projectId=#{projectId} and isfirst='1' and type='0') as normal,
+	   		(select count(*) from topic where projectId=#{projectId} and isfirst='1' and type='1') as info,
+	  		(select count(*) from topic where projectId=#{projectId} and isfirst='1' and type='2') as faq,
+	   		(select count(*) from topic where projectId=#{projectId} and isfirst='1' and type='3') as question,
+	   		(select count(*) from topic where projectId=#{projectId} and isfirst='1' and type='4') as up,
+	   		(select count(*) from topic where projectId=#{projectId} and isfirst='1' and type='5') as down
+</select>
+<select id="getTopicById" resultType="map">
+	select t.*, u.username as username, u.avatar as avatar,
+	(select count(t1.id) from topic t1 where t1.pid=t.id) as commentnum 	
+	from topic t left join st_user u on(t.userid=u.UserId) where t.id=#{topicid} and isfirst='1'
+</select>
+<select id="getCommentsByTopicid" resultType="map">
+	select t.*, u.username as username, u.avatar as avatar, u1.username as replyusername, u1.userid as replyuserid, t1.content as reply
+	from topic t 
+	left join st_user u on(t.userid=u.UserId) 
+	left join topic t1 on(t.replyid=t1.id) 
+	left join st_user u1 on(t1.userid=u1.UserId) 
+	where t.pid=#{topicid} and t.isfirst='0'
+</select>
+
+<insert id="addcomment" keyProperty="id">
+	insert into topic set content=#{content}, isfirst='0',
+	                      createdate=now(),projectid=#{projectid},
+	                      userid=#{userid},pid=${pid}, replyid=${replyid}
+</insert>
 
 </mapper>

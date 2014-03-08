@@ -15,4 +15,6 @@ public interface FocusMapper {
 	void focus(@Param("id")int id, @Param("userid") int loginUserId);
 
 	int checkFocusByUserid(@Param("id")int id, @Param("userid") int loginUserId);
+
+	int getCountByPidAndUid(@Param("projectid")int id, @Param("userid")int uid);
 }

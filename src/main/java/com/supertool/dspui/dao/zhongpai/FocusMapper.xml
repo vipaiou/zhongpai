@@ -7,7 +7,10 @@
 	select count(*) from focus where projectId=#{projectId}
 </select>
 <select id="getFocusByProjectId" resultType="map">
-	select * from focus where projectId=#{projectId}
+	select u.*, f.createdate as focusdate,
+			(select count(p1.id) from project p1 right join support s on(p1.id=s.projectId) where s.userid=f.userid) as supported,
+			(select SUM(r.money) from project p1 right join support s on(p1.id=s.projectId) left join `return` r on (r.id=s.returnid)  where s.userid=f.userid) as money
+			 from focus f left join st_user u on (u.UserId=f.userid) where f.projectId=#{projectId}
 </select>
 
 <insert id="focus" keyProperty="id">
@@ -15,6 +18,10 @@
 </insert>
 
 <select id="checkFocusByUserid" resultType="int">
+	select count(*) from focus where projectid=${id} and userid=${userid};
+</select>
+
+<select id="getCountByPidAndUid" resultType="int">
 	select count(*) from focus where projectid=${id} and userid=${userid};
 </select>
 

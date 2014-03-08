@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public interface TopicMapper {
+public interface CommentMapper {
 
 	int getTopicnumByProjectId(int id);
 
@@ -16,8 +16,6 @@ public interface TopicMapper {
 
 	List<Map<String, Object>> getCreatedTopicByUserId(int userid);
 
-	List<Map<String, Object>> getCommentedTopicByUserId(int userid);
-	
 	Map<String, String> getTopicMetaByProjectId(int id);
 
 	Object getTopicById(int topicid);
@@ -26,5 +24,8 @@ public interface TopicMapper {
 
 	Object addcomment(Map<String, Object> map);
 
+	List<Map<String, Object>> getReceived(int userid);
+
+	List<Map<String, Object>> getSent(int userid);
 
 }

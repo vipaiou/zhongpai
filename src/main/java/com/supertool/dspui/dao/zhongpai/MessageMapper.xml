@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.zhongpai.MessageMapper">
+
+<insert id="add" keyProperty="id">
+	insert into message set content=#{content}, 
+	                      createdate=now(), `from`=#{userid},
+	                      `to`=#{recipient_id}
+</insert>
+
+<select id="getReceived" resultType="map">
+	select m.*, u.username as fromusername, u.avatar as fromavatar, 
+	     u1.username as tousername, u1.avatar as toavatar,
+	     (select count(m1.id) from message m1 where m1.from=m.from or m1.to=m.from) as messagecount  
+	    from message m 
+		left join st_user u on(m.from=u.UserId) 
+		left join st_user u1 on(m.to=u1.UserId)
+	    where m.to=#{userid} order by m.id desc
+</select>
+
+<select id="getSent" resultType="map">
+	select m.*, u.username as fromusername, u.avatar as fromavatar, 
+	     u1.username as tousername, u1.avatar as toavatar,
+	     (select count(m1.id) from message m1 where m1.from=m.to or m1.to=m.to) as messagecount  
+	    from message m 
+		left join st_user u on(m.from=u.UserId) 
+		left join st_user u1 on(m.to=u1.UserId)
+	    where m.from=#{userid} order by m.id desc
+</select>
+
+<select id="getById" resultType="map">
+	select * from message where id>0;
+</select>
+
+<select id="getContactor" resultType="map">
+	select DISTINCT u.*, u.userid as uid,
+	    (select count(m1.id) from message m1 where m1.from=uid or m1.to=uid) as messagecount 
+	    from message m 
+		left join st_user u on(if(m.from=1, m.to, m.from)=u.UserId) 
+	    where m.from=#{userid} or m.to=#{userid}
+</select>
+
+<select id="getDialogue" resultType="map">
+select m.*, u.username as fromusername, u.avatar as fromavatar, 
+	     u1.username as tousername, u1.avatar as toavatar,
+	     (select count(m1.id) from message m1 where m1.from=m.to or m1.to=m.to) as messagecount  
+	    from message m 
+		left join st_user u on(m.from=u.UserId) 
+		left join st_user u1 on(m.to=u1.UserId)
+	    where (m.from=#{userid} and m.to=#{with}) or (m.from=#{with} and m.to=#{userid}) order by m.id desc
+</select>
+
+</mapper>

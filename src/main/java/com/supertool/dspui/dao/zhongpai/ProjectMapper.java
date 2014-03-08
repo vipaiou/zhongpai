@@ -30,4 +30,6 @@ public interface ProjectMapper {
 
 	List<Map<String, Object>> selectBySupportUserid(@Param("userId")int userId);
 
+	void updateViewtime(@Param("projectId")int id);
+
 }

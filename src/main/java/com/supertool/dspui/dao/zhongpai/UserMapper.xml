@@ -29,6 +29,13 @@
 	
 </update>
 
+<update id="updateLoginInfo" parameterType="com.supertool.dspui.model.User">
+	update st_user set
+	loginCount = #{loginCount},
+	logintime = now()
+	where UserId = #{userId}
+</update>
+
 <update id="updateUserPasswordByName" >
 	update st_user set
 	Password = #{password}
@@ -72,4 +79,13 @@
 	update st_user set tags=#{tags} where userid=${userid}
 </update>
 <!-- function  -->
+
+
+<select id="getUserDetailById" resultType="map" parameterType="Object" >
+ select u.*, 
+        (select count(p.id) from project p where p.createuser=#{id} and step > 0) as created, 
+        (select count(p1.id) from project p1 right join support s on(p1.id=s.projectId) where s.userid=#{id}) as supported
+  from st_user u where userid=#{id}
+</select>
+
 </mapper>

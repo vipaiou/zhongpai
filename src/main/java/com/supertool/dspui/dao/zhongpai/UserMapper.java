@@ -254,4 +254,8 @@ public interface UserMapper {
 	public void updateAccount(Map<String, Object> map);
 	public void updateNotification(Map<String, Object> map);
 	public void updateTags(Map<String, Object> map);
+	
+	public void updateLoginInfo(User user);
+	
+	public Map<?, ?> getUserDetailById(Object object);
 }

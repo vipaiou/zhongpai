@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supertool.dspui.dao.zhongpai.CommentMapper">
+<select id="getTopicnumByProjectId" resultType="int">
+	select count(*) from topic where projectId=#{projectId} and isfirst='1'
+</select>
+
+<select id="getCommentedTopicByUserId" resultType="map">
+	select DISTINCT t.*  from topic t right join topic t1 on (t1.pid=t.id) where t1.userid=#{userid} and t.isfirst='1'
+</select>
+
+<select id="getCommentsByTopicid" resultType="map">
+	select c.*, u.username as username, u.avatar as avatar, 
+	u1.username as replyusername, 
+	u1.userid as replyuserid, c1.content as reply 
+	from comments c 
+	left join comments c1 on(c1.id=c.replycommentid) 
+	left join st_user u on(c.userid=u.UserId) 
+	left join st_user u1 on(c.replyuserid=u.UserId) 
+	where c.topicid=#{topicid}
+</select>
+
+<insert id="addcomment" keyProperty="id">
+	insert into comments set content=#{content}, 
+	                      createdate=now(), projectid=#{projectid},
+	                      userid=#{userid}, replyuserid=${replyuserid},
+	                      replycommentid=#{replycommentid}, topicid=#{topicid}
+</insert>
+
+<select id="getReceived" resultType="map">
+	select c.*, c1.content as replycontent, u.username as username, u.avatar as avatar, 
+	     u1.username as topicusername, u1.avatar as topicavatar, u1.userid as topicuserid, 
+	     t.title as topictitle 
+	    from comments c 
+		left join st_user u on(c.userid=u.UserId) 
+	    left join comments c1 on(c.replycommentid=c1.id) 
+		left join topic t on(c.topicid=t.id) 
+		left join st_user u1 on(t.userid=u1.UserId) 
+	    where c.replyuserid=#{userid}
+</select>
+
+<select id="getSent" resultType="map">
+	select c.*, c1.content as replycontent, u.username as username, u.avatar as avatar, 
+	u1.username as topicusername, u1.avatar as topicavatar, u1.userid as topicuserid, 
+	t.title as topictitle 
+	    from comments c 
+		left join st_user u on(c.replyuserid=u.UserId) 
+	    left join comments c1 on(c.replycommentid=c1.id) 
+		left join topic t on(c.topicid=t.id) 
+		left join st_user u1 on(t.userid=u1.UserId) 
+	    where c.userid=#{userid}
+</select>
+
+</mapper>
