@@ -1,6 +1,10 @@
 package com.supertool.dspui.controller.zhongpai;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -81,21 +85,43 @@ public class ProjectController {
 		model.addAttribute("returns", returns);
 		int topicnum = topicService.getTopicnumByProjectId(id);
 		model.addAttribute("topicnum", topicnum);
+		
 		List<Map<String, Object>> topics = topicService.getTopicByProjectId(id);
 		model.addAttribute("topics", topics);
+		
 		int focusnum = focusService.getFocusnumByProjectId(id);
 		model.addAttribute("focusnum", focusnum);
 		List<Map<String, Object>> focus = focusService.getFocusByProjectId(id);
 		model.addAttribute("focus", focus);
 		model.addAttribute("imagehost", Config.getImageHost());
-		Map<?,?> createuser = userService.getUserById(project.get("createuser"));
+		Map<?,?> createuser = userService.getUserDetailById(project.get("createuser"));
 		model.addAttribute("createuser", createuser);
+		
 		int focused = focusService.checkFocusByUserid(id, UserContext.getLoginUserId());
 		model.addAttribute("focused", focused);
-		
+
+		Map<String,String> topicmeta = topicService.getTopicMetaByProjectId(id); 
+		model.addAttribute("topicmeta", topicmeta);
+		int ratio = 100*focusnum/Integer.parseInt(project.get("targetfocusnum").toString());
+		model.addAttribute("focusratio", ratio);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		try {
+			int preparedays = (int)((new Date().getTime() - df.parse(project.get("begintime").toString().substring(0, 19)).getTime())/1000/60/60/24);
+			model.addAttribute("preparedays", preparedays);
+		} catch (ParseException e) {
+			int preparedays = 0;
+			model.addAttribute("preparedays", preparedays);
+		}
+		projectService.updateViewtime(id);
 		return "projects/view";
 	}
 	
+	public static void main(String[] args) throws ParseException {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.03");
+		System.out.println("yyyy-MM-dd hh:mm:ss.03".substring(0, 19));
+		int preparedays = (int)((new Date().getTime() - df.parse("2013-10-01 23:00:00.03").getTime())/1000/60/60/24);
+		System.out.println(preparedays);
+	}
 	/**
 	 * 首次编辑基本信息页面
 	 * @param model
@@ -221,7 +247,24 @@ public class ProjectController {
 		model.addAttribute("imagehost", Config.getImageHost());
 	}
 
-	@RequestMapping(value={"topics/{id}"})
+	@RequestMapping(value={"{id}/topic/{topicid}","{id}/topic/{topicid}/"})
+	public String topic(@PathVariable int id, @PathVariable int topicid, Model model){
+		Map<?, ?> project = projectService.selectById(id);
+		model.addAttribute("project", project);
+		Object topic = topicService.getTopicById(topicid);
+		List<Map<String, String>> comments = topicService.getCommentsByTopicid(topicid);
+		List<Map<String, Object>> topics = topicService.getTopicByProjectId(id);
+		model.addAttribute("topic", topic);
+		model.addAttribute("comments", comments);
+		model.addAttribute("topics", topics);
+		model.addAttribute("imagehost", Config.getImageHost());
+		int topicnum = topicService.getTopicnumByProjectId(id);
+		model.addAttribute("topicnum", topicnum);
+		int focusnum = focusService.getFocusnumByProjectId(id);
+		model.addAttribute("focusnum", focusnum);
+		return "projects/topic";
+	}
+	@RequestMapping(value={"{id}/topics/","{id}/topics"})
 	public String topics(@PathVariable int id, Model model){
 		List<Map<String, Object>> topics = topicService.getTopicByProjectId(id);
 		model.addAttribute("topics", topics);
@@ -234,8 +277,24 @@ public class ProjectController {
 		int focusnum = focusService.getFocusnumByProjectId(id);
 		model.addAttribute("focusnum", focusnum);
 		model.addAttribute("imagehost", Config.getImageHost());
-		Map<?,?> createuser = userService.getUserById(project.get("createuser"));
+		Map<?,?> createuser = userService.getUserDetailById(project.get("createuser"));
 		model.addAttribute("createuser", createuser);
+
+		int focused = focusService.checkFocusByUserid(id, UserContext.getLoginUserId());
+		model.addAttribute("focused", focused);
+		Map<String,String> topicmeta = topicService.getTopicMetaByProjectId(id); 
+		model.addAttribute("topicmeta", topicmeta);
+		int ratio = 100*focusnum/Integer.parseInt(project.get("targetfocusnum").toString());
+		model.addAttribute("focusratio", ratio);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		try {
+			int preparedays = (int)((new Date().getTime() - df.parse(project.get("begintime").toString().substring(0, 19)).getTime())/1000/60/60/24);
+			model.addAttribute("preparedays", preparedays);
+		} catch (ParseException e) {
+			int preparedays = 0;
+			model.addAttribute("preparedays", preparedays);
+		}
+		
 		return "projects/topics";
 	}
 
@@ -254,16 +313,32 @@ public class ProjectController {
 		List<Map<String, Object>> focus = focusService.getFocusByProjectId(id);
 		model.addAttribute("focus", focus);
 		model.addAttribute("imagehost", Config.getImageHost());
-		Map<?,?> createuser = userService.getUserById(project.get("createuser"));
+		Map<?,?> createuser = userService.getUserDetailById(project.get("createuser"));
 		model.addAttribute("createuser", createuser);
+
+		int focused = focusService.checkFocusByUserid(id, UserContext.getLoginUserId());
+		model.addAttribute("focused", focused);
+		Map<String,String> topicmeta = topicService.getTopicMetaByProjectId(id); 
+		model.addAttribute("topicmeta", topicmeta);
+		int ratio = 100*focusnum/Integer.parseInt(project.get("targetfocusnum").toString());
+		model.addAttribute("focusratio", ratio);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		try {
+			int preparedays = (int)((new Date().getTime() - df.parse(project.get("begintime").toString().substring(0, 19)).getTime())/1000/60/60/24);
+			model.addAttribute("preparedays", preparedays);
+		} catch (ParseException e) {
+			int preparedays = 0;
+			model.addAttribute("preparedays", preparedays);
+		}
 		return "projects/focuses";
 	}
 	
 	@RequestMapping(value={"focus/{id}","focus/{id}/"})
-	public @ResponseBody int focus(@PathVariable int id, Model model){
+	public String focus(@PathVariable int id, Model model){
 		focusService.focus(id, UserContext.getLoginUserId());
 		int focuses = focusService.getFocusnumByProjectId(id);
-		return focuses;
+		model.addAttribute("focuses", focuses);
+		return "projects/focus";
 	}
 
 }

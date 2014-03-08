@@ -41,7 +41,16 @@ public class TopicController {
 	}
 
 	@RequestMapping(value={"commented"})
-	public String commented(){
+	public String commented(Model model){
+		List<Map<String,Object>> topices = topicService.getCommentedTopicByUserId();
+		model.addAttribute("topices", topices);
 		return "topic/commented";
+	}
+	
+
+	@RequestMapping(value="addcomment")
+	public @ResponseBody Object addcomment(@RequestParam Map<String,Object> map){
+		Object id = topicService.addcomment(map);
+		return map;
 	}
 }
