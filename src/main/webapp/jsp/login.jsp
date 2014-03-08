@@ -4,6 +4,7 @@
 <%@ taglib prefix="bean"  uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ include file="../include/header.jsp" %>
+
 <%--  <div class="content">
  		
      <form action="<s:url value="/j_spring_security_check"/>" method="post">
