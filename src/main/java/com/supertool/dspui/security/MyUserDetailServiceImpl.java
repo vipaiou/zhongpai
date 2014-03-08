@@ -72,8 +72,9 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
         boolean accountNonLocked = true;  
         List<List<Authority>> userAuthoritys= null;//this.userService.getGroupedAuthoritysByUser(user);
         //System.out.println("loadUserByUsername="+userAuthoritys.size());
-        userdetail = new UserDetailsImpl(user.getUsername(), user.getPassword(), enables, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuths,userAuthoritys,user);  
-        
+        userdetail = new UserDetailsImpl(user.getUsername(), user.getPassword(), enables, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuths,userAuthoritys,user);
+        user.setLoginCount(user.getLoginCount() + 1);
+        userService.updateLoginInfo(user);
         logger.info("User [" + username
 				+ "] is successfully authenticated");
 		return userdetail; 

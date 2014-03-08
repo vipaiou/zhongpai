@@ -73,6 +73,7 @@ public class User implements Serializable{
 	private String projectnotify;
 	private String actionnotify;
 	private String tags;
+	private Date logintime;
 	
 	public String getAvatar() {
 		return avatar;
@@ -431,6 +432,16 @@ public class User implements Serializable{
 
 	public void setTags(String tags) {
 		this.tags = tags;
+	}
+
+
+	public Date getLogintime() {
+		return logintime;
+	}
+
+
+	public void setLogintime(Date logintime) {
+		this.logintime = logintime;
 	}
 
 
