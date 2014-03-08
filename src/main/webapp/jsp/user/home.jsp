@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="bean"  uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ include file="../../include/header.jsp" %>
 <link href="<s:url value="/demohour-index_files/projects-9afed8175e89fa73647b287e62737440.css" />" media="screen" rel="stylesheet" type="text/css">
 <style>
@@ -57,11 +58,15 @@ body {TEXT-ALIGN: center;}
 <strong>${user.UserName }</strong>
 </div>
 <div class="post-private-letter">
-	<a href="<%=request.getContextPath()%>/messages?to=${user.UserId}" class="ui-popup-message" title="私信给 ${user.UserName }">发私信</a>
+	<a href="<%=request.getContextPath()%>/messages?recipient_id=${user.UserId}" class="ui-popup-message" title="私信给 ${user.UserName }">发私信</a>
    <a class="a-btn-add mr10 j a_show_login" href="#" title="关注${user.UserName }">关注</a>
 </div>
-<p class="jiaru">${user.CreateDate } 加入众拍网</p>
-<p><a target="_blank" href="${user.weibo }">新浪微博 </a> <a target="_blank" href="${user.qq }">qq</a> <a target="_blank" href="${user.douban }">豆瓣</a> <a target="_blank" href="${user.renren }">人人</a> </p>
+<p class="jiaru">${fn:substring(user.CreateDate,0,19) } 加入众拍网</p>
+<p>
+<a target="_blank" href="${user.weibo }">新浪微博 </a> 
+<a target="_blank" href="${user.qq }">qq</a> 
+<a target="_blank" href="${user.douban }">豆瓣</a> 
+<a target="_blank" href="${user.renren }">人人</a> </p>
 <p><a>影愿</a>  <a><del>镜头说</del></a>  <a><del>留言板</del></a>  <a><del>收藏秀</del></a></p>
 </div>
 </div>
@@ -103,18 +108,13 @@ body {TEXT-ALIGN: center;}
 </form></div>
 </div>
 <ul class="topmenutabs">
-<li class="selected"><a href="<%=request.getContextPath()%>/user/${user.UserId}" class="select_projects">全部活动 </a></li>
-<li><a href="<%=request.getContextPath()%>/user/${user.UserId}/projects/?filter=yingyuan" class="select_projects">影愿<span>0</span></a></li>
-<li><a href="<%=request.getContextPath()%>/user/${user.UserId}/projects" class="select_projects">支持的项目 <span>0</span></a></li>
-<li><a href="<%=request.getContextPath()%>/user/${user.UserId}/supports" class="select_projects">发起的项目 <span>0</span></a></li>
+<li class="selected"><a id="alltab" class="select_projects" onclick="changetab('allactivity',this.id)">全部活动 </a></li>
+<li><a id="wishtab" class="" onclick="changetab('allwishes',this.id)">影愿<span>${fn:length(wishes) }</span></a></li>
+<li><a id="supporttab" class="" onclick="changetab('allsupported',this.id)">支持的项目 <span>${fn:length(supported) }</span></a></li>
+<li><a id="createtab" class="" onclick="changetab('allcreated',this.id)">发起的项目 <span>${fn:length(created) }</span></a></li>
+<li><a id="focustab" class="" onclick="changetab('allfocused',this.id)">关注的项目 <span>${fn:length(focused) }</span></a></li>
 </ul>
 </div></div>
-<div class="projectwrap myprojects">
-<div class="project-list tabs" id="projects">
-	<c:forEach items="${activities }" var="activity">
-	
-	</c:forEach>
-</div>
 <style>
 .mbtr2 {
     margin-bottom: 20px;
@@ -191,6 +191,11 @@ body .note {
     margin: 0 0 12px;
 }
 </style>
+<div class="projectwrap myprojects" id="allactivity">
+	<c:forEach items="${activities }" var="activity">
+	
+	</c:forEach>
+
 <div id="note" class=" ">
     <span class="title">
         ${user.UserName} 的影愿 &nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·
@@ -265,6 +270,185 @@ body .note {
     </div>
 </div>
 </div>
+
+<div class="projectwrap myprojects" id="allwishes">
+<c:forEach items="${wishes }" var="wish">
+	<div id="note" class=" ">
+    <span class="title">
+        ${user.UserName} 的镜头说 &nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·
+            <span class="pl">&nbsp;(<a target="_self" href="http://www.douban.com/people/Pearls/notes">全部</a>) </span>
+    </span>
+    <div class="content">
+        <div class="mbtr2">
+	        <div class="note-header pl2">
+	        <a class="ll" href="http://www.douban.com/note/300400475/" title="布鲁斯教你批量删除Kindle图书馆的已经推送内容">布鲁斯教你批量删除Kindle图书馆的已经推送内容</a>
+	        <br>
+	        </div>
+        <div class="clear"></div>
+        <div id="note_300400475_short" class="note">
+	        <div class="ll">
+		        <a href="http://www.douban.com/note/300400475/">
+		        <img alt="" src="http://img3.douban.com/icon/ul56323439-103.jpg">
+		        </a>
+	        </div>
+        	推送到kindle上的文件都会存放在Kindle Library里，怎么能批量删除Kindle Library里的文件呢？ 最近遇到这个问题了，找到如下方法和大家分享下  可以在安全策略不是那么严格的浏览器(Chrome因为安全原因依旧不可以)下美国主站Amazon.com使用 bookmark 方式也【电视遭遇网络：渐进改良，还是彻底革命？】互联网与电视的结合俨然已是今年最大的产业热点。爱奇艺与TCL婚恋前日，康佳也宣布了推出自己的线上品牌KKTV，互联网势力与传统势力的竞争越发激烈，暗战升级，当然，也有合作与融合。这两种势力，究竟会向何种发向发展？让我们期待！......&nbsp; &nbsp; 
+        </div>
+        <div node-type="feed_list_funcLink" class="WB_func clearfix">
+             <div class="WB_handle">
+                 <a title="喜欢" action-data="version=mini&amp;qid=heart&amp;mid=3619887354692844&amp;like_src=1" action-type="feed_list_like" href="javascript:void(0);"><em class="W_ico20 icon_praised_b"></em>喜欢(16)</a><i class="S_txt3">|</i>
+                 <a action-data="allowForward=1&amp;url=http://weibo.com/1711479641/A8lmnjGP2&amp;mid=3619887354692844&amp;name=北大新媒体&amp;uid=1711479641&amp;domain=looooker" action-type="feed_list_forward" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=repost_by_genius">关注(172)</a><i class="S_txt3">|</i>
+                 <a action-type="feed_list_favorite" diss-data="fuid=1711479641" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=fav_by_genius">竞拍出品人</a><i class="S_txt3">|</i>
+                 <a action-data="ouid=1711479641&amp;location=home" action-type="feed_list_comment" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=comment_by_genius">评论(30)</a>
+             </div>
+             <div class="WB_from">
+             <a suda-data="key=smart_feed&amp;value=details_feed" node-type="feed_list_item_date" class="S_link2 WB_time" date="1378531861000" title="2013-09-07 13:31" href="/1711479641/A8lmnjGP2" target="_blank"><span class="pl">2013-09-06 14:35:37</span></a>
+         	</div>
+         </div>
+        </div>
+        <div class="clear"></div>
+    <div class="clear"></div>
+    </div>
+</div>
+</c:forEach>
+</div>
+<div class="projectwrap myprojects" id="allsupported">
+	<div id="note" class=" ">
+    <span class="title">
+        ${user.UserName} 的镜头说 &nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·
+            <span class="pl">&nbsp;(<a target="_self" href="http://www.douban.com/people/Pearls/notes">全部</a>) </span>
+    </span>
+    
+<c:forEach items="${supported }" var="support">
+    <div class="content">
+        <div class="mbtr2">
+	        <div class="note-header pl2">
+	        <a class="ll" href="<%=request.getContextPath() %>/projects/view/${support.id }" title="${support.name }">${support.name }</a>
+	        <br>
+	        </div>
+        <div class="clear"></div>
+        <div id="note_${support.id }_short" class="note">
+	        <div class="ll">
+		        <a href="<%=request.getContextPath() %>/projects/view/${support.id }">
+		        <img alt="" width="" src="${imagehost }project-medium-${support.picture}">
+		        </a>
+	        </div>
+        	${support.summary }......&nbsp; &nbsp; 
+        </div>
+        <div node-type="feed_list_funcLink" class="WB_func clearfix">
+             <div class="WB_handle">
+                 <a title="喜欢" action-data="version=mini&amp;qid=heart&amp;mid=3619887354692844&amp;like_src=1" action-type="feed_list_like" href="javascript:void(0);"><em class="W_ico20 icon_praised_b"></em>喜欢(16)</a><i class="S_txt3">|</i>
+                 <a action-data="allowForward=1&amp;url=http://weibo.com/1711479641/A8lmnjGP2&amp;mid=3619887354692844&amp;name=北大新媒体&amp;uid=1711479641&amp;domain=looooker" action-type="feed_list_forward" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=repost_by_genius">关注(172)</a><i class="S_txt3">|</i>
+                 <a action-type="feed_list_favorite" diss-data="fuid=1711479641" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=fav_by_genius">竞拍出品人</a><i class="S_txt3">|</i>
+                 <a action-data="ouid=1711479641&amp;location=home" action-type="feed_list_comment" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=comment_by_genius">评论(30)</a>
+             </div>
+             <div class="WB_from">
+             <a suda-data="key=smart_feed&amp;value=details_feed" node-type="feed_list_item_date" class="S_link2 WB_time" date="1378531861000" title="2013-09-07 13:31" href="/1711479641/A8lmnjGP2" target="_blank"><span class="pl">2013-09-06 14:35:37</span></a>
+         	</div>
+         </div>
+        </div>
+        <div class="clear"></div>
+    <div class="clear"></div>
+    </div>
+    
+</c:forEach>
+</div>
+</div>
+<div class="projectwrap myprojects" id="allcreated">
+	<div id="note" class=" ">
+    <span class="title">
+        ${user.UserName} 的镜头说 &nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·
+            <span class="pl">&nbsp;(<a target="_self" href="http://www.douban.com/people/Pearls/notes">全部</a>) </span>
+    </span>
+<c:forEach items="${created }" var="create">
+    <div class="content">
+        <div class="mbtr2">
+	        <div class="note-header pl2">
+	        <a class="ll" href="<%=request.getContextPath() %>/projects/view/${create.id }" title="${create.name }">${create.name }</a>
+	        <br>
+	        </div>
+        <div class="clear"></div>
+        <div id="note_${create.id }_short" class="note">
+	        <div class="ll">
+		        <a href="<%=request.getContextPath() %>/projects/view/${create.id }">
+		        <img alt="" width="" src="${imagehost }project-medium-${create.picture}">
+		        </a>
+	        </div>
+        	${create.summary }......&nbsp; &nbsp; 
+        </div>
+        <div node-type="feed_list_funcLink" class="WB_func clearfix">
+             <div class="WB_handle">
+                 <a title="喜欢" action-data="version=mini&amp;qid=heart&amp;mid=3619887354692844&amp;like_src=1" action-type="feed_list_like" href="javascript:void(0);"><em class="W_ico20 icon_praised_b"></em>喜欢(16)</a><i class="S_txt3">|</i>
+                 <a action-data="allowForward=1&amp;url=http://weibo.com/1711479641/A8lmnjGP2&amp;mid=3619887354692844&amp;name=北大新媒体&amp;uid=1711479641&amp;domain=looooker" action-type="feed_list_forward" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=repost_by_genius">关注(172)</a><i class="S_txt3">|</i>
+                 <a action-type="feed_list_favorite" diss-data="fuid=1711479641" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=fav_by_genius">竞拍出品人</a><i class="S_txt3">|</i>
+                 <a action-data="ouid=1711479641&amp;location=home" action-type="feed_list_comment" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=comment_by_genius">评论(30)</a>
+             </div>
+             <div class="WB_from">
+             <a suda-data="key=smart_feed&amp;value=details_feed" node-type="feed_list_item_date" class="S_link2 WB_time" date="1378531861000" title="2013-09-07 13:31" href="/1711479641/A8lmnjGP2" target="_blank"><span class="pl">2013-09-06 14:35:37</span></a>
+         	</div>
+         </div>
+        </div>
+        <div class="clear"></div>
+    <div class="clear"></div>
+    </div>
+</c:forEach>
+</div>
+</div>
+<div class="projectwrap myprojects" id="allfocused">
+	<div id="note" class=" ">
+    <span class="title">
+        ${user.UserName} 的镜头说 &nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·&nbsp;·
+            <span class="pl">&nbsp;(<a target="_self" href="http://www.douban.com/people/Pearls/notes">全部</a>) </span>
+    </span>
+<c:forEach items="${focused }" var="focus">
+        <div class="content">
+        <div class="mbtr2">
+	        <div class="note-header pl2">
+	        <a class="ll" href="<%=request.getContextPath() %>/projects/view/${focus.id }" title="${focus.name }">${focus.name }</a>
+	        <br>
+	        </div>
+        <div class="clear"></div>
+        <div id="note_${focus.id }_short" class="note">
+	        <div class="ll">
+		        <a href="<%=request.getContextPath() %>/projects/view/${focus.id }">
+		        <img alt="" width="" src="${imagehost }project-medium-${focus.picture}">
+		        </a>
+	        </div>
+        	${focus.summary }......&nbsp; &nbsp; 
+        </div>
+        <div node-type="feed_list_funcLink" class="WB_func clearfix">
+             <div class="WB_handle">
+                 <a title="喜欢" action-data="version=mini&amp;qid=heart&amp;mid=3619887354692844&amp;like_src=1" action-type="feed_list_like" href="javascript:void(0);"><em class="W_ico20 icon_praised_b"></em>喜欢(16)</a><i class="S_txt3">|</i>
+                 <a action-data="allowForward=1&amp;url=http://weibo.com/1711479641/A8lmnjGP2&amp;mid=3619887354692844&amp;name=北大新媒体&amp;uid=1711479641&amp;domain=looooker" action-type="feed_list_forward" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=repost_by_genius">关注(172)</a><i class="S_txt3">|</i>
+                 <a action-type="feed_list_favorite" diss-data="fuid=1711479641" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=fav_by_genius">竞拍出品人</a><i class="S_txt3">|</i>
+                 <a action-data="ouid=1711479641&amp;location=home" action-type="feed_list_comment" href="javascript:void(0);" suda-data="key=smart_feed&amp;value=comment_by_genius">评论(30)</a>
+             </div>
+             <div class="WB_from">
+             <a suda-data="key=smart_feed&amp;value=details_feed" node-type="feed_list_item_date" class="S_link2 WB_time" date="1378531861000" title="2013-09-07 13:31" href="/1711479641/A8lmnjGP2" target="_blank"><span class="pl">2013-09-06 14:35:37</span></a>
+         	</div>
+         </div>
+        </div>
+        <div class="clear"></div>
+    <div class="clear"></div>
+    </div>
+</c:forEach>
+</div>
+</div>
+<script type="text/javascript">
+	function changetab(id, tabid){
+		$("#allactivity").hide();
+		$("#allwishes").hide();
+		$("#allsupported").hide();
+		$("#allcreated").hide();
+		$("#allfocused").hide();
+		$("#"+id).show();
+		$("#alltab").parent().removeClass("selected");
+		$("#wishtab").parent().removeClass("selected");
+		$("#supporttab").parent().removeClass("selected");
+		$("#createtab").parent().removeClass("selected");
+		$("#focustab").parent().removeClass("selected");
+		$("#"+tabid).parent().addClass("selected");
+	}
+</script>
 </div>
 <div class="userpage_right">
 <style>
@@ -317,9 +501,9 @@ body .note {
 }
 </style>
 <div class="bd">
-<img alt="" class="userface" width="60" height="60" src="http://img3.douban.com/icon/ul56323439-103.jpg">
+<img alt="" class="userface" width="60" height="60" src="${imagehost }avatar-medium-${user.avatar}">
 <div class="user-info">
-<b style="font-size:20px">众投人</b>&nbsp;&nbsp;TA支持过&nbsp;<a href="<%=request.getContextPath()%>/user/${user.UserId}/projects">2个${projectnum }</a>&nbsp;项目<br>
+<b style="font-size:20px">众投人</b>&nbsp;&nbsp;TA支持过&nbsp;<a href="<%=request.getContextPath()%>/user/${user.UserId}/projects">${user.supported}个${projectnum }</a>&nbsp;项目<br>
 常居:&nbsp;<a href="http://shanghai.douban.com/">${user.province }${user.city }</a><br>
 <div class="pl">
 财富值：10000 
@@ -332,7 +516,7 @@ body .note {
 <div class="sep-line"></div>
 <div class="user-intro">
     <div class="j edtext pl" id="edit_intro">
-        <span id="intro_display"><br>相遇即是缘分，感谢并珍惜关注我的每一位友邻，你们都是我的宝石。<br><br><br></span>
+        <span id="intro_display"><br>${user.Description }<br></span>
         
         <form mothod="post" name="edit_intro" action="/j/people/Hexuejun/edit_intro" style="display: none;">
             <textarea name="intro" style="overflow: hidden;">相遇即是缘分，感谢并珍惜关注我的每一位友邻，你们都是我的宝石。
@@ -464,7 +648,7 @@ body .note {
 <div id="ui_popup_message" class="ui-popup ui-popup-textarea">
 <div class="ui-popup-background">
 <div class="ui-popup-content ui-draggable">
-<form accept-charset="UTF-8" action="/messages" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="WgCQl1g0l5r3m2JHy6Ry3Z6wZyCNMrtEtpJ9/hjEy6U=" type="hidden"></div>
+<form accept-charset="UTF-8" action="<%=request.getContextPath() %>/messages?recipient_id=${user.UserId}" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="WgCQl1g0l5r3m2JHy6Ry3Z6wZyCNMrtEtpJ9/hjEy6U=" type="hidden"></div>
 <table class="ui-popup-table" align="center" border="0" cellpadding="0" cellspacing="0">
 <tbody><tr><td class="ui-popup-top-l" width="25"></td>
 <td class="ui-popup-top"><span class="ui-popup-title"></span></td>
@@ -473,12 +657,12 @@ body .note {
 <td class="ui-popup-mid">
 <div class="ui-textarea">
 <div class="ui-textarea-border">
-<textarea id="message_content" name="message[content]" class="ui-text-fixed"></textarea>
+<textarea id="message_content" name="content" class="ui-text-fixed"></textarea>
 </div>
 </div>
 <div class="ui-popup-textarea-b">
-<span id="ui_popup_message_url"><a href="<%=request.getContextPath()%>/messages">查看私信记录</a></span>
-<span id="ui_popup_message_email" style="display:none"><label><input name="message[email_sync]" value="1" type="checkbox"> 同时发送邮件</label></span>
+<span id="ui_popup_message_url"><a href="<%=request.getContextPath()%>/message/detail?with=${user.UserId}">查看私信记录</a></span>
+<%-- <span id="ui_popup_message_email" style="display:none"><label><input name="message[email_sync]" value="1" type="checkbox"> 同时发送邮件</label></span> --%>
 <span id="message_content_error"></span>
 <div class="ui-button ui-button-green ui-button-ajax"><span><button type="submit">发送</button></span></div>
 </div>
@@ -508,7 +692,8 @@ body .note {
 </div>
 
 
-<script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script><script src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js" type="text/javascript"></script>
+<%-- <script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script> --%>
+<script src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/demohour-index_files/users-81a8e5c3f0f88ef37b5abe40fcd3aa03.js" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
@@ -560,11 +745,11 @@ $(document).ready(function() {
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-23451409-1']);
 _gaq.push(['_trackPageview']);
-(function() {
+/* (function() {
 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+})(); */
 //]]>
 </script>
 </body></html>

@@ -18,7 +18,7 @@
 </div>
 
 <div class="transactions recharge-cash">
-<form accept-charset="UTF-8" action="/credits" id="new_credit" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="WgCQl1g0l5r3m2JHy6Ry3Z6wZyCNMrtEtpJ9/hjEy6U=" type="hidden"></div>
+<form accept-charset="UTF-8" action="<%=request.getContextPath() %>/transaction/pay" id="new_credit" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="WgCQl1g0l5r3m2JHy6Ry3Z6wZyCNMrtEtpJ9/hjEy6U=" type="hidden"></div>
 <div class="transactions-address-list">
 <ul>
 <li>

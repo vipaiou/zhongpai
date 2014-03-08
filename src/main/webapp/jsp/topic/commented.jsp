@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="bean"  uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ include file="../../include/header.jsp" %>
@@ -30,149 +31,35 @@
 <c:forEach items="${topices }" var="topic">
 <tr>
 <td align="center" width="30">
-<div class="comment-icon">${topic.type }[顶]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/19724" class="c5 c5-length" title="${topic.title }" target="_blank">${topic.title }</a>
-	<div style="display: none;" class="list-icon-new" data-visited-time="2013-08-21 17:59:08 +0800" data-visited-id="19724">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/user/${topic.userid }" class="c9 c9-length" target="_blank" title="${topic.userid }">${topic.userid }</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/topic/${topic.id }" class="c5">1</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/topic/${topic.id }?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-08-21 17:59:08 +0800">11天以前</a></td>
+<div class="comment-icon">
+<c:if test="${topic.type=='0' }">
+		[普]
+	</c:if>
+	<c:if test="${topic.type=='1' }">
+		[告]
+	</c:if>
+	<c:if test="${topic.type=='2' }">
+		[常]
+	</c:if>
+	<c:if test="${topic.type=='3' }">
+		[问]
+	</c:if>
+	<c:if test="${topic.type=='4' }">
+		[顶]
+	</c:if>
+	<c:if test="${topic.type=='5' }">
+		[倒]
+	</c:if></div>
+</td><td width="330"><a href="<%=request.getContextPath()%>/projects/${topic.projectId }/topic/${topic.id }" class="c5 c5-length" title="${topic.title }" target="_blank">${topic.title }</a>
+	<div style="display: none;" class="list-icon-new" data-visited-time="${fn:substring(topic.createdate,0,19) } +0800" data-visited-id="19724"></div></td>
+<td align="left"><a href="<%=request.getContextPath()%>/user/${topic.userid }" class="c9 c9-length" target="_blank" title="${topic.username }">${topic.username }</a></td>
+<td align="center"><a href="<%=request.getContextPath()%>/projects/${topic.projectId }/topic/${topic.id }" class="c5">1</a></td>
+<td align="right"><a href="<%=request.getContextPath()%>/projects/${topic.projectId }/topic/${topic.id }?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="${fn:substring(topic.createdate,0,19) } +0800"></a></td>
 <td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/view/${topic.projectid }" target="_blank" title="${topic.name }">${topic.name }</a>
+<a href="<%=request.getContextPath()%>/projects/view/${topic.projectId }" target="_blank" title="${topic.name }">${topic.name }</a>
 </td>    
 </tr>
 </c:forEach>
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[顶]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/19724" class="c5 c5-length" title="什么时候开始筹款啊？" target="_blank">什么时候开始筹款啊？</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-08-21 17:59:08 +0800" data-visited-id="19724">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1075802" class="c9 c9-length" target="_blank" title="阿舞游泳和存钱要两手抓">阿舞游泳和存钱要两手抓</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/19724" class="c5">1</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/19724?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-08-21 17:59:08 +0800">11天以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[顶]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/19304" class="c5 c5-length" title="支持！" target="_blank">支持！</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-07-12 11:37:28 +0800" data-visited-id="19304">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1114536" class="c9 c9-length" target="_blank" title="爱宝贝">爱宝贝</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/19304" class="c5">1</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/19304?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-07-12 11:37:28 +0800">1月以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[告]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/19269" class="c5 c5-length" title="内蒙拍摄地之一清水河概况  " target="_blank">内蒙拍摄地之一清水河概况  </a><div style="display: none;" class="list-icon-new" data-visited-time="2013-07-09 10:32:27 +0800" data-visited-id="19269">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1021804" class="c9 c9-length" target="_blank" title="立夏">立夏</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/19269" class="c5">0</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/19269?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-07-09 10:32:27 +0800">1月以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[顶]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/18873" class="c5 c5-length" title="支持支持，支持支持" target="_blank">支持支持，支持支持</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-07-08 16:30:41 +0800" data-visited-id="18873">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1110132" class="c9 c9-length" target="_blank" title="Midwinter1001">Midwinter1001</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/18873" class="c5">3</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/18873?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-07-08 16:30:41 +0800">1月以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[顶]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/18668" class="c5 c5-length" title="加油。你做的是我曾经想做却一直未做的。" target="_blank">加油。你做的是我曾经想做却一直未做的。</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-06-28 16:55:14 +0800" data-visited-id="18668">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1007198" class="c9 c9-length" target="_blank" title="谈天天">谈天天</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/18668" class="c5">1</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/18668?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-06-28 16:55:14 +0800">2月以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[顶]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/18629" class="c5 c5-length" title="支持" target="_blank">支持</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-06-27 22:30:41 +0800" data-visited-id="18629">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1110739" class="c9 c9-length" target="_blank" title="三叉神经 精益求精 张龙">三叉神经 精益求精 张龙</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/18629" class="c5">1</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/18629?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-06-27 22:30:41 +0800">2月以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[顶]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/18575" class="c5 c5-length" title="加油" target="_blank">加油</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-06-27 21:22:30 +0800" data-visited-id="18575">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1110231" class="c9 c9-length" target="_blank" title="焦广平">焦广平</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/18575" class="c5">2</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/18575?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-06-27 21:22:30 +0800">2月以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[顶]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/18562" class="c5 c5-length" title="这是一件纯粹的事情，需要立夏的坚持和我们的支持。" target="_blank">这是一件纯粹的事情，需要立夏的坚持和我们的支持。</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-06-27 17:40:04 +0800" data-visited-id="18562">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1110091" class="c9 c9-length" target="_blank" title="金桂楠">金桂楠</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/18562" class="c5">1</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/18562?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-06-27 17:40:04 +0800">2月以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[顶]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/18584" class="c5 c5-length" title="温暖在人间" target="_blank">温暖在人间</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-06-27 17:38:28 +0800" data-visited-id="18584">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1110298" class="c9 c9-length" target="_blank" title="指天踏地夜如何">指天踏地夜如何</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/18584" class="c5">1</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/18584?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-06-27 17:38:28 +0800">2月以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[问]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/18578" class="c5 c5-length" title="项目预计实施时间的几时?" target="_blank">项目预计实施时间的几时?</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-06-27 17:13:46 +0800" data-visited-id="18578">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1047895" class="c9 c9-length" target="_blank" title="_DON">_DON</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/18578" class="c5">1</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/18578?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-06-27 17:13:46 +0800">2月以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
-<tr>
-<td align="center" width="30">
-<div class="comment-icon">[告]</div>
-</td><td width="330"><a href="<%=request.getContextPath()%>/posts/18538" class="c5 c5-length" title="#&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆#上线了！" target="_blank">#"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆#上线了！</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-06-26 11:37:18 +0800" data-visited-id="18538">新</div></td>
-<td align="left"><a href="<%=request.getContextPath()%>/1013487" class="c9 c9-length" target="_blank" title="众拍网客服">众拍网客服</a></td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/18538" class="c5">0</a></td>
-<td align="right"><a href="<%=request.getContextPath()%>/posts/18538?latest=2" target="_blank" class="timeline-posted-at" data-timestamp="2013-06-26 11:37:18 +0800">2月以前</a></td>
-<td class="my-01" align="left">
-<a href="<%=request.getContextPath()%>/projects/320283/posts" target="_blank" title="&quot;我们在一起&quot;  第二期·内蒙  用摄影撷取一朵温暖的记忆">"我们在一起"  第二期·内蒙  用摄影撷取一朵温暖的记忆</a>
-</td>    
-</tr>
-
 </tbody></table>
 </div>
 
@@ -242,11 +129,62 @@
 </div>
 
 
-<script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script><script src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js" type="text/javascript"></script>
+<%-- <script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script> --%>
+<script src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/demohour-index_files/posts-cee7846e0147c9be9a0b484efae2fd79.js" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
-$(document).ready(function(){$.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');$('input, textarea').placeholder();$(window).scroll(function(){if($(window).scrollTop() > 48){$('#ui_notification').addClass('layer-message-fixed');}else{$('#ui_notification').removeClass('layer-message-fixed');}});$.ui_notification.ready({url:'http://nf-2.demohour.com',data:{"new_comments_count":0,"new_messages_count":0,"new_notifications_count":0,"new_posts_count":0}});$.ui_core.paginate("#project-list-more"),$.ui_core.visit({until:"2013-09-01 17:43:40 +0800"}),$("a").on("click",function(e){$(e.target).parent().find("div.list-icon-new").hide()}),$("body").on("click","a.ui-popup-delete",function(e){$("#ui_popup_delete").find("div.ui-popup-content").css("top",$(window).height()/2-120),$("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),$("#ui_popup_delete").find("a.ui-popup-url").attr("href",$(e.target).attr("href")),$("#ui_popup_delete").toggle(),e.preventDefault()}),$("body").on("click","a.ui-popup-message",function(e){$("#ui_popup_message").find("div.ui-popup-content").css("top",$(window).height()/2-150),$("#ui_popup_message").find("form").attr("action",$(e.target).attr("href")),$("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),$("#ui_popup_message").toggle(),$("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),$("#ui_popup_message").find("textarea").focus(),$(e.target).attr("href").indexOf("?recipient_id=")>0?($("#ui_popup_message_url").show(),$("#ui_popup_message_email").hide(),$("#ui_popup_message_url").find("a").attr("href",$(e.target).attr("href").replace("?recipient_id=","/"))):($("#ui_popup_message_url").hide(),$("#ui_popup_message_email").show()),e.preventDefault()});;$.ui_core.backtop('#backtop');$.ui_core.distance({now:'2013-09-01 21:43:40 +0800'});});
+$(document).ready(function() {
+    $.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');
+    $('input, textarea').placeholder();
+    $(window).scroll(function() {
+        if ($(window).scrollTop() > 48) {
+            $('#ui_notification').addClass('layer-message-fixed');
+        } else {
+            $('#ui_notification').removeClass('layer-message-fixed');
+        }
+    });
+/*     $.ui_notification.ready({
+        url: 'http://nf-2.demohour.com',
+        data: {
+            "new_comments_count": 0,
+            "new_messages_count": 0,
+            "new_notifications_count": 0,
+            "new_posts_count": 0
+        }
+    }); */
+    $.ui_core.paginate("#project-list-more"),
+    $.ui_core.visit({
+        until: "2013-09-01 17:43:40 +0800"
+    }),
+    $("a").on("click", 
+    function(e) {
+        $(e.target).parent().find("div.list-icon-new").hide()
+    }),
+    $("body").on("click", "a.ui-popup-delete", 
+    function(e) {
+        $("#ui_popup_delete").find("div.ui-popup-content").css("top", $(window).height() / 2 - 120),
+        $("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),
+        $("#ui_popup_delete").find("a.ui-popup-url").attr("href", $(e.target).attr("href")),
+        $("#ui_popup_delete").toggle(),
+        e.preventDefault()
+    }),
+    $("body").on("click", "a.ui-popup-message", 
+    function(e) {
+        $("#ui_popup_message").find("div.ui-popup-content").css("top", $(window).height() / 2 - 150),
+        $("#ui_popup_message").find("form").attr("action", $(e.target).attr("href")),
+        $("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),
+        $("#ui_popup_message").toggle(),
+        $("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),
+        $("#ui_popup_message").find("textarea").focus(),
+        $(e.target).attr("href").indexOf("?recipient_id=") > 0 ? ($("#ui_popup_message_url").show(), $("#ui_popup_message_email").hide(), $("#ui_popup_message_url").find("a").attr("href", $(e.target).attr("href").replace("?recipient_id=", "/"))) : ($("#ui_popup_message_url").hide(), $("#ui_popup_message_email").show()),
+        e.preventDefault()
+    });;
+    $.ui_core.backtop('#backtop');
+    $.ui_core.distance({
+        //now: '2013-09-01 21:43:40 +0800'
+    });
+});
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-23451409-1']);
 _gaq.push(['_trackPageview']);

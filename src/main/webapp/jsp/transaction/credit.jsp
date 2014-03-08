@@ -281,13 +281,13 @@
 <div class="account-balance">
 <div class="account-balance-t"><p>账户余额<span class="yuan"><b>¥</b>0.00</span>元</p></div>
 <div class="account-balance-b"><p>充值到众拍网，方便支持项目！ </p>
-<a href="<%=request.getContextPath()%>/credits/new?url=http%3A%2F%2Fwww.demohour.com%2Fcredits">立即充值</a>
+<a href="<%=request.getContextPath()%>/transaction/recharge?url=http%3A%2F%2Fwww.demohour.com%2Fcredits">立即充值</a>
 </div>
 </div>
 </div>
 
 <div class="content support-projects-list">
-<div class="nocontent">目前还没有任何收支记录，<a href="<%=request.getContextPath()%>/credits/new?url=http%3A%2F%2Fwww.demohour.com%2Fcredits">点击这里</a> 充值到众拍网方便支持</div>
+<div class="nocontent">目前还没有任何收支记录，<a href="<%=request.getContextPath()%>/credits/recharge?url=http%3A%2F%2Fwww.demohour.com%2Fcredits">点击这里</a> 充值到众拍网方便支持</div>
 
 <div class="ui-pagination"><ul></ul></div>
 </div>
@@ -357,19 +357,63 @@
 </div>
 
 
-<script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script><script src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js" type="text/javascript"></script>
+<%-- <script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script> --%>
+<script src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/demohour-index_files/credits-81a8e5c3f0f88ef37b5abe40fcd3aa03.js" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
-$(document).ready(function(){$.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');$('input, textarea').placeholder();$(window).scroll(function(){if($(window).scrollTop() > 48){$('#ui_notification').addClass('layer-message-fixed');}else{$('#ui_notification').removeClass('layer-message-fixed');}});$.ui_notification.ready({url:'http://nf-2.demohour.com',data:{"new_comments_count":0,"new_messages_count":0,"new_notifications_count":0,"new_posts_count":0}});$.ui_core.flash("balance",[]),$("body").on("click","a.ui-popup-delete",function(e){$("#ui_popup_delete").find("div.ui-popup-content").css("top",$(window).height()/2-120),$("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),$("#ui_popup_delete").find("a.ui-popup-url").attr("href",$(e.target).attr("href")),$("#ui_popup_delete").toggle(),e.preventDefault()}),$("body").on("click","a.ui-popup-message",function(e){$("#ui_popup_message").find("div.ui-popup-content").css("top",$(window).height()/2-150),$("#ui_popup_message").find("form").attr("action",$(e.target).attr("href")),$("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),$("#ui_popup_message").toggle(),$("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),$("#ui_popup_message").find("textarea").focus(),$(e.target).attr("href").indexOf("?recipient_id=")>0?($("#ui_popup_message_url").show(),$("#ui_popup_message_email").hide(),$("#ui_popup_message_url").find("a").attr("href",$(e.target).attr("href").replace("?recipient_id=","/"))):($("#ui_popup_message_url").hide(),$("#ui_popup_message_email").show()),e.preventDefault()});;$.ui_core.backtop('#backtop');$.ui_core.distance({now:'2013-09-01 22:58:46 +0800'});});
+$(document).ready(function() {
+    $.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');
+    $('input, textarea').placeholder();
+    $(window).scroll(function() {
+        if ($(window).scrollTop() > 48) {
+            $('#ui_notification').addClass('layer-message-fixed');
+        } else {
+            $('#ui_notification').removeClass('layer-message-fixed');
+        }
+    });
+/*     $.ui_notification.ready({
+        url: 'http://nf-2.demohour.com',
+        data: {
+            "new_comments_count": 0,
+            "new_messages_count": 0,
+            "new_notifications_count": 0,
+            "new_posts_count": 0
+        }
+    }); */
+    $.ui_core.flash("balance", []),
+    $("body").on("click", "a.ui-popup-delete", 
+    function(e) {
+        $("#ui_popup_delete").find("div.ui-popup-content").css("top", $(window).height() / 2 - 120),
+        $("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),
+        $("#ui_popup_delete").find("a.ui-popup-url").attr("href", $(e.target).attr("href")),
+        $("#ui_popup_delete").toggle(),
+        e.preventDefault()
+    }),
+    $("body").on("click", "a.ui-popup-message", 
+    function(e) {
+        $("#ui_popup_message").find("div.ui-popup-content").css("top", $(window).height() / 2 - 150),
+        $("#ui_popup_message").find("form").attr("action", $(e.target).attr("href")),
+        $("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),
+        $("#ui_popup_message").toggle(),
+        $("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),
+        $("#ui_popup_message").find("textarea").focus(),
+        $(e.target).attr("href").indexOf("?recipient_id=") > 0 ? ($("#ui_popup_message_url").show(), $("#ui_popup_message_email").hide(), $("#ui_popup_message_url").find("a").attr("href", $(e.target).attr("href").replace("?recipient_id=", "/"))) : ($("#ui_popup_message_url").hide(), $("#ui_popup_message_email").show()),
+        e.preventDefault()
+    });;
+    $.ui_core.backtop('#backtop');
+    $.ui_core.distance({
+        //now: '2013-09-01 22:58:46 +0800'
+    });
+});
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-23451409-1']);
 _gaq.push(['_trackPageview']);
-(function() {
+/* (function() {
 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+})(); */
 //]]>
 </script>
 </body></html>

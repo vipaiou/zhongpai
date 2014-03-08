@@ -80,7 +80,7 @@ fload:left;
 </style>
 <div id="menuwrapper">
 <div id="navmenu" class="hm_mainNav">
-<img id="projectpic" alt="sdf" src="http://localhost/zhongpaipic/project-medium-ecd9f2b0f301c3e208b9987c0bb846b8.jpg">
+<img id="projectpic" alt="" src="${imagehost }/project-medium-${project.picture}">
 <ul style="width: 90px; float: right; text-align:right; padding-right:10px">
    	<li class="hm_navContribute"><a href="#">出品人</a></li>
    	<li class="hm_navIdea"><a href="#">主创团队</a></li>
@@ -119,6 +119,11 @@ fload:left;
 </div>
 </div>
 </div>
+</div>
+<div class="">
+<button style="width:90px; height:30px" type="button">加入我们</button>
+&nbsp;
+<button style="width:90px; height:30px" type="button">支持我们</button>
 </div>
 <div class="reward-options">
 <c:forEach items="${returns }" var="return" varStatus="s">
