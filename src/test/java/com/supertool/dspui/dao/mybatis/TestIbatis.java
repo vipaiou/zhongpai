@@ -1,43 +1,12 @@
 package com.supertool.dspui.dao.mybatis;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.supertool.dspui.dao.mybatis.CampaignMapper;
-import com.supertool.dspui.dao.mybatis.CreativeMapper;
-import com.supertool.dspui.dao.mybatis.MaterialMapper;
-import com.supertool.dspui.model.Advertiser;
-import com.supertool.dspui.model.Campaign;
-import com.supertool.dspui.model.Material;
-import com.supertool.dspui.model.Rtb;
-import com.supertool.dspui.param.Params;
-import com.supertool.dspui.param.SelectSQLParam;
-import com.supertool.dspui.service.AdvertiserService;
-import com.supertool.dspui.service.CampaignService;
-import com.supertool.dspui.util.DateUtil;
-import com.supertool.dspui.util.Utils;
-import com.supertool.dspui.vo.CampaignRow;
 
 
 
 
 public class TestIbatis {
 	
-	private static ApplicationContext context=null;
+	/*private static ApplicationContext context=null;
 	private  CampaignService campaignService = (CampaignService) context.getBean("campaignService");
 	private  AdvertiserService advertiserService = (AdvertiserService) context.getBean("advertiserService");
 	private  CampaignMapper campaignMapper = (CampaignMapper) context.getBean("campaignMapper");
@@ -66,7 +35,7 @@ public class TestIbatis {
 
 	public void insertCampaign(){
 		
-	/*	CampaignParam campaignParam = new CampaignParam();
+		CampaignParam campaignParam = new CampaignParam();
 		campaignParam.setAdvertiserId("1");
 		campaignParam.setBrand("asd");
 		campaignParam.setDspId(1);
@@ -74,7 +43,7 @@ public class TestIbatis {
 		campaignParam.setEnd("2012-01-01 00:00:00");
 		ResultVO vo =  campaignService.save(campaignParam);
 		
-		System.out.println("---"+vo.getResultCode());*/
+		System.out.println("---"+vo.getResultCode());
 		Campaign campaign =new Campaign();
 		campaign.setStartTime(DateUtil.getDate(DateUtil.getDateFormatString(),"1970-01-01"));
 		campaign.setEndTime(DateUtil.getDate(DateUtil.getDateFormatString(), "1970-01-01"));
@@ -89,7 +58,7 @@ public class TestIbatis {
 	}
 	public void javabean(){
 		Campaign campaign = new Campaign();
-		/*Method[] methods = campaign.getClass().getMethods();  
+		Method[] methods = campaign.getClass().getMethods();  
         for (int i = 0; i < methods.length; i++) {  
             Method method = methods[i];  
             if (method.getName().startsWith("get") && !method.getName().equalsIgnoreCase("getClass")&&!method.getName().equalsIgnoreCase("getSerialversionuid") ) {  
@@ -103,7 +72,7 @@ public class TestIbatis {
                     e.printStackTrace();  
                 } 
             }  
-        }*/
+        }
 		 Field[] fieldlist = campaign.getClass().getDeclaredFields();
          for (int i = 0; i < fieldlist.length; i++) {
              Field fld = fieldlist[i];
@@ -234,5 +203,5 @@ public class TestIbatis {
 		//checkName();
 		//getRtbDate();
 		getCampaignIdsByRtbStarted();
-	}
+	}*/
 }
