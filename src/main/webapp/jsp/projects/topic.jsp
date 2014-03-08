@@ -2,18 +2,19 @@
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="bean"  uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>    
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
 <%@ include file="../../include/header.jsp" %>
 <link href="<s:url value="/demohour-index_files/projects-9afed8175e89fa73647b287e62737440.css" />" media="screen" rel="stylesheet" type="text/css">
 <div class="ui-tab">
 <div class="ui-tab-top">
-<h1><a href="<%=request.getContextPath()%>/projects/view/${project.id}">${project.name }</a></h1>
+<h1><a href="<%=request.getContextPath()%>/projects/view/${topic.projectId}">${project.name }</a></h1>
 </div>
 <div class="ui-tab-layout">
 <ul class="ui-tab-menu">
-<li><a href="<%=request.getContextPath()%>/projects/view/${project.id}">项目主页</a></li>
-<li><a href="<%=request.getContextPath()%>/projects/${project.id}/topics/">话题<span id="posts_count">${topicnum }</span></a></li>
-<li><a class="ui-tab-current" href="<%=request.getContextPath()%>/projects/focuses/${project.id}">关注者<span id="favorites_count">${focusnum }</span></a></li>
+<li><a href="<%=request.getContextPath()%>/projects/view/${topic.projectId}">项目主页</a></li>
+<li><a class="ui-tab-current" href="<%=request.getContextPath()%>/projects/${topic.projectId}/topics/">话题<span id="posts_count">${topicnum }</span></a></li>
+<li><a href="<%=request.getContextPath()%>/projects/focuses/${topic.projectId}">关注者<span id="favorites_count">${focusnum }</span></a></li>
 </ul>
 <div class="ui-tab-menu-right">
 <div class="ui-button ui-button-blue"><span><a href="#ui_invite_popup" class="ui-popup-open invite_popup" data-popup-height="180" title="帮忙转发">帮忙转发</a></span></div>
@@ -99,174 +100,189 @@
 </div>
 </div>
 
-<div id="project_intro" class="projects-home">
-<div class="projects-backers-left">
-<c:forEach items="${focuses }" var="focus" varStatus="s">
-<div class="supporters">
-	<a target="_blank" href="<%=request.getContextPath() %>/user/${focus.UserId}">
-	<c:if test="${focus.avatar == ''}"><img height="80" width="80" src="<%=request.getContextPath()%>/demohour-index_files/thumb.png"></c:if>
-	<c:if test="${focus.avatar != ''}"><img height="80" width="80" src="${imagehost }avatar-medium-${focus.avatar}"></c:if>
-	</a>
-	<div class="supportersmeta">
-	<div class="supportersmeta-t"><a class="supportersmeta-t-a" target="_blank" href="<%=request.getContextPath() %>/user/${focus.UserId}">${focus.UserName }</a>
-	<div class="icon-sun-ms"><a title="支持者勋章：级别1" target="_blank" href="http://www.demohour.com/posts/9138">1</a></div>
-	(${focus.province }${focus.city })
-	</div>
-	${focus.focusdate } 支持了 <b>¥</b>${focus.money }<br>
-	TA总共支持了${focus.supported }个项目</div>
+<div class="projects-home">
+<div id="show_post" class="projects-home-left">
+<div class="comment-end-p-n">
+<a class="comment-end-return" href="<%=request.getContextPath() %>/projects/${topic.projectId }/topics/">&lt;&lt; 返回列表</a>
+<!-- <a class="comment-end-next" href="/posts/23614">下一则</a> -->
+</div>  
+<div class="timeline">
+<div class="timeline-box">
+<div class="timeline-box-right">
+<div class="timeline-box-title">
+<div class="comment-title-avatar">
+<a class="timeline-comment-avatar" target="_blank" href="<%=request.getContextPath() %>/user/${topic.userid}"><img src="${imagehost }avatar-medium-${topic.avatar}"></a>
 </div>
+<div class="comment-title-avatar-r">
+<p>
+	<c:if test="${topic.type=='0' }">
+		[普通话题]
+	</c:if>
+	<c:if test="${topic.type=='1' }">
+		[公告]
+	</c:if>
+	<c:if test="${topic.type=='2' }">
+		[常见问答]
+	</c:if>
+	<c:if test="${topic.type=='3' }">
+		[问题]
+	</c:if>
+	<c:if test="${topic.type=='4' }">
+		[顶]
+	</c:if>
+	<c:if test="${topic.type=='5' }">
+		[倒]
+	</c:if>
+	 ${topic.title }
+</p>
+<span><a class="comment-title-avatar-r-n" target="_blank" href="<%=request.getContextPath() %>/user/${topic.userid}">${topic.username }</a>
+<a title="私信给  ${topic.username }" class="ui-popup-message post-private-letter" href="/messages?recipient_id=${topic.userid }">发私信</a>
+</span>
+<div data-timestamp="${fn:substring(topic.createdate,0,19) } +0800" class="timeline-box-title-date">${topic.createdate }</div>
+</div>
+</div>
+<div class="timeline-box-function">
+<a data-message-attachment="相关链接：<%=request.getContextPath() %>/projects/${topic.projectId}/topic/${topic.id}" class="ui-popup-message timeline-box-delete" title="举报给 项目客服" href="/messages?recipient_id=1013487">举报</a>
+</div>
+<div class="timeline-box-explain">
+<div class="timeline-box-explain-text">
+由 创智工作室 发起的项目「Talking Timer（对讲提示器）」上线了！<br>
+此项目正在预热中，暂不筹资，欢迎大家参与讨论。<br><br>
+${topic.content }<br>
+<span id="project_322072_favorite2">${focusnum }人关注了此项目，
+<c:choose>
+	<c:when test="${focused != 0}">
+	您已关注此项目
+	</c:when>
+	<c:otherwise>
+		<a data-remote="true" href="<%=request.getContextPath() %>/focus/${project.id }">立即关注</a> 此项目</span>
+	</c:otherwise>
+</c:choose>
+
+<br>
+</div>
+</div>
+<%-- <div class="projects-share projects-comment-share">
+<span>分享到：</span>
+<p>
+</p><div id="ckepop">
+<a class="jiathis_button_tsina" title="分享到新浪微博"><span class="jiathis_txt jtico jtico_tsina"></span></a>
+<a class="jiathis_button_tqq" title="分享到腾讯微博"><span class="jiathis_txt jtico jtico_tqq"></span></a>
+<a class="jiathis_button_qzone" title="分享到QQ空间"><span class="jiathis_txt jtico jtico_qzone"></span></a>
+<a class="jiathis_button_douban" title="分享到豆瓣"><span class="jiathis_txt jtico jtico_douban"></span></a>
+<a class="jiathis_button_renren" title="分享到人人网"><span class="jiathis_txt jtico jtico_renren"></span></a>
+<a target="_blank" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" href="http://www.jiathis.com/share" style="">更多</a>
+<a class="jiathis_counter_style"><span class="jiathis_button_expanded jiathis_counter jiathis_bubble_style" id="jiathis_counter_52" title="累计分享4次">4</span></a>
+</div>
+<p></p>
+</div> --%>
+<div id="post_20518_comment">
+<div class="timeline-box-function">
+<a class="timeline-box-comment ui-action-comment" href="#">评论(${fn:length(comments)})</a>
+</div>
+<div class="comment-new-list">
+<ul class="comment-new-list-ul">
+<c:forEach items="${comments }" var="comment">
+	<li id="comment_${comment.id }">
+		<a class="comment-new-list-avatar" target="_blank" href="<%=request.getContextPath() %>/user/${comment.userid}">
+		<c:if test="${comment.avatar == ''}"><img src="<%=request.getContextPath()%>/demohour-index_files/thumb.png"></c:if>
+		<c:if test="${comment.avatar != ''}"><img src="${imagehost }avatar-medium-${comment.avatar}"></c:if>
+		</a>
+		<div class="comment-new-list-avatar-r">
+		<div class="comment-new-list-avatar-r-title">
+		<a class="comment-new-list-avatar-r-title-l" target="_blank" href="<%=request.getContextPath() %>/user/${comment.userid}">${comment.username}</a>
+		<c:if test="${project.createuser == comment.userid}"><span class="icon-user-f">项目发起人</span></c:if>
+		<!-- <div class="icon-sun-s"><a title="支持者勋章：级别1" target="_blank" href="http://www.demohour.com/posts/9138">1</a></div> -->
+		<div class="comment-new-list-avatar-r-title-r">
+		<div data-timestamp="${fn:substring(comment.createdate,0,19) } +0800" class="comment-new-list-avatar-r-date timeline-commented-at">${fn:substring(comment.createdate,0,19)}</div>
+		</div>
+		</div>
+		<div class="comment-new-list-text">
+		<c:if test="${comment.replyid > 0 }">
+		<div class="comment-new-list-text-reply">
+		<a class="comment-new-list-text-reply-r" target="_blank" href="<%=request.getContextPath() %>/user/${comment.replyuserid}">${comment.replyusername}</a>
+		<p>${comment.reply}</p></div>
+		</c:if>
+		${comment.content }
+		</div>
+		<div class="comment-reply">
+		<div class="comment-reply-delete">
+		<a title="回复${comment.username }" rel="nofollow" class="ui-action-reply timeline-comment-reply timeline-comment-delete" href="#post_new_comment" onclick="reply('${comment.id }','${comment.userid}','${comment.username}')">回复</a>
+		</div>
+		</div>
+		</div>
+	</li>
 </c:forEach>
-<div class="ui-pagination">
-	<ul>
-	<li class="ui-pagination-prev">
-	<a class="prev_page" href="<%=request.getContextPath() %>/projects/focuses/${project.id }?page=1">上一页</a>
-	</li>
-	<li class="ui-pagination-current">
-	<a href="<%=request.getContextPath() %>/projects/focuses/${project.id }?page=1"><span>1</span></a>
-	</li>
-	<li>
-	<a href="<%=request.getContextPath() %>/projects/focuses/${project.id }?page=2"><span>2</span></a>
-	</li>
-	<li class="ui-pagination-next">
-	<a class="next_page" href="<%=request.getContextPath() %>/projects/focuses/${project.id }?page=1">下一页</a>
-	</li>
-	</ul>
+</ul>
+
+</div>
+<br>
+<div class="comment-new-list-reply-textarea" id="post_new_comment">
+<form method="post" data-remote="true" action="<%=request.getContextPath() %>/topic/addcomment?pid=${topic.id }" accept-charset="UTF-8" id="commentform">
+<div style="margin:0;padding:0;display:inline"><input type="hidden" value="✓" name="utf8">
+<input type="hidden" value="aj5z6znYr5g0W7t0XTZlds9vWsFZ3Rq0ORolNzN07mU=" name="authenticity_token"></div>
+<input type="hidden" name="replyid" id="replyid" value="0">
+<input type="hidden" name="commentuserid" id="commentuserid" value="0">
+<input type="hidden" name="projectid" id="projectid" value="${project.id }">
+<div class="ui-textarea">
+<div class="ui-textarea-border">
+<textarea placeholder="回复本话题" name="content" id="comment_content"></textarea>
+</div>
+</div>
+<div class="projects-posts-add-b">
+<div id="post_20518_comment_content_error"></div>
+<div class="ui-button ui-button-green ui-button-ajax"><span><button type="button" onclick="resetreply(); ">重置</button></span></div>
+<div class="ui-button ui-button-green ui-button-ajax"><span><button type="submit">发送</button></span></div>
+</div>
+</form></div>
+
+
+
+</div>
+</div>
+</div>
+
 </div>
 </div>
 <div class="projects-home-right">
-<c:if test="${project.status=='0' }">
-<div class="sidebar-draft">
-</c:if>
-<c:if test="${project.status=='1' }">
-<div class="sidebar-submitted">
-</c:if>
-<c:if test="${project.status=='2' }">
-<div class="sidebar-warming">
-</c:if>
-<c:if test="${project.status=='3' }">
-<div class="sidebar-funding">
-</c:if>
-<c:if test="${project.status=='4' }">
-<div class="sidebar-success">
-</c:if>
-<c:if test="${project.status=='5' }">
-<div class="sidebar-failure">
-</c:if>
-<div class="sidebar-money-raised-top">
-<c:if test="${project.status=='3' or project.status=='4' or project.status=='5'}">
-<div class="sidebar-money-raised-num-t"><p>目标</p><b><b>¥${project.money }</b></b><span><span>/</span>已达</span></div>
-<div class="sidebar-money-raised-num"><b><b>¥${project.totalmoney }</b></b></div>
-</c:if>
-<c:if test="${project.status=='0' or project.status=='1' or project.status=='2'}">
-<div class="sidebar-money-raised-num-t"><p>目标</p><b><b>${project.targetfocusnum }</b>人关注</b><span><span>/</span>已达</span></div>
-<div class="sidebar-money-raised-num"><b><b>${focusnum }</b>人</b></div>
-</c:if>
-</div>
-<div class="sidebar-percentage">
-<span class="sidebar-percentage-progress-span">${focusratio }%</span>
-<div style="width:${focusratio}%;" class="sidebar-percentage-progress"></div>
-</div>
-<div class="sidebar-number-days">
-<div class="sidebar-number-days-l"><span>话题总数</span><b><b>${topicnum }</b>条</b></div>
-<div class="sidebar-number-days-m"><span>浏览次数</span><b><b>${project.viewnum }</b>次</b></div>
-<div class="sidebar-number-days-r"><span>已经预热</span><b><b>${preparedays }</b>天</b></div>
-</div>
-</div>
-<div class="project-by">
-<div class="project-by-dotty">项目发起人</div>
-<div class="project-by-img">
-<a href="<%=request.getContextPath()%>/user/${project.createuser }" target="_blank">
-	<c:if test="${createuser.avatar == ''}"><img height="80" width="80" src="<%=request.getContextPath()%>/demohour-index_files/thumb.png"></c:if>
-	<c:if test="${createuser.avatar != ''}"><img height="80" width="80" src="${imagehost }avatar-medium-${createuser.avatar}"></c:if>
-</a>
-<div class="project-by-img-r"><a href="<%=request.getContextPath()%>/${project.createuser }" class="project-by-img-r-author" target="_blank">${createuser.UserName }</a>
-<div class="post-private-letter"><a href="<%=request.getContextPath()%>/messages?recipient_id=${createuser.UserId }" class="ui-popup-message" title="私信给 ${createuser.UserName }">发私信</a></div>
-<div class="project-by-last-time">上次登录时间：${createuser.logintime }
-</div>
-<div class="project-by-post">
-<a href="<%=request.getContextPath()%>/${project.createuser }" target="_blank">支持的项目：<span>${createuser.supported }</span></a>
-<a href="<%=request.getContextPath()%>/${project.createuser }" target="_blank">发起的项目：<span>${createuser.created }</span></a>
-</div>
-</div>
-</div>
-</div>
-<div class="reward-options">
-<c:forEach items="${returns }" var="return" varStatus="s">
-	<ul>
-	<li class="support-amount">
-	支持 <b>¥</b>${return.money }
-	<span>（0 位支持者）</span>
-	</li>
-	<c:if test="${return.limit=='1' }">
-	<li class="supporter-number"><div class="supporter-limit">
-	<p>限额 ${return.limitnum }位，剩余 ${return.limitnum-return.supported } 位</p>
-	</div></li></c:if>
-	<li class="returns-contents"><p>${return.content }</p></li>
-	<li class="returns-contents-img">
-	</li>
-	<li class="returns-contents-time">
-	<p><c:if test="${return.freepost=='1' }">包邮（大陆地区）</c:if></p>
-	<p>预计回报发放时间：项目成功结束后${return.days }天内</p>
-	</li>
-	<li>
-	<c:choose>
-	<c:when test="${project.status=='3' or project.status=='2' }">
-	<div class="ui-button ui-button-special">
-	<span>
-		<a href="#ui_warming_popup" class="ui-popup-open" data-popup-height="180">支持<b>¥</b>${return.money }</a>
-	</span></div>
-	</c:when>
-	<c:otherwise>
-	<div class="ui-button ui-button-special-disabled">
-	<span>
-		<a href="#">支持<b>¥</b>${return.money }</a>
-	</span></div>
-	</c:otherwise>
-	</c:choose>
-	</li>
-	</ul>
-</c:forEach>
-</div>
-<c:if test="${project.status=='0' or project.status=='1' or project.status=='2'  }">
-<div class="payment-refund">关于预热项目：<p></p>
-预热项目是筹资前的一个热身，目的是希望更多的朋友能关注项目，给项目提意见，帮助发起人完善项目的各项内容。<p></p>
-当项目成熟时，发起人可以随时提交审核开始筹资。
-</div>
-</c:if>
-<c:if test="${project.status=='4' or project.status=='5' or project.status=='3' }">
-<div class="payment-refund">关于付款与退款：<p></p>
-这个项目必须在2013年09月11日 14:25之前达到<b>¥</b>${project.money }的目标才算成功，否则已经支持的订单将取消。<p></p>
-订单取消时，您的支持金额将自动退款至<a href="<%=request.getContextPath() %>/transactions">【众拍网余额】</a>中。您可以支持其他项目，或在此<a href="<%=request.getContextPath() %>/credits/refund">【申请取现】</a>至您的支付宝或其他原付款账户。
-</div>
-</c:if>
-</div>
-<div id="warming_popup" class="ui-popup ui-popup-blank ui-popup-invite" style="display:none">
-<div class="ui-popup-background">
-<div class="ui-popup-content ui-draggable">
-<table class="ui-popup-table" align="center" border="0" cellpadding="0" cellspacing="0">
-<tbody><tr><td class="ui-popup-top-l" width="25"></td>
-<td class="ui-popup-top"></td>
-<td class="ui-popup-top-r" width="25"><a href="#close" class="ui-popup-close">关闭</a></td></tr>
-<tr><td class="ui-popup-mid-l"></td>
-<td class="ui-popup-mid">
-<ul>
-<li class="ui-popup-invite-t">项目正在预热中，目前还不能进行现金支持！</li>
-<li class="ui-popup-invite-c">
-预热是筹资前的一个热身，目的是希望更多的朋友能关注项目，<br>
-给项目提意见，帮助发起人完善项目的各项内容，最终能够成功完成筹资。
-</li>
-<li>	
-<div class="project-invite-title">别错过了项目的最新动态！请立即关注此项目</div>
-<div class="ui-button ui-button-blue"><span><a href="http://www.demohour.com/projects/322072/invite" title="+关注此项目">+关注此项目</a></span></div>	
-</li>
-</ul>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" class="new-comment-list">
+<tbody><tr class="new-comment-t">
+<td width="310" valign="top" align="left" colspan="2">话题列表</td>
+<td width="50" align="right">回应</td>
+</tr>
+
+<c:forEach items="${topics}" var="topic1" varStatus="s">
+<c:if test="${topic.id == topic1.id }">
+<tr class="new-comment-on">
+</c:if> 
+<c:if test="${topic.id != topic1.id }">
+<tr class="">
+</c:if> 
+<td width="30" align="center">
+	<c:if test="${topic1.type=='0' }">
+		[普]
+	</c:if>
+	<c:if test="${topic1.type=='1' }">
+		[告]
+	</c:if>
+	<c:if test="${topic1.type=='2' }">
+		[常]
+	</c:if>
+	<c:if test="${topic1.type=='3' }">
+		[问]
+	</c:if>
+	<c:if test="${topic1.type=='4' }">
+		[顶]
+	</c:if>
+	<c:if test="${topic.type=='5' }">
+		[倒]
+	</c:if>
 </td>
-<td class="ui-popup-mid-r"></td></tr>
-<tr><td class="ui-popup-bottom-l"></td><td class="ui-popup-bottom"></td><td class="ui-popup-bottom-r"></td></tr>
+<td width="260"><a title="${topic1.title }" class="c5 c5-length" href="<%=request.getContextPath() %>/projects/${topic1.projectId }/topic/${topic1.id}">${topic1.title }</a><div data-visited-id="${topic1.id }" data-visited-time="${topic1.createdate } +0800" class="list-icon-new" style="display: none;">新</div></td>
+<td width="50" align="right"><span class="c5-length-r">${topic1.commentnum }</span></td>    
+</tr>
+</c:forEach>
 </tbody></table>
-</div>
-</div>
-</div>
 
 </div>
 </div>
@@ -477,7 +493,7 @@
 
 
 <script src="<s:url value="/demohour-index_files/jia.js"/>" async="" type="text/javascript"></script>
-<%-- <script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script> --%>
+<script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script>
 <script src="<s:url value="/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js"/>" type="text/javascript"></script>
 <script src="<s:url value="/demohour-index_files/projects-1ab927eb13eddbb381c44171a7060594.js"/>" type="text/javascript"></script>
 <script type="text/javascript">
@@ -487,9 +503,9 @@ $(document).ready(function() {
     $('input, textarea').placeholder();
     $(window).scroll(function() {
         if ($(window).scrollTop() > 48) {
-            $('#ui_notification').addClass('layer-message-fixed');
+            $('.new-comment-list').addClass('layer-message-fixed');
         } else {
-            $('#ui_notification').removeClass('layer-message-fixed');
+            $('.new-comment-list').removeClass('layer-message-fixed');
         }
     });
 /*     $.ui_notification.ready({
@@ -509,8 +525,8 @@ $(document).ready(function() {
     }),
     $.ui_core.flash("project_intro", []),
     jiathis_config = {
-        summary: "${project.summary}",
-        title: "${project.name}"
+        summary: "Talking Timer是什么？很简单，如同它的名字，是一款可以对话的提示器。",
+        title: "#Talking Timer（对讲提示器）#"
     },
 /*     function() {
         var e = document.createElement("script");
@@ -530,9 +546,9 @@ $(document).ready(function() {
     	function() {
         	$(".ui-flash").remove()
     }),
-    $("#new_post").find("form").on('ajax:success', function(data) {
+/*     $("#new_post").find("form").on('ajax:success', function(data) {
         alert(data);
-    }),
+    }), */
     editors = $("#post_content_1").ueditor({
         autosave: !1,
         image: {
@@ -581,9 +597,26 @@ $(document).ready(function() {
     });;
     $.ui_core.backtop('#backtop');
     $.ui_core.distance({
-        now: '2013-08-18 00:59:49 +0800'
+        //now: '2013-08-18 00:59:49 +0800'
+    });
+    $("#commentform").on('ajax:success', function(data) {
+    	//alert(data);
+    	window.location.href="<%=request.getContextPath() %>/projects/${topic.projectId}/topic/${topic.id}";
     });
 });
+function reply(commentid, commentuserid, commentusername){
+	if(commentuserid != $("#commentuserid").val() ){
+		$("#comment_content").val("");
+	}
+	$("#commentuserid").val(commentuserid);
+	$("#replyid").val(commentid);
+	$("#comment_content").attr("placeholder","回复 " + commentusername);
+}
+function resetreply(){
+	$("#replyid").val(0);
+	$("#comment_content").attr("placeholder","回复本话题");
+	$("#comment_content").val("");
+}
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-23451409-1']);
 _gaq.push(['_trackPageview']);

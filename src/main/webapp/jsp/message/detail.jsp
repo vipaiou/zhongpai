@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="bean"  uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <%@ include file="../../include/header.jsp" %>
@@ -13,11 +14,16 @@
 <div class="content private-letter-page">
 <div class="letter-page-left">
 <div class="private-letter-reply">
-<form accept-charset="UTF-8" action="/messages?recipient_id=1121568&reply=true" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" value="✓" type="hidden"><input name="authenticity_token" value="WgCQl1g0l5r3m2JHy6Ry3Z6wZyCNMrtEtpJ9/hjEy6U=" type="hidden"></div>
-<div class="private-letter-reply-title"><a href="<%=request.getContextPath()%>/message/">&lt;&lt; 返回所有私信</a></div>
+<form accept-charset="UTF-8" action="<%=request.getContextPath() %>/messages?recipient_id=${user.UserId }&reply=true" data-remote="true" method="post">
+<div style="margin:0;padding:0;display:inline">
+<input name="utf8" value="✓" type="hidden">
+<input name="authenticity_token" value="WgCQl1g0l5r3m2JHy6Ry3Z6wZyCNMrtEtpJ9/hjEy6U=" type="hidden">
+</div>
+<div class="private-letter-reply-title">
+<a href="<%=request.getContextPath()%>/message/">&lt;&lt; 返回所有私信</a></div>
 <div class="ui-textarea">
 <div class="ui-textarea-border">
-<textarea id="message_content" name="message[content]" placeholder="发私信给: aiou"></textarea>
+<textarea id="message_content" name="content" placeholder="发私信给: ${user.UserName }"></textarea>
 </div>
 </div>
 <div class="private-letter-reply-b">
@@ -26,36 +32,30 @@
 </div>
 </form></div>
 <ul id="messages" class="private-letter-list">
-<li id="message_253312">
-<a href="<%=request.getContextPath()%>/1121568" target="_blank" class="private-letter-list-l">
-<img src="<%=request.getContextPath()%>/demohour-index_files/user_avatars-files-000-106-730-106730-small.jpg"></a>
+<c:forEach items="${messages}" var="message">
+<li id="message_${message.id }">
+<a href="<%=request.getContextPath()%>/user/${message.from}" target="_blank" class="private-letter-list-l">
+<img src="${imagehost }avatar-small-${message.fromavatar}"></a>
 <div class="private-letter-list-r">
 <div class="private-letter-list-t">
-<a href="<%=request.getContextPath()%>/1121568" target="_blank">我</a>
-: wohao	
+<c:if test="${message.from == user.UserId }">
+<a href="<%=request.getContextPath()%>/user/${message.from}" target="_blank">${message.fromusername }</a>
+</c:if>
+<c:if test="${message.from != user.UserId }">
+<a href="<%=request.getContextPath()%>/user/${message.from}" target="_blank">我</a>
+</c:if>
+: ${message.content }	
 </div>
-<div class="private-letter-list-b"><span class="private-letter-list-date" data-timestamp="2013-09-01 22:35:26 +0800">7分钟以前</span>
+<div class="private-letter-list-b"><span class="private-letter-list-date" data-timestamp="${fn:substring(message.createdate,0,19)} +0800"></span>
+<c:if test="${message.from == user.UserId }">
 <a href="#reply" class="ui-action-reply">回复</a>
 <span>|</span>
+</c:if>
 <a href="<%=request.getContextPath()%>/messages/253312" class="ui-popup-delete" rel="nofollow" title="确定要删除这条私信？">删除</a>
 </div>
 </div>
 </li>
-<li id="message_253311">
-<a href="<%=request.getContextPath()%>/1121568" target="_blank" class="private-letter-list-l">
-<img src="<%=request.getContextPath()%>/demohour-index_files/user_avatars-files-000-106-730-106730-small.jpg"></a>
-<div class="private-letter-list-r">
-<div class="private-letter-list-t">
-<a href="<%=request.getContextPath()%>/1121568" target="_blank">我</a>
-: nihao	
-</div>
-<div class="private-letter-list-b"><span class="private-letter-list-date" data-timestamp="2013-09-01 22:35:09 +0800">8分钟以前</span>
-<a href="#reply" class="ui-action-reply">回复</a>
-<span>|</span>
-<a href="<%=request.getContextPath()%>/messages/253311" class="ui-popup-delete" rel="nofollow" title="确定要删除这条私信？">删除</a>
-</div>
-</div>
-</li>
+</c:forEach>
 </ul>
 <div class="private-letter-pagination">
 <div class="ui-pagination"><ul></ul></div>
@@ -131,19 +131,74 @@
 </div>
 
 
-<script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script><script src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js" type="text/javascript"></script>
+<%-- <script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script> --%>
+<script src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/demohour-index_files/messages-81a8e5c3f0f88ef37b5abe40fcd3aa03.js" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
-$(document).ready(function(){$.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');$('input, textarea').placeholder();$(window).scroll(function(){if($(window).scrollTop() > 48){$('#ui_notification').addClass('layer-message-fixed');}else{$('#ui_notification').removeClass('layer-message-fixed');}});$.ui_notification.ready({url:'http://nf-2.demohour.com',data:{"new_comments_count":0,"new_messages_count":2,"new_notifications_count":0,"new_posts_count":0}});$("a.ui-action-reply").click(function(){$("html, body").position().top<-50?$("html, body").animate({scrollTop:0},500,function(){$("#message_content").show("highlight",{},1e3)}):$("#message_content").show("highlight",{},1e3),$("#message_content").focus()}),$("body").on("click","a.ui-popup-delete",function(e){$("#ui_popup_delete").find("div.ui-popup-content").css("top",$(window).height()/2-120),$("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),$("#ui_popup_delete").find("a.ui-popup-url").attr("href",$(e.target).attr("href")),$("#ui_popup_delete").toggle(),e.preventDefault()}),$("body").on("click","a.ui-popup-message",function(e){$("#ui_popup_message").find("div.ui-popup-content").css("top",$(window).height()/2-150),$("#ui_popup_message").find("form").attr("action",$(e.target).attr("href")),$("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),$("#ui_popup_message").toggle(),$("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),$("#ui_popup_message").find("textarea").focus(),$(e.target).attr("href").indexOf("?recipient_id=")>0?($("#ui_popup_message_url").show(),$("#ui_popup_message_email").hide(),$("#ui_popup_message_url").find("a").attr("href",$(e.target).attr("href").replace("?recipient_id=","/"))):($("#ui_popup_message_url").hide(),$("#ui_popup_message_email").show()),e.preventDefault()});;$.ui_core.backtop('#backtop');$.ui_core.distance({now:'2013-09-01 22:43:22 +0800'});});
+$(document).ready(function() {
+    $.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');
+    $('input, textarea').placeholder();
+    $(window).scroll(function() {
+        if ($(window).scrollTop() > 48) {
+            $('#ui_notification').addClass('layer-message-fixed');
+        } else {
+            $('#ui_notification').removeClass('layer-message-fixed');
+        }
+    });
+/*     $.ui_notification.ready({
+        url: 'http://nf-2.demohour.com',
+        data: {
+            "new_comments_count": 0,
+            "new_messages_count": 2,
+            "new_notifications_count": 0,
+            "new_posts_count": 0
+        }
+    }); */
+    $("a.ui-action-reply").click(function() {
+        $("html, body").position().top < -50 ? $("html, body").animate({
+            scrollTop: 0
+        },
+        500, 
+        function() {
+            $("#message_content").show("highlight", {},
+            1e3)
+        }) : $("#message_content").show("highlight", {},
+        1e3),
+        $("#message_content").focus()
+    }),
+    $("body").on("click", "a.ui-popup-delete", 
+    function(e) {
+        $("#ui_popup_delete").find("div.ui-popup-content").css("top", $(window).height() / 2 - 120),
+        $("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),
+        $("#ui_popup_delete").find("a.ui-popup-url").attr("href", $(e.target).attr("href")),
+        $("#ui_popup_delete").toggle(),
+        e.preventDefault()
+    }),
+    $("body").on("click", "a.ui-popup-message", 
+    function(e) {
+        $("#ui_popup_message").find("div.ui-popup-content").css("top", $(window).height() / 2 - 150),
+        $("#ui_popup_message").find("form").attr("action", $(e.target).attr("href")),
+        $("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),
+        $("#ui_popup_message").toggle(),
+        $("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),
+        $("#ui_popup_message").find("textarea").focus(),
+        $(e.target).attr("href").indexOf("?recipient_id=") > 0 ? ($("#ui_popup_message_url").show(), $("#ui_popup_message_email").hide(), $("#ui_popup_message_url").find("a").attr("href", $(e.target).attr("href").replace("?recipient_id=", "/"))) : ($("#ui_popup_message_url").hide(), $("#ui_popup_message_email").show()),
+        e.preventDefault()
+    });;
+    $.ui_core.backtop('#backtop');
+    $.ui_core.distance({
+        //now: '2013-09-01 22:43:22 +0800'
+    });
+});
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-23451409-1']);
 _gaq.push(['_trackPageview']);
-(function() {
+/* (function() {
 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+})(); */
 //]]>
 </script>
 </body></html>

@@ -7,21 +7,22 @@
 <link href="<s:url value="/demohour-index_files/projects-9afed8175e89fa73647b287e62737440.css" />" media="screen" rel="stylesheet" type="text/css">
 <div class="ui-tab">
 <div class="ui-tab-top">
-<h1><a href="<%=request.getContextPath()%>/projects/view/${project.id}">${project.name }</a></h1>
+<%-- <h1><a href="<%=request.getContextPath()%>/projects/view/${project.id}">${project.name }</a></h1> --%>
+<h1>${project.name }</h1>
 </div>
 <div class="ui-tab-layout">
 <ul class="ui-tab-menu">
 <li><a class="ui-tab-current" href="<%=request.getContextPath()%>/projects/view/${project.id}">项目主页</a></li>
-<li><a href="<%=request.getContextPath()%>/projects/topics/${project.id}">话题<span id="posts_count">${topicnum }</span></a></li>
-<li><a href="<%=request.getContextPath()%>/projects/focus/${project.id}">关注者<span id="favorites_count">${focusnum }</span></a></li>
+<li><a href="<%=request.getContextPath()%>/projects/${project.id}/topics/">话题<span id="posts_count">${topicnum }</span></a></li>
+<li><a href="<%=request.getContextPath()%>/focuses/${project.id}">关注者<span id="favorites_count">${focusnum }</span></a></li>
 </ul>
 <div class="ui-tab-menu-right">
 <div class="ui-button ui-button-blue"><span><a href="#ui_invite_popup" class="ui-popup-open invite_popup" data-popup-height="180" title="帮忙转发">帮忙转发</a></span></div>
 <div id="project_322072_favorite1" class="ui-button ui-button-blue ui-button-ajax">
 <span>
 <c:choose>
-	<c:when test="focused > 0">
-	<a id="focus" href="javascript:void(0);">已关注</a>
+	<c:when test="${focused != 0}">
+	已关注
 	</c:when>
 	<c:otherwise>
 		<a id="focus" href="<%=request.getContextPath()%>/projects/focus/${project.id }" data-remote="true">+关注此项目</a>
@@ -125,9 +126,9 @@
 ${project.content }
 <br>
 <div class="projects-home-left-seat">标签：
-<a href="<%=request.getContextPath()%>/projects/category/technology" target="_blank">科技${project.category }</a>&nbsp;&nbsp;
-<a href="<%=request.getContextPath()%>/1120565" target="_blank">${createuser.UserName }</a>&nbsp;&nbsp;
-<a href="<%=request.getContextPath()%>/projects/location/${project.province }" target="_blank">${project.province }${project.city }</a>
+<a href="<%=request.getContextPath()%>/projects/discover/0_${project.category }_0_0" target="_blank">${project.category }</a>&nbsp;&nbsp;
+<a href="<%=request.getContextPath()%>/user/${createuser.UserId}" target="_blank">${createuser.UserName }</a>&nbsp;&nbsp;
+<a href="<%=request.getContextPath()%>/projects/discover/0_0_${project.province }_0" target="_blank">${project.province }${project.city }</a>
 </div>
 </div>
 </div>
@@ -136,11 +137,12 @@ ${project.content }
 <div class="new-comment" id="posts">
 <div class="new-tab">
 <ul class="new-tab-menu">
-<li><a id="filter_all" href="<%=request.getContextPath()%>/posts/list?project_id=322072&refresh=1376757331.657914" data-remote="true" class="new-tab-current"><div class="new-tab-left-radius"></div>全部<span>${topicnum}</span></a></li>
-<li><a href="<%=request.getContextPath()%>/posts/list?filter=0&project_id=322072" data-remote="true">公告<span>1</span></a></li>
-<li><a href="<%=request.getContextPath()%>/posts/list?filter=1&project_id=322072" data-remote="true">问答<span>10</span></a></li>
-<li><a href="<%=request.getContextPath()%>/posts/list?filter=2&project_id=322072" data-remote="true">顶<span>29</span></a></li>
-<li><a href="<%=request.getContextPath()%>/posts/list?filter=3&project_id=322072" data-remote="true">倒<span>0</span></a></li>
+<li><a id="filter_all" href="<%=request.getContextPath()%>/projects/topics/list?projectid=${project.id }&refresh=1376757331.657914" data-remote="true" class="new-tab-current"><div class="new-tab-left-radius"></div>全部<span>${topicnum}</span></a></li>
+<li><a href="<%=request.getContextPath()%>/projects/topics/list?filter=0&projectid=${project.id }" data-remote="true">公告<span>${topicmeta.info }</span></a></li>
+<li><a href="<%=request.getContextPath()%>/projects/topics/list?filter=1&projectid=${project.id }" data-remote="true">常见问答<span>${topicmeta.faq }</span></a></li>
+<li><a href="<%=request.getContextPath()%>/projects/topics/list?filter=1&projectid=${project.id }" data-remote="true">问<span>${topicmeta.question }</span></a></li>
+<li><a href="<%=request.getContextPath()%>/projects/topics/list?filter=2&projectid=${project.id }" data-remote="true">顶<span>${topicmeta.up }</span></a></li>
+<li><a href="<%=request.getContextPath()%>/projects/topics/list?filter=3&projectid=${project.id }" data-remote="true">倒<span>${topicmeta.down }</span></a></li>
 </ul>
 </div>
 <table class="new-comment-list" border="0" cellpadding="0" cellspacing="0">
@@ -153,29 +155,44 @@ ${project.content }
 </tr>
 
 <c:forEach items="${topics}" var="topic" varStatus="s"> 
-<tr class="new-comment-ding">
+<c:choose>
+	<c:when test="${topic.type=='1' || topic.type=='2'}">
+		<tr class="new-comment-ding">
+	</c:when>
+	<c:otherwise>
+		<tr class="">
+	</c:otherwise>
+</c:choose>
 <td align="center">
-<div class="comment-icon">[<a href="<%=request.getContextPath()%>/posts/list?filter=0&limit=40&project_id=${topic.projectId}" data-remote="true">告</a>]</div>
+<div class="comment-icon">
+	<c:if test="${topic.type=='0' }">
+		[<a href="<%=request.getContextPath()%>/projects/topics/list?filter=0&limit=40&project_id=${topic.projectId}" data-remote="true">普</a>]
+	</c:if>
+	<c:if test="${topic.type=='1' }">
+		[<a href="<%=request.getContextPath()%>/projects/topics/list?filter=0&limit=40&project_id=${topic.projectId}" data-remote="true">告</a>]
+	</c:if>
+	<c:if test="${topic.type=='2' }">
+		[<a href="<%=request.getContextPath()%>/projects/topics/list?filter=0&limit=40&project_id=${topic.projectId}" data-remote="true">常</a>]
+	</c:if>
+	<c:if test="${topic.type=='3' }">
+		[<a href="<%=request.getContextPath()%>/projects/topics/list?filter=0&limit=40&project_id=${topic.projectId}" data-remote="true">问</a>]
+	</c:if>
+	<c:if test="${topic.type=='4' }">
+		[<a href="<%=request.getContextPath()%>/projects/topics/list?filter=0&limit=40&project_id=${topic.projectId}" data-remote="true">顶</a>]
+	</c:if>
+	<c:if test="${topic.type=='5' }">
+		[<a href="<%=request.getContextPath()%>/projects/topics/list?filter=0&limit=40&project_id=${topic.projectId}" data-remote="true">倒</a>]
+	</c:if>
+</div>
 </td>
-<td align="left" width="336"><a href="<%=request.getContextPath()%>/posts/${topic.id }" class="c5 c5-length" title="#${topic.title }">${topic.title }</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-08-17 13:15:59 +0800" data-visited-id="20518">新</div></td>
+<td align="left" width="336"><a href="<%=request.getContextPath()%>/projects/${project.id }/topic/${topic.id }" class="c5 c5-length" title="#${topic.title }">${topic.title }</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-08-17 13:15:59 +0800" data-visited-id="20518">新</div></td>
 <td align="left">
-<a href="<%=request.getContextPath()%>/${topic.userid }" class="c9 c9-length" target="_blank" title="众拍网客服">${topic.userid }</a>
+<a href="<%=request.getContextPath()%>/${topic.userid }" class="c9 c9-length" target="_blank" title="${topic.username }">${topic.username }</a>
 </td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/${topic.id}" class="c5">4</a></td>
-<td class="timeline-posted-at" align="right"><a href="<%=request.getContextPath()%>/posts/${topic.id }?latest=1" data-timestamp="2013-08-17 13:15:59 +0800">11小时以前</a></td>
+<td align="center"><a href="<%=request.getContextPath()%>/projects/topics/${topic.id}" class="c5">${topic.commentnum }</a></td>
+<td class="timeline-posted-at" align="right"><a href="<%=request.getContextPath()%>/projects/${project.id }/topic/${topic.id }?latest=1" data-timestamp="2013-08-17 13:15:59 +0800">11小时以前</a></td>
 </tr>
 </c:forEach>
-<tr class="new-comment-ding">
-<td align="center">
-<div class="comment-icon">[<a href="<%=request.getContextPath()%>/posts/list?filter=0&limit=40&project_id=322072" data-remote="true">告</a>]</div>
-</td>
-<td align="left" width="336"><a href="<%=request.getContextPath()%>/posts/20518" class="c5 c5-length" title="#Talking Timer（对讲提示器）#上线了！">#Talking Timer（对讲提示器）#上线了！</a><div style="display: none;" class="list-icon-new" data-visited-time="2013-08-17 13:15:59 +0800" data-visited-id="20518">新</div></td>
-<td align="left">
-<a href="<%=request.getContextPath()%>/1013487" class="c9 c9-length" target="_blank" title="众拍网客服">众拍网客服</a>
-</td>
-<td align="center"><a href="<%=request.getContextPath()%>/posts/20518" class="c5">4</a></td>
-<td class="timeline-posted-at" align="right"><a href="<%=request.getContextPath()%>/posts/20518?latest=1" data-timestamp="2013-08-17 13:15:59 +0800">11小时以前</a></td>
-</tr>
 </tbody>
 </table>
 
@@ -235,68 +252,119 @@ ${project.content }
 <div class="ui-button ui-button-green ui-button-ajax"><span><button type="submit">发送</button></span></div>
 </div>
 </form></div>
-
 </div>
 <div class="projects-home-right">
-<div class="projects-home-right">
+<c:if test="${project.status=='0' }">
+<div class="sidebar-draft">
+</c:if>
+<c:if test="${project.status=='1' }">
+<div class="sidebar-submitted">
+</c:if>
+<c:if test="${project.status=='2' }">
 <div class="sidebar-warming">
+</c:if>
+<c:if test="${project.status=='3' }">
+<div class="sidebar-funding">
+</c:if>
+<c:if test="${project.status=='4' }">
+<div class="sidebar-success">
+</c:if>
+<c:if test="${project.status=='5' }">
+<div class="sidebar-failure">
+</c:if>
 <div class="sidebar-money-raised-top">
-<div class="sidebar-money-raised-num-t"><p>目标</p><b><b>1400</b>人关注</b><span><span>/</span>已达</span></div>
+<c:if test="${project.status=='3' or project.status=='4' or project.status=='5'}">
+<div class="sidebar-money-raised-num-t"><p>目标</p><b><b>¥${project.money }</b></b><span><span>/</span>已达</span></div>
+<div class="sidebar-money-raised-num"><b><b>¥${project.totalmoney }</b></b></div>
+</c:if>
+<c:if test="${project.status=='0' or project.status=='1' or project.status=='2'}">
+<div class="sidebar-money-raised-num-t"><p>目标</p><b><b>${project.targetfocusnum }</b>人关注</b><span><span>/</span>已达</span></div>
 <div class="sidebar-money-raised-num"><b><b>${focusnum }</b>人</b></div>
+</c:if>
 </div>
 <div class="sidebar-percentage">
-<span class="sidebar-percentage-progress-span">21%</span>
-<div style="width:21%;" class="sidebar-percentage-progress"></div>
+<span class="sidebar-percentage-progress-span">${focusratio }%</span>
+<div style="width:${focusratio}%;" class="sidebar-percentage-progress"></div>
 </div>
 <div class="sidebar-number-days">
 <div class="sidebar-number-days-l"><span>话题总数</span><b><b>${topicnum }</b>条</b></div>
-<div class="sidebar-number-days-m"><span>浏览人数</span><b><b>${project.viewnum }</b>人</b></div>
-<div class="sidebar-number-days-r"><span>已经预热</span><b><b>18</b>天</b></div>
+<div class="sidebar-number-days-m"><span>浏览次数</span><b><b>${project.viewnum }</b>次</b></div>
+<div class="sidebar-number-days-r"><span>已经预热</span><b><b>${preparedays }</b>天</b></div>
 </div>
 </div>
 <div class="project-by">
 <div class="project-by-dotty">项目发起人</div>
-<div class="project-by-img"><a href="<%=request.getContextPath()%>/${project.createuser }" target="_blank">
-<img src="<%=request.getContextPath()%>/demohour-index_files/thumb.png" height="80" width="80"></a>
+<div class="project-by-img">
+<a href="<%=request.getContextPath()%>/user/${project.createuser }" target="_blank">
+	<c:if test="${createuser.avatar == ''}"><img height="80" width="80" src="<%=request.getContextPath()%>/demohour-index_files/thumb.png"></c:if>
+	<c:if test="${createuser.avatar != ''}"><img height="80" width="80" src="${imagehost }avatar-medium-${createuser.avatar}"></c:if>
+</a>
 <div class="project-by-img-r"><a href="<%=request.getContextPath()%>/${project.createuser }" class="project-by-img-r-author" target="_blank">${createuser.UserName }</a>
-<div class="project-by-last-time">上次登录时间：2013/08/17
 <div class="post-private-letter"><a href="<%=request.getContextPath()%>/messages?recipient_id=${createuser.UserId }" class="ui-popup-message" title="私信给 ${createuser.UserName }">发私信</a></div>
+<div class="project-by-last-time">上次登录时间：${createuser.logintime }
 </div>
 <div class="project-by-post">
-<a href="<%=request.getContextPath()%>/${project.createuser }" target="_blank">支持的项目：<span>0</span></a>
-<a href="<%=request.getContextPath()%>/${project.createuser }" target="_blank">发起的项目：<span>1</span></a>
+<a href="<%=request.getContextPath()%>/${project.createuser }" target="_blank">支持的项目：<span>${createuser.supported }</span></a>
+<a href="<%=request.getContextPath()%>/${project.createuser }" target="_blank">发起的项目：<span>${createuser.created }</span></a>
 </div>
 </div>
 </div>
 </div>
 <div class="reward-options">
-<c:forEach items="${returns }" var="return" varStatus="s">
+<c:forEach items="${returns }" var="return1" varStatus="s">
 	<ul>
 	<li class="support-amount">
-	支持 <b>¥</b>${return.money }
+	支持 <b>¥</b>${return1.money }
 	<span>（0 位支持者）</span>
 	</li>
-	<c:if test="${return.limit=='1' }">
+	<c:if test="${return1.limit=='1'}">
 	<li class="supporter-number"><div class="supporter-limit">
-	<p>限额 ${return.limitnum }位，剩余 ${return.limitnum-return.supported } 位</p>
+	<p>限额 ${return1.limitnum }位，剩余 ${return1.limitnum-return1.supported } 位</p>
 	</div></li></c:if>
-	<li class="returns-contents"><p>${return.content }</p></li>
+	<li class="returns-contents"><p>${return1.content }</p></li>
 	<li class="returns-contents-img">
 	</li>
 	<li class="returns-contents-time">
-	<p><c:if test="${return.freepost=='1' }">包邮（大陆地区）</c:if></p>
-	<p>预计回报发放时间：项目成功结束后${return.days }天内</p>
+	<p><c:if test="${return1.freepost=='1' }">包邮（大陆地区）</c:if></p>
+	<p>预计回报发放时间：项目成功结束后${return1.days }天内</p>
 	</li>
 	<li>
-	<div class="ui-button ui-button-special"><span><a href="#ui_warming_popup" class="ui-popup-open" data-popup-height="180">支持<b>¥</b>${return.money }</a></span></div>
+	<c:choose>
+	<c:when test="${project.status=='2' }">
+	<div class="ui-button ui-button-special">
+	<span>
+		<a href="#ui_warming_popup" class="ui-popup-open" data-popup-height="180">支持<b>¥</b>${return1.money }</a>
+	</span></div>
+	</c:when>
+	<c:when test="${project.status=='3'}">
+	<div class="ui-button ui-button-special">
+	<span>
+		<a href="<%=request.getContextPath()%>/transaction/pay">支持<b>¥</b>${return1.money }</a>
+	</span></div>
+	</c:when>
+	<c:otherwise>
+	<div class="ui-button ui-button-special-disabled">
+	<span>
+		<a href="#">支持<b>¥</b>${return1.money }</a>
+	</span></div>
+	</c:otherwise>
+	</c:choose>
 	</li>
 	</ul>
 </c:forEach>
 </div>
+<c:if test="${project.status=='0' or project.status=='1' or project.status=='2'  }">
 <div class="payment-refund">关于预热项目：<p></p>
 预热项目是筹资前的一个热身，目的是希望更多的朋友能关注项目，给项目提意见，帮助发起人完善项目的各项内容。<p></p>
 当项目成熟时，发起人可以随时提交审核开始筹资。
 </div>
+</c:if>
+<c:if test="${project.status=='4' or project.status=='5' or project.status=='3' }">
+<div class="payment-refund">关于付款与退款：<p></p>
+这个项目必须在2013年09月11日 14:25之前达到<b>¥</b>${project.money }的目标才算成功，否则已经支持的订单将取消。<p></p>
+订单取消时，您的支持金额将自动退款至<a href="<%=request.getContextPath() %>/transactions">【众拍网余额】</a>中。您可以支持其他项目，或在此<a href="<%=request.getContextPath() %>/credits/refund">【申请取现】</a>至您的支付宝或其他原付款账户。
+</div>
+</c:if>
 </div>
 <div id="warming_popup" class="ui-popup ui-popup-blank ui-popup-invite" style="display:none">
 <div class="ui-popup-background">
@@ -333,7 +401,7 @@ ${project.content }
 <div id="projects" class="project-list">
 <ul class="project-one">
 <li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/321583" title="T-EYE， 让智能手机变身google眼镜" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/project_posters-files-000-012-069-12069-medium.jpg"></a></li>
+<a href="<%=request.getContextPath()%>/projects/321583" title="T-EYE， 让智能手机变身google眼镜" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-012-069-12069-medium.jpg"></a></li>
 <li class="project-titile"><a href="<%=request.getContextPath()%>/projects/321583" title="T-EYE， 让智能手机变身google眼镜">T-EYE， 让智能手机变身google眼镜</a></li>
 <li class="project-function">
 <a href="<%=request.getContextPath()%>/projects/321583/posts" title="此项目有41个话题" class="project-p-on">话题：41</a>
@@ -354,7 +422,7 @@ ${project.content }
 
 <ul class="project-one">
 <li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/316845" title="超 •手柄革命 多功能蓝牙游戏手柄 Dark Hammer " target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/project_posters-files-000-010-037-10037-medium.png"></a></li>
+<a href="<%=request.getContextPath()%>/projects/316845" title="超 •手柄革命 多功能蓝牙游戏手柄 Dark Hammer " target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-010-037-10037-medium.png"></a></li>
 <li class="project-titile"><a href="<%=request.getContextPath()%>/projects/316845" title="超 •手柄革命 多功能蓝牙游戏手柄 Dark Hammer ">超 •手柄革命 多功能蓝牙游戏手柄 Dark Hammer </a></li>
 <li class="project-function">
 <a href="<%=request.getContextPath()%>/projects/316845/posts" title="此项目有24个话题" class="project-p-on">话题：24</a>
@@ -375,7 +443,7 @@ ${project.content }
 
 <ul class="project-one">
 <li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/319612" title="ppt多能助手（iphone手机外挂设备）" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/project_posters-files-000-011-344-11344-medium.jpg"></a></li>
+<a href="<%=request.getContextPath()%>/projects/319612" title="ppt多能助手（iphone手机外挂设备）" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-011-344-11344-medium.jpg"></a></li>
 <li class="project-titile"><a href="<%=request.getContextPath()%>/projects/319612" title="ppt多能助手（iphone手机外挂设备）">ppt多能助手（iphone手机外挂设备）</a></li>
 <li class="project-function">
 <a href="<%=request.getContextPath()%>/projects/319612/posts" title="此项目有18个话题" class="project-p-on">话题：18</a>
@@ -396,7 +464,7 @@ ${project.content }
 
 <ul class="project-one">
 <li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/321626" title="中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/project_posters-files-000-012-089-12089-medium.jpg"></a></li>
+<a href="<%=request.getContextPath()%>/projects/321626" title="中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-012-089-12089-medium.jpg"></a></li>
 <li class="project-titile"><a href="<%=request.getContextPath()%>/projects/321626" title="中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作">中美合拍悬疑电影《破镜》 华人电影精英纽约联合制作</a></li>
 <li class="project-function">
 <a href="<%=request.getContextPath()%>/projects/321626/posts" title="此项目有24个话题" class="project-p-on">话题：24</a>
@@ -454,14 +522,14 @@ ${project.content }
 
 <div class="h-media-reports">
 <p>感谢国内外媒体报道支持</p>
-<a href="http://site.douban.com/widget/notes/4422127/note/218531103/" title="新周刊" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-01-04e39a7307d5119ac4df50d9e51dbbbd.gif"></a>
-<a href="http://site.douban.com/widget/notes/4422127/note/215977583/" title="南方都市报" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-02-39101939abd2a818f930b2c3f436e38a.gif"></a>
-<a href="http://site.douban.com/widget/notes/4422127/note/216279901/" title="南方周刊" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-03-bf5f2628a4a9548b1fd6750de0d8f05e.gif"></a>
-<a href="http://finance.cnr.cn/gs/201201/t20120112_509051989.shtml" title="经济之声" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-04-1a732a930611e6960263b399816b0a1a.gif"></a>
-<a href="http://news.xinhuanet.com/book/2012-06/25/c_123324750.htm" title="北京青年报" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-05-bd5f1c3bab1f62bd218702c792f4222c.gif"></a>
-<a href="http://site.douban.com/widget/notes/4422127/note/217068128/" title="北京晚报" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-06-dbe57a3ff106dfdc5bf5d26734595676.gif"></a>
-<a href="http://site.douban.com/widget/notes/4422127/note/213505558/" title="商业周刊/中文版" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/h-media-reports-07-f940ef6cca208ef3e8ca12c58aa4cc7b.gif"></a>
-<a href="http://news.xinhuanet.com/2013-04/12/c_115370793.htm" title="新华网" target="_blank"><img src="<%=request.getContextPath()%>/zhongpai-index_files/new.jpg"></a>
+<a href="http://site.douban.com/widget/notes/4422127/note/218531103/" title="新周刊" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-01-04e39a7307d5119ac4df50d9e51dbbbd.gif"></a>
+<a href="http://site.douban.com/widget/notes/4422127/note/215977583/" title="南方都市报" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-02-39101939abd2a818f930b2c3f436e38a.gif"></a>
+<a href="http://site.douban.com/widget/notes/4422127/note/216279901/" title="南方周刊" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-03-bf5f2628a4a9548b1fd6750de0d8f05e.gif"></a>
+<a href="http://finance.cnr.cn/gs/201201/t20120112_509051989.shtml" title="经济之声" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-04-1a732a930611e6960263b399816b0a1a.gif"></a>
+<a href="http://news.xinhuanet.com/book/2012-06/25/c_123324750.htm" title="北京青年报" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-05-bd5f1c3bab1f62bd218702c792f4222c.gif"></a>
+<a href="http://site.douban.com/widget/notes/4422127/note/217068128/" title="北京晚报" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-06-dbe57a3ff106dfdc5bf5d26734595676.gif"></a>
+<a href="http://site.douban.com/widget/notes/4422127/note/213505558/" title="商业周刊/中文版" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/h-media-reports-07-f940ef6cca208ef3e8ca12c58aa4cc7b.gif"></a>
+<a href="http://news.xinhuanet.com/2013-04/12/c_115370793.htm" title="新华网" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/new.jpg"></a>
 
 
 
@@ -570,14 +638,14 @@ $(document).ready(function() {
         summary: "${project.summary}",
         title: "${project.name}"
     },
-    function() {
+/*     function() {
         var e = document.createElement("script");
         e.type = "text/javascript",
         e.async = !0,
         e.src = ("https:" == document.location.protocol ? "https://": "http://") + "v2.jiathis.com/code/jia.js";
         var t = document.getElementsByTagName("script")[0];
         t.parentNode.insertBefore(e, t)
-    } (),
+    } (), */
     $(".invite_popup").click(function() {
         jiathis_config.url = "<%=request.getContextPath()%>/projects/322072?u=1121568"
     }),
@@ -639,7 +707,7 @@ $(document).ready(function() {
     });;
     $.ui_core.backtop('#backtop');
     $.ui_core.distance({
-        now: '2013-08-18 00:59:49 +0800'
+        //now: '2013-08-18 00:59:49 +0800'
     });
     $("#focus").on('ajax:success', function(data) {
     	$("#focus").parent().html('<a id="focus" href="javascript:void(0);">已关注</a>');
@@ -649,11 +717,11 @@ $(document).ready(function() {
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-23451409-1']);
 _gaq.push(['_trackPageview']);
-(function() {
+/* (function() {
 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+})(); */
 //]]>
 </script>
 <div style="position: fixed; left: 0px; top: 0px; width: 0px; height: 0px;" id="edui_fixedlayer"><div style="display: none;" id="edui9" class="edui-dialog edui-for-link"><div class="edui-dialog-wrap"><div id="edui9_body" class="edui-dialog-body"><div class="edui-dialog-shadow"></div><div id="edui9_titlebar" class="edui-dialog-titlebar"><div class="edui-dialog-draghandle" onmousedown='$EDITORUI["edui9"]._onTitlebarMouseDown(event, this);'><span class="edui-dialog-caption">超链接</span></div><div id="edui12" class="edui-box edui-button edui-dialog-closebutton"><div id="edui12_state" onmousedown='$EDITORUI["edui12"].Stateful_onMouseDown(event, this);' onmouseup='$EDITORUI["edui12"].Stateful_onMouseUp(event, this);' onmouseover='$EDITORUI["edui12"].Stateful_onMouseOver(event, this);' onmouseout='$EDITORUI["edui12"].Stateful_onMouseOut(event, this);'><div class="edui-button-wrap"><div data-original-title="关闭对话框" id="edui12_body" unselectable="on" class="edui-button-body" onmousedown="return false;" onclick='return $EDITORUI["edui12"]._onClick();'><div class="edui-box edui-icon"></div><div class="edui-box edui-label"></div></div></div></div></div></div><div id="edui9_content" class="edui-dialog-content"></div><div class="edui-dialog-foot"><div id="edui9_buttons" class="edui-dialog-buttons"><div id="edui13" class="edui-box edui-button edui-okbutton"><div id="edui13_state" onmousedown='$EDITORUI["edui13"].Stateful_onMouseDown(event, this);' onmouseup='$EDITORUI["edui13"].Stateful_onMouseUp(event, this);' onmouseover='$EDITORUI["edui13"].Stateful_onMouseOver(event, this);' onmouseout='$EDITORUI["edui13"].Stateful_onMouseOut(event, this);'><div class="edui-button-wrap"><div data-original-title="" id="edui13_body" unselectable="on" class="edui-button-body" onmousedown="return false;" onclick='return $EDITORUI["edui13"]._onClick();'><div class="edui-box edui-icon"></div><div class="edui-box edui-label">确认</div></div></div></div></div><div id="edui14" class="edui-box edui-button edui-cancelbutton"><div id="edui14_state" onmousedown='$EDITORUI["edui14"].Stateful_onMouseDown(event, this);' onmouseup='$EDITORUI["edui14"].Stateful_onMouseUp(event, this);' onmouseover='$EDITORUI["edui14"].Stateful_onMouseOver(event, this);' onmouseout='$EDITORUI["edui14"].Stateful_onMouseOut(event, this);'><div class="edui-button-wrap"><div data-original-title="" id="edui14_body" unselectable="on" class="edui-button-body" onmousedown="return false;" onclick='return $EDITORUI["edui14"]._onClick();'><div class="edui-box edui-icon"></div><div class="edui-box edui-label">取消</div></div></div></div></div></div></div></div></div></div><div style="display: none;" id="edui10" class="edui-mask  edui-dialog-modalmask" onmousedown='return $EDITORUI["edui10"]._onMouseDown(event, this);'></div><div style="display: none;" id="edui11" class="edui-mask  edui-dialog-dragmask" onmousedown='return $EDITORUI["edui11"]._onMouseDown(event, this);'></div><div style="display: none;" id="edui15" class="edui-dialog edui-for-insertvideo"><div class="edui-dialog-wrap"><div id="edui15_body" class="edui-dialog-body"><div class="edui-dialog-shadow"></div><div id="edui15_titlebar" class="edui-dialog-titlebar"><div class="edui-dialog-draghandle" onmousedown='$EDITORUI["edui15"]._onTitlebarMouseDown(event, this);'><span class="edui-dialog-caption">视频</span></div><div id="edui16" class="edui-box edui-button edui-dialog-closebutton"><div id="edui16_state" onmousedown='$EDITORUI["edui16"].Stateful_onMouseDown(event, this);' onmouseup='$EDITORUI["edui16"].Stateful_onMouseUp(event, this);' onmouseover='$EDITORUI["edui16"].Stateful_onMouseOver(event, this);' onmouseout='$EDITORUI["edui16"].Stateful_onMouseOut(event, this);'><div class="edui-button-wrap"><div data-original-title="关闭对话框" id="edui16_body" unselectable="on" class="edui-button-body" onmousedown="return false;" onclick='return $EDITORUI["edui16"]._onClick();'><div class="edui-box edui-icon"></div><div class="edui-box edui-label"></div></div></div></div></div></div><div id="edui15_content" class="edui-dialog-content"></div><div class="edui-dialog-foot"><div id="edui15_buttons" class="edui-dialog-buttons"><div id="edui17" class="edui-box edui-button edui-okbutton"><div id="edui17_state" onmousedown='$EDITORUI["edui17"].Stateful_onMouseDown(event, this);' onmouseup='$EDITORUI["edui17"].Stateful_onMouseUp(event, this);' onmouseover='$EDITORUI["edui17"].Stateful_onMouseOver(event, this);' onmouseout='$EDITORUI["edui17"].Stateful_onMouseOut(event, this);'><div class="edui-button-wrap"><div data-original-title="" id="edui17_body" unselectable="on" class="edui-button-body" onmousedown="return false;" onclick='return $EDITORUI["edui17"]._onClick();'><div class="edui-box edui-icon"></div><div class="edui-box edui-label">确认</div></div></div></div></div><div id="edui18" class="edui-box edui-button edui-cancelbutton"><div id="edui18_state" onmousedown='$EDITORUI["edui18"].Stateful_onMouseDown(event, this);' onmouseup='$EDITORUI["edui18"].Stateful_onMouseUp(event, this);' onmouseover='$EDITORUI["edui18"].Stateful_onMouseOver(event, this);' onmouseout='$EDITORUI["edui18"].Stateful_onMouseOut(event, this);'><div class="edui-button-wrap"><div data-original-title="" id="edui18_body" unselectable="on" class="edui-button-body" onmousedown="return false;" onclick='return $EDITORUI["edui18"]._onClick();'><div class="edui-box edui-icon"></div><div class="edui-box edui-label">取消</div></div></div></div></div></div></div></div></div></div><div style="display: none;" id="edui19" class="edui-popup  edui-bubble"> <div id="edui19_body" class="edui-popup-body"> <iframe style="position:absolute;z-index:-1;left:0;top:0;background-color: white;" src="javascript:" frameborder="0" height="100%" width="100%"></iframe> <div class="edui-shadow"></div> <div id="edui19_content" class="edui-popup-content">  </div> </div></div></div></body></html>

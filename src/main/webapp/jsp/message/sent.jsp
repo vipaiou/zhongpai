@@ -273,32 +273,31 @@
 <h2>我的私信</h2></div>
 <div class="ui-tab-layout">
 <ul class="ui-tab-menu">
-<li><a href="<%=request.getContextPath()%>/message/" class="ui-tab-current">联系人</a></li>
-<li><a href="<%=request.getContextPath()%>/message/sent/">我发送的</a></li>
+<li><a href="<%=request.getContextPath()%>/message/">联系人</a></li>
+<li><a href="<%=request.getContextPath()%>/message/sent/" class="ui-tab-current">我发送的</a></li>
 <li><a href="<%=request.getContextPath()%>/message/received/">发送给我的</a></li>
 </ul>
 </div>
 </div>
 <div class="content private-letter-page">
 <div class="letter-page-left">
-<div class="private-letter-title">${fn:length(messages) }个联系人</div>
+<!-- <div class="private-letter-title">1个联系人</div> -->
 <ul class="private-letter-list">
 <c:forEach items="${messages}" var="message">
-<li id="contact_${message.UserId }">
-<a href="<%=request.getContextPath()%>/user/${message.UserId}" target="_blank" class="private-letter-list-l">
-<img src="${imagehost }avatar-small-${message.avatar }"></a>
+<li id="contact_${message.id }">
+<a href="<%=request.getContextPath()%>/user/${message.to}" target="_blank" class="private-letter-list-l">
+<img src="${imagehost }avatar-small-${message.toavatar }"></a>
 <div class="private-letter-list-r">
 <div class="private-letter-list-t">
-<!-- <div class="private-letter-list-t-l">发送给</div>  -->
-<a href="<%=request.getContextPath()%>/user/${message.UserId}" target="_blank">${message.UserName }</a>
- :${message.province }${message.city }&nbsp;&nbsp; ${message.tags }&nbsp;&nbsp;${fn:substring(message.Description,0,19)}
+<div class="private-letter-list-t-l">发送给</div> 
+<a href="<%=request.getContextPath()%>/user/${message.to}" target="_blank">${message.tousername }</a>
+: ${message.content }
 </div>
 <div class="private-letter-list-b">
-<span class="private-letter-list-date">上次登录时间：</span>
-<span class="private-letter-list-date" data-timestamp="${fn:substring(message.logintime,0,19)} +0800"></span>
-<a href="<%=request.getContextPath()%>/message/detail?with=${message.UserId}">共${message.messagecount }条对话</a><span>|</span>
-<a userid="${message.UserId }" href="<%=request.getContextPath()%>/messages?recipient_id=${message.UserId}" class="ui-popup-message" title="回复给 ${message.UserName }">回复</a><span>|</span>
-<a href="<%=request.getContextPath()%>/messages/all?contact_id=${message.UserId}" class="ui-popup-delete" rel="nofollow" title="确定要删除与 ${message.UserName } 之间的所有私信？">删除</a>
+<span class="private-letter-list-date" data-timestamp="${fn:substring(message.createdate,0,19)} +0800"></span>
+<a href="<%=request.getContextPath()%>/message/detail?with=${message.to}">共${message.messagecount }条对话</a><span>|</span>
+<a href="<%=request.getContextPath()%>/messages?recipient_id=${message.to}" class="ui-popup-message" title="回复给 ${message.tousername }">回复</a><span>|</span>
+<a href="<%=request.getContextPath()%>/messages/all?contact_id=${message.to}" class="ui-popup-delete" rel="nofollow" title="确定要删除与 ${message.tousername } 之间的所有私信？">删除</a>
 </div>
 </div>
 </li>
@@ -346,7 +345,7 @@
 </div>
 <div class="ui-popup-textarea-b">
 <span id="ui_popup_message_url"><a href="<%=request.getContextPath()%>/messages">查看私信记录</a></span>
-<span id="ui_popup_message_email" style="display:none"><label><input name="message[email_sync]" value="1" type="checkbox"> 同时发送邮件</label></span>
+<%-- <span id="ui_popup_message_email" style="display:none"><label><input name="message[email_sync]" value="1" type="checkbox"> 同时发送邮件</label></span> --%>
 <span id="message_content_error"></span>
 <div class="ui-button ui-button-green ui-button-ajax"><span><button type="submit">发送</button></span></div>
 </div>
@@ -416,15 +415,7 @@ $(document).ready(function() {
         $("#ui_popup_message").toggle(),
         $("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),
         $("#ui_popup_message").find("textarea").focus(),
-        $(e.target).attr("href").indexOf("?recipient_id=") > 0 ? 
-        		(
-        				$("#ui_popup_message_email").hide(), 
-        				/* $("#ui_popup_message_url").find("a").attr("href", $(e.target).attr("href").replace("?recipient_id=", "/")))  */
-        				$("#ui_popup_message_url").find("a").attr("href", "<%=request.getContextPath()%>/message/detail?with="+ $(e.target).attr("userid"))) 
-        		: 
-        		(
-        				$("#ui_popup_message_url").hide(), 
-        				$("#ui_popup_message_email").show()),
+        $(e.target).attr("href").indexOf("?recipient_id=") > 0 ? ($("#ui_popup_message_url").show(), $("#ui_popup_message_email").hide(), $("#ui_popup_message_url").find("a").attr("href", $(e.target).attr("href").replace("?recipient_id=", "/"))) : ($("#ui_popup_message_url").hide(), $("#ui_popup_message_email").show()),
         e.preventDefault()
     });;
     $.ui_core.backtop('#backtop');

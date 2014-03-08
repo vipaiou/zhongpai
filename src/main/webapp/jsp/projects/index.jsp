@@ -24,14 +24,15 @@
 </div>
 <div class="ui-categories-r">
 <a href="<%=request.getContextPath()%>/projects/discover/0_${c2 }_${c3 }_${c4 }" id="attribute_0">所有项目</a>
-<a class="ui-categories-current" href="<%=request.getContextPath()%>/projects/discover/1_${c2 }_${c3 }_${c4 }" id="attribute_1">推荐项目</a>
+<a href="<%=request.getContextPath()%>/projects/discover/1_${c2 }_${c3 }_${c4 }" id="attribute_1">推荐项目</a>
 <a href="<%=request.getContextPath()%>/projects/discover/2_${c2 }_${c3 }_${c4 }" id="attribute_2">经典项目</a>
 <a href="<%=request.getContextPath()%>/projects/discover/3_${c2 }_${c3 }_${c4 }" id="attribute_3">预热中</a>
 <a href="<%=request.getContextPath()%>/projects/discover/4_${c2 }_${c3 }_${c4 }" id="attribute_4">筹资中</a>
 <a href="<%=request.getContextPath()%>/projects/discover/5_${c2 }_${c3 }_${c4 }" id="attribute_5">筹资成功</a>
-<a href="<%=request.getContextPath()%>/projects/discover/6_${c2 }_${c3 }_${c4 }" id="attribute_${c4 }">筹资失败</a>
+<a href="<%=request.getContextPath()%>/projects/discover/6_${c2 }_${c3 }_${c4 }" id="attribute_6">筹资失败</a>
+
 <div class="ui-categories-r-line"></div>
-<a class="ui-categories-current" href="<%=request.getContextPath()%>/projects/discover/${c1}_0_${c3 }_${c4 }" id="category_0">所有分类</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_0_${c3 }_${c4 }" id="category_0">所有分类</a>
 <c:forEach items="${categories }" var="category">
 <a href="<%=request.getContextPath() %>/projects/discover/${c1 }_${category.id }_${c3 }_${c4 }" id="category_${category.id }">${category.name }</a>
 </c:forEach>
@@ -45,7 +46,7 @@
 <a href="http://www.demohour.com/projects/discover/1_927157_0_6" id="category_927157">摄影</a>
 <a href="http://www.demohour.com/projects/discover/1_927162_0_6" id="category_927162">其他</a> -->
 <div class="ui-categories-r-line"></div>
-<a class="ui-categories-current" href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_0_${c4 }" id="location_0">所有地区</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_0_${c4 }" id="location_0">所有地区</a>
 <a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_北京_${c4 }" id="location_北京">北京</a>
 <a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_广东_${c4 }" id="location_广东">广东</a>
 <a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_上海_${c4 }" id="location_上海">上海</a>
@@ -88,87 +89,58 @@
 <a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_3" id="sort_3">支持最多</a>
 <a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_4" id="sort_4">关注最多</a>
 <a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_5" id="sort_5">评价最高</a>
-<a class="ui-categories-current" href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_6" id="sort_6">最新上线</a>
+<a href="<%=request.getContextPath()%>/projects/discover/${c1}_${c2 }_${c3 }_6" id="sort_6">最新上线</a>
 </div>
 </div>
 
 <div class="categorieswrap">
 <div id="projects" class="project-list">
 <c:forEach items="${projects}" var="project" varStatus="s"> 
-
+<c:if test="${project.status==3 or project.status==4 or project.status==5}">
 <ul class="project-one">
 <li class="project-thumbnail">
-<a href="<%=request.getContextPath()%>/projects/view/${project.id}" title="史上第一部众筹电影《十万个冷笑话》，征求十万个微赞助商" target="_blank"><img src="${ imagehost }project-medium-${project.picture}" />"></a></li>
-<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/view/${project.id}" title="史上第一部众筹电影《十万个冷笑话》，征求十万个微赞助商">${project.name }</a></li>
+<a href="<%=request.getContextPath()%>/projects/view/${project.id}" title="${project.name }" target="_blank"><img src="${ imagehost }project-medium-${project.picture}" />"></a></li>
+<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/view/${project.id}" title="${project.name }">${project.name }</a></li>
 <li class="project-function">
-<a href="<%=request.getContextPath()%>/projects/${project.id}/posts" title="此项目有414个话题" class="project-p-on">话题：414</a>
-<a href="<%=request.getContextPath()%>/projects/${project.id}/backers" title="5408用户支持此项目" class="project-g-on">支持：5408</a>
-<a href="<%=request.getContextPath()%>/projects/discover/4_0_0_0" class="project-g-running">${project.status }筹资中</a>
+<a href="<%=request.getContextPath()%>/projects/${project.id}/posts" title="此项目有${project.topicnum }个话题" class="project-p-on">话题：${project.topicnum }</a>
+<a href="<%=request.getContextPath()%>/projects/${project.id}/backers" title="${project.supportnum }用户支持此项目" class="project-g-on">支持：${project.supportnum }</a>
+<a href="<%=request.getContextPath()%>/projects/discover/4_0_0_0" class="project-g-running">筹资中</a>
 </li>
 <li class="project-list-stats">
 <div class="projectpledgedwrap">
-<div style="width:100%;" class="projectpledged"></div>
-
-
-
+<div style="width:${project.supportratio }%;" class="projectpledged"></div>
 </div>
 <div class="projectstats">
-<p class="widtha"><strong>135%</strong>达到</p>
-<p class="widthb"><strong><span><b>¥</b>1,354,394</span></strong>已获支持</p>
-<p class="widthc"><strong>
-9天
-</strong>剩余时间</p>
+<p class="widtha"><strong>${project.supportratio }%</strong>达到</p>
+<p class="widthb"><strong><span><b>¥</b>${project.totalmoney }</span></strong>已获支持</p>
+<p class="widthc"><strong>${project.remaindays }天</strong>剩余时间</p>
 </div>
 </li>
 </ul>
+</c:if>
+<c:if test="${project.status==2 }">
+<ul class="project-one">
+<li class="project-thumbnail">
+<a href="<%=request.getContextPath()%>/projects/view/${project.id}" title="${project.name }" target="_blank"><img src="${ imagehost }project-medium-${project.picture}" />"></a></li>
+<li class="project-titile"><a href="<%=request.getContextPath()%>/projects/view/${project.id}" title="${project.name }">${project.name }</a></li>
+<li class="project-function">
+<a href="<%=request.getContextPath()%>/projects/${project.id}/posts" title="此项目有414个话题" class="project-p-on">话题：${project.topicnum }</a>
+<a href="<%=request.getContextPath()%>/projects/${project.id}/backers" title="${project.focusnum }用户支持此项目" class="project-g-on">关注：${project.focusnum }</a>
+<a href="<%=request.getContextPath()%>/projects/discover/4_0_0_0" class="project-g-funding">筹备中</a>
+</li>
+<li class="project-list-stats">
+<div class="projectpledgedwrap">
+<div style="width:${project.focusratio }%;" class="projectpledged projectpledged-funding"></div>
+</div>
+<div class="projectstats">
+<p class="widtha"><strong>${project.hotradio }%</strong>热度</p>
+<p class="widthb"><strong><span>${project.viewnum }</span></strong>浏览人数</p>
+<p class="widthc"><strong>${project.preparedays }天</strong>已经预热</p>
+</div>
+</li>
+</ul>
+</c:if>
 </c:forEach>
-<ul class="project-one">
-<li class="project-thumbnail">
-<a href="http://www.demohour.com/projects/320816" title="多用途定位器--“找找”让我们不再失去彼此！" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-011-739-11739-medium.jpg"></a></li>
-<li class="project-titile"><a href="http://www.demohour.com/projects/320816" title="多用途定位器--“找找”让我们不再失去彼此！">多用途定位器--“找找”让我们不再失去彼此！</a></li>
-<li class="project-function">
-<a href="http://www.demohour.com/projects/320816/posts" title="此项目有26个话题" class="project-p-on">话题：26</a>
-<a href="http://www.demohour.com/projects/320816/backers" title="0用户支持此项目" class="project-g-on">支持：0</a>
-<a href="http://www.demohour.com/projects/discover/4_0_0_0" class="project-g-running">筹资中</a>
-</li>
-<li class="project-list-stats">
-<div class="projectpledgedwrap">
-<div style="width:0%;" class="projectpledged"></div>
-
-
-
-</div>
-<div class="projectstats">
-<p class="widtha"><strong>0%</strong>达到</p>
-<p class="widthb"><strong><span><b>¥</b>0</span></strong>已获支持</p>
-<p class="widthc"><strong>
-59天
-</strong>剩余时间</p>
-</div>
-</li>
-</ul>
-
-<ul class="project-one">
-<li class="project-thumbnail">
-<a href="http://www.demohour.com/projects/317996" title="声控 双向 智能家居系统，真正的全宅智能家居！" target="_blank"><img src="<%=request.getContextPath()%>/demohour-index_files/project_posters-files-000-010-913-10913-medium.gif"></a></li>
-<li class="project-titile"><a href="http://www.demohour.com/projects/317996" title="声控 双向 智能家居系统，真正的全宅智能家居！">声控 双向 智能家居系统，真正的全宅智能家居！</a></li>
-<li class="project-function">
-<a href="http://www.demohour.com/projects/317996/posts" title="此项目有61个话题" class="project-p-on">话题：61</a>
-<a href="http://www.demohour.com/projects/317996/subscribers" title="678用户关注此项目" class="project-g-on">关注：678</a>
-<a href="http://www.demohour.com/projects/discover/3_0_0_0" class="project-g-funding">预热中</a>
-</li>
-<li class="project-list-stats">
-<div class="projectpledgedwrap">
-<div style="width:48%;" class="projectpledged projectpledged-funding"></div>
-</div>
-<div class="projectstats">
-<p class="widtha"><strong>48%</strong>热度</p>
-<p class="widthb"><strong><span>11153</span></strong>浏览人数</p>
-<p class="widthc"><strong>58天</strong>已经预热</p>
-</div>
-</li>
-</ul>
-
 </div>
 
 </div>
@@ -276,19 +248,63 @@
 </div>
 
 
-<script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script><script src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js" type="text/javascript"></script>
+<%-- <script src="<%=request.getContextPath()%>/demohour-index_files/ga.js" async="" type="text/javascript"></script> --%>
+<script src="<%=request.getContextPath()%>/demohour-index_files/application-ffd788692166a3012f8373c435f5c0c2.js" type="text/javascript"></script>
 <script src="<%=request.getContextPath()%>/demohour-index_files/projects-1ab927eb13eddbb381c44171a7060594.js" type="text/javascript"></script>
 <script type="text/javascript">
+$("#attribute_${c1}").addClass("ui-categories-current");
+$("#category_${c2}").addClass("ui-categories-current");
+$("#location_${c3}").addClass("ui-categories-current");
+$("#sort_${c4}").addClass("ui-categories-current");
+</script>
+<script type="text/javascript">
 //<![CDATA[
-$(document).ready(function(){$.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');$('input, textarea').placeholder();$(window).scroll(function(){if($(window).scrollTop() > 48){$('#ui_notification').addClass('layer-message-fixed');}else{$('#ui_notification').removeClass('layer-message-fixed');}});$.ui_notification.ready({url:'http://nf-2.demohour.com',data:{"new_comments_count":0,"new_messages_count":0,"new_notifications_count":0,"new_posts_count":0}});$.ui_core.paginate("#project-list-more"),$("#attribute_1").addClass("ui-categories-current"),$("#category_0").addClass("ui-categories-current"),$("#location_0").addClass("ui-categories-current"),$("#sort_6").addClass("ui-categories-current"),$("#projects_tabs").length>0&&$(window).scroll(function(){$(window).scrollTop()>166?$("#projects_tabs").addClass("scrollon"):$("#projects_tabs").removeClass("scrollon")}),$("body").on("click","a.ui-popup-delete",function(e){$("#ui_popup_delete").find("div.ui-popup-content").css("top",$(window).height()/2-120),$("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),$("#ui_popup_delete").find("a.ui-popup-url").attr("href",$(e.target).attr("href")),$("#ui_popup_delete").toggle(),e.preventDefault()}),$("body").on("click","a.ui-popup-message",function(e){$("#ui_popup_message").find("div.ui-popup-content").css("top",$(window).height()/2-150),$("#ui_popup_message").find("form").attr("action",$(e.target).attr("href")),$("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),$("#ui_popup_message").toggle(),$("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),$("#ui_popup_message").find("textarea").focus(),$(e.target).attr("href").indexOf("?recipient_id=")>0?($("#ui_popup_message_url").show(),$("#ui_popup_message_email").hide(),$("#ui_popup_message_url").find("a").attr("href",$(e.target).attr("href").replace("?recipient_id=","/"))):($("#ui_popup_message_url").hide(),$("#ui_popup_message_email").show()),e.preventDefault()});;$.ui_core.backtop('#backtop');$.ui_core.distance({now:'2013-08-15 23:38:17 +0800'});});
+$(document).ready(function(){
+	$.ui_core.ready('dropbox', 'tab', 'popup', 'button', 'checkbox', 'radio', 'text', 'action', 'popup_preview');
+	$('input, textarea').placeholder();
+	$(window).scroll(function(){
+		if($(window).scrollTop() > 48){$('#ui_notification').addClass('layer-message-fixed');}
+		else{$('#ui_notification').removeClass('layer-message-fixed');}
+	});
+/* $.ui_notification.ready({url:'http://nf-2.demohour.com',data:{"new_comments_count":0,"new_messages_count":0,"new_notifications_count":0,"new_posts_count":0}}); */
+$.ui_core.paginate("#project-list-more"),
+/* $("#attribute_1").addClass("ui-categories-current"),
+$("#category_0").addClass("ui-categories-current"),
+$("#location_0").addClass("ui-categories-current"),
+$("#sort_6").addClass("ui-categories-current"), */
+$("#projects_tabs").length>0&&$(window).scroll(function(){
+	$(window).scrollTop()>166?$("#projects_tabs").addClass("scrollon"):$("#projects_tabs").removeClass("scrollon")
+}),
+$("body").on("click","a.ui-popup-delete",function(e){
+	$("#ui_popup_delete").find("div.ui-popup-content").css("top",$(window).height()/2-120),
+	$("#ui_popup_delete").find("p.ui-popup-text").html($(e.target).attr("title")),
+	$("#ui_popup_delete").find("a.ui-popup-url").attr("href",$(e.target).attr("href")),
+	$("#ui_popup_delete").toggle(),e.preventDefault()
+}),
+$("body").on("click","a.ui-popup-message",function(e){
+	$("#ui_popup_message").find("div.ui-popup-content").css("top",$(window).height()/2-150),
+	$("#ui_popup_message").find("form").attr("action",$(e.target).attr("href")),
+	$("#ui_popup_message").find("span.ui-popup-title").html($(e.target).attr("title")),
+	$("#ui_popup_message").toggle(),
+	$("#ui_popup_message").find("textarea").val($(e.target).attr("data-message-attachment")),
+	$("#ui_popup_message").find("textarea").focus(),
+	$(e.target).attr("href").indexOf("?recipient_id=")>0?
+			($("#ui_popup_message_url").show(),$("#ui_popup_message_email").hide(),$("#ui_popup_message_url").find("a").attr("href",$(e.target).attr("href").replace("?recipient_id=","/")))
+			:($("#ui_popup_message_url").hide(),$("#ui_popup_message_email").show()),e.preventDefault()
+});;
+$.ui_core.backtop('#backtop');
+$.ui_core.distance({
+	//now:'2013-08-15 23:38:17 +0800'
+	});
+});
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-23451409-1']);
 _gaq.push(['_trackPageview']);
-(function() {
+/* (function() {
 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
+})(); */
 //]]>
 </script>
 </body></html>
