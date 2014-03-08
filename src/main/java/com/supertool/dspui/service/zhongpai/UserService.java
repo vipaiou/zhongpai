@@ -378,8 +378,8 @@ public class UserService {
 	public List<Authority> getUserAuthoritysForSecurity(User user) {
 		return null;//this.userAuthorityDAO.getAuthoritysForSecurityByUser(user);
 	}
-	public Map<?, ?> getUserById(Object object) {
-		return userDAO.getUserById(object);
+	public Map<?, ?> getUserDetailById(Object object) {
+		return userDAO.getUserDetailById(object);
 	}
 	
 	/**
@@ -449,5 +449,11 @@ public class UserService {
 		userDAO.updateTags(map);
 		UserContext.getLoginUser().setTags(tags);
 		return "1";
+	}
+	public void updateLoginInfo(User user) {
+		userDAO.updateLoginInfo(user);
+	}
+	public Map<?, ?> getUserById(Object object) {
+		return userDAO.getUserById(object);
 	}
 }

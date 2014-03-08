@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.supertool.dspui.context.UserContext;
+import com.supertool.dspui.dao.zhongpai.CommentMapper;
 import com.supertool.dspui.dao.zhongpai.TopicMapper;
 
 @Service
-public class TopicService {
+public class CommentService {
 
 	@Autowired
 	TopicMapper topicMapper;
+	
+	@Autowired
+	CommentMapper commentMapper;
 	
 	public int getTopicnumByProjectId(int id) {
 		return topicMapper.getTopicnumByProjectId(id);
@@ -39,10 +43,6 @@ public class TopicService {
 		return topicMapper.getCreatedTopicByUserId(UserContext.getLoginUserId());
 	}
 
-	public List<Map<String, Object>> getCommentedTopicByUserId() {
-		return topicMapper.getCommentedTopicByUserId(UserContext.getLoginUserId());
-	}
-
 	public Map<String, String> getTopicMetaByProjectId(int id) {
 		return topicMapper.getTopicMetaByProjectId(id);
 	}
@@ -57,10 +57,15 @@ public class TopicService {
 
 	public Object addcomment(Map<String, Object> map) {
 		map.put("userid", UserContext.getLoginUserId());
-		if(map.get("pid") == null){
-			map.put("pid", "0");
-		}
-		return topicMapper.addcomment(map);
+		return commentMapper.addcomment(map);
+	}
+
+	public List<Map<String, Object>> getReceived() {
+		return commentMapper.getReceived(UserContext.getLoginUserId());
+	}
+
+	public List<Map<String, Object>> getSent() {
+		return commentMapper.getSent(UserContext.getLoginUserId());
 	}
 
 	
