@@ -12,7 +12,7 @@ html,body {
 	height:100%;
 }
 a:link,a:visited {
-	color:#258CFF;
+	/* color:#258CFF; */
 	text-decoration:none;
 }
 a:hover,a:active {
@@ -350,11 +350,13 @@ p.hm_excerpt {
 }
 .hm_leftNav .hm_snsNav .no{ margin:0;}
 .hm_leftNav .hm_snsNav li {
-	padding-top:10px; float:left; margin-right:20px;
+	padding-top:10px; 
+	/* float:left; */ 
+	margin-right:20px;
 }
 .hm_topWrap {
 	width:995px;
-	float:right;
+	/* float:right; */
 	padding-top:20px;
 	/*padding-left:20px;*/
 	/*padding-left:190px;*/
@@ -1182,7 +1184,7 @@ ul.hm_onBelow li a:hover,ul.hm_onBelow li a:active {
 	padding-left:20px;
 }
 .hm_authorArticle ul li a:hover,.hm_authorArticle ul li a:active {
-	color:#258cff;
+	/* color:#258cff; */
 }
 .hm_recArticle {
 	width:100%;
