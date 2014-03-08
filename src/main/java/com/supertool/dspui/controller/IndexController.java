@@ -26,6 +26,7 @@ import com.supertool.dspui.dao.mybatis.DspLogicMapper;
 import com.supertool.dspui.model.Dsp;
 import com.supertool.dspui.model.User;
 import com.supertool.dspui.service.zhongpai.CategoryService;
+import com.supertool.dspui.service.zhongpai.MessageService;
 import com.supertool.dspui.service.zhongpai.ProjectService;
 import com.supertool.dspui.service.zhongpai.UserService;
 
@@ -39,6 +40,9 @@ public class IndexController {
 	
 	@Autowired
 	CategoryService categoryService;
+	
+	@Autowired
+	MessageService messageService;
 	
     @RequestMapping(value = {"/", "", "/index"})
     public String index(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -97,4 +101,13 @@ public class IndexController {
 		m.put("user", user);
 		return m;
 	}
+    @RequestMapping("/messages")
+	public @ResponseBody
+	Map<String,Object> messages(@RequestParam Map<String, Object> p) {
+		Map<String,Object> m=new HashMap<String,Object>();
+		messageService.add(p);
+		m.put("result", 1);
+		return m;
+	}
+    
 }

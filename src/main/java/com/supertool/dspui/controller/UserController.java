@@ -40,6 +40,7 @@ import com.supertool.dspui.model.Media;
 import com.supertool.dspui.model.User;
 import com.supertool.dspui.security.UserDetailsImpl;
 import com.supertool.dspui.service.zhongpai.ActivityService;
+import com.supertool.dspui.service.zhongpai.ProjectService;
 import com.supertool.dspui.service.zhongpai.UserService;
 import com.supertool.dspui.util.ImageUtil;
 import com.supertool.dspui.util.MD5;
@@ -56,15 +57,24 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	@Autowired
+	private ProjectService projectService;
+	@Autowired
 	private ActivityService activityService;
 
 
 	@RequestMapping(value={"/user/home"})
 	public String home(@RequestParam Map<String, Object> map, Model model){
-		Object user = userService.getUserById(UserContext.getLoginUserId());
+		Object user = userService.getUserDetailById(UserContext.getLoginUserId());
 		List<Map<String,Object>> activities = activityService.getActivityByUserid(UserContext.getLoginUserId());
 		model.addAttribute("activities", activities);
 		model.addAttribute("user", user);
+
+		List<Map<String,Object>> created = projectService.created();
+		model.addAttribute("created", created);
+
+		List<Map<String,Object>> supported = projectService.supported();
+		model.addAttribute("supported", supported);
+		
 		model.addAttribute("imagehost", Config.getImageHost());
 		return "/user/home";
 	}
